@@ -1,0 +1,7 @@
+前端：html + css + javascript + vue
+后端：Spring Boot+Spring
+数据库：Mysql + MongoDB
+
+
+Python爬虫
+知识图谱、NLP
