@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class UserDaoImpl implements UserDao {
@@ -21,20 +22,21 @@ public class UserDaoImpl implements UserDao {
     @Override
     public User findById(Integer userId) {
         User user = userRepository.getOne(userId);
-        UserOther userOther = userOtherRepository.findByUserId(userId);
-        if(userOther != null)
-            user.setAvatarBase64(userOther.getAvatarBase64());
+        Optional<UserOther> userOther =
+                userOtherRepository.findByUserId(user.getUserId());
+        userOther.ifPresent(other -> user.setAvatarBase64(other.getAvatarBase64()));
         return userRepository.getOne(userId);
     }
 
     @Override
     public void update(User user) {
         User user1 = userRepository.saveAndFlush(user);
-        UserOther userOther = userOtherRepository.findByUserId(user1.getUserId());
-        if(userOther != null) {
+        Optional<UserOther> userOther =
+                userOtherRepository.findByUserId(user1.getUserId());
+        if(userOther.isPresent()) {
             if(user.getAvatarBase64() != null) {
-                userOther.setAvatarBase64(user.getAvatarBase64());
-                userOtherRepository.save(userOther);
+                userOther.get().setAvatarBase64(user.getAvatarBase64());
+                userOtherRepository.save(userOther.get());
             }
         }
     }
@@ -42,9 +44,10 @@ public class UserDaoImpl implements UserDao {
     @Override
     public User findByName(String username) {
         User user = userRepository.findByUsername(username);
-        UserOther userOther = userOtherRepository.findByUserId(user.getUserId());
-        if(userOther != null) {
-            user.setAvatarBase64(userOther.getAvatarBase64());
+        if(user != null) {
+            Optional<UserOther> userOther =
+                    userOtherRepository.findByUserId(user.getUserId());
+            userOther.ifPresent(other -> user.setAvatarBase64(other.getAvatarBase64()));
         }
         return user;
     }

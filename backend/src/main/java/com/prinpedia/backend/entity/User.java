@@ -4,10 +4,9 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.Transient;
+import javax.persistence.*;
+
+import static javax.persistence.GenerationType.IDENTITY;
 
 @Entity
 @Table(name = "user", schema = "prinpedia")
@@ -20,9 +19,11 @@ public class User {
     private String username;
     private String password;
     private String email;
+    private Integer authority; // 1--ordinary user
     private String avatarBase64;
 
     @Id
+    @GeneratedValue(strategy = IDENTITY)
     public int getUserId() {
         return this.userId;
     }
@@ -50,6 +51,9 @@ public class User {
     public void setEmail(String email) {
         this.email = email;
     }
+
+    public Integer getAuthority() { return authority; }
+    public void setAuthority(Integer authority) { this.authority = authority; }
 
     @Transient
     public String getAvatarBase64() { return avatarBase64; }

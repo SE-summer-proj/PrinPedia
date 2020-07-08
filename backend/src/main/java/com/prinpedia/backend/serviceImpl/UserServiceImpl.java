@@ -17,10 +17,21 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public void register(String username, String password, String email) {
+        if(userDao.findByName(username) != null) return;
+        User user = new User();
+        user.setUsername(username);
+        user.setPassword(password);
+        user.setEmail(email);
+        user.setAuthority(1);
+        userDao.update(user);
+    }
+
+    @Override
     public Boolean validate(String username, String password) {
         User user = userDao.findByName(username);
-        if(user.getPassword().equals(password)) return true;
-        else return false;
+        if(user == null) return false;
+        return user.getPassword().equals(password);
     }
 
     @Override
