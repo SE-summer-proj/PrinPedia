@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Entity
 @Table(name = "user", schema = "prinpedia")
@@ -19,6 +20,7 @@ public class User {
     private String username;
     private String password;
     private String email;
+    private String avatarBase64;
 
     @Id
     public int getUserId() {
@@ -47,5 +49,11 @@ public class User {
     }
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    @Transient
+    public String getAvatarBase64() { return avatarBase64; }
+    public void setAvatarBase64(String avatarBase64) {
+        this.avatarBase64 = avatarBase64;
     }
 }
