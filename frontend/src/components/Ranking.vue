@@ -38,7 +38,14 @@
         components: {Entry},
         data: function () {
             return {
-                hotWords: [
+                hotWords: []
+            };
+        },
+        props: ['columns'],
+        methods: {
+            getRanking() {
+                // setData: hotWords
+                this.hotWords = [
                     {
                         word: '上海交大',
                         type: '新',
@@ -59,13 +66,7 @@
                         type: '荐',
                         change: 0
                     }
-                ]
-            };
-        },
-        props: ['columns'],
-        methods: {
-            getRanking() {
-                // setData: hotWords
+                ];
             }
         },
         mounted() {

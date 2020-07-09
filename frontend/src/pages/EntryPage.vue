@@ -1,18 +1,28 @@
 <template>
-  <el-container>
-    <el-header>
-      <Header />
-    </el-header>
-    <el-aside>
-      <Catalog :catalog-data="catalog" />
-    </el-aside>
-    <el-main>
-      <MainText :catalog-data="catalog" :contents="text" />
-    </el-main>
-    <el-footer>
-      <Footer />
-    </el-footer>
-  </el-container>
+  <div id="entry-page">
+    <el-container>
+      <el-header>
+        <Header />
+      </el-header>
+      <el-container>
+        <el-aside>
+          <el-button @click="dialogVisible = true" type="success">新增段落</el-button>
+          <Catalog :catalog-data="contents.catalog" />
+        </el-aside>
+        <el-main>
+          <MainText :contents="contents" />
+        </el-main>
+      </el-container>
+      <el-footer>
+        <Footer />
+      </el-footer>
+    </el-container>
+    <el-dialog title="新增段落" :visible.sync="dialogVisible">
+      <el-container>
+        <el-aside><Catalog :catalog-data="contents.catalog" /></el-aside>
+      </el-container>
+    </el-dialog>
+  </div>
 </template>
 
 <script>
@@ -25,15 +35,62 @@
         components: {Footer, Header, MainText, Catalog},
         data: function () {
             return {
-                catalog: [],
-                text: [],
-                entryName: this.$route.params.entryName
+                contents: [],
+                entryName: this.$route.params.entryName,
+                dialogVisible: false
             }
         },
         methods: {
             getContents() {
                 console.log(this.entryName);
-                // setData: contents, catalogData
+                // setData: contents
+                this.contents = {
+                    summary: 'Summary text of ' + this.entryName,
+                    catalog: [
+                        {
+                            label: '1 History',
+                            text: 'text...',
+                            children: [
+                                {
+                                    label: '1.1 Ancient History',
+                                    text: 'text...'
+                                },
+                                {
+                                    label: '1.2 Modern History',
+                                    text: 'text...',
+                                }
+                            ]
+                        },
+                        {
+                            label: '2 Features',
+                            text: 'text...',
+                            children: [
+                                {
+                                    label: '2.1 Advantages',
+                                    text: 'text...',
+                                    children: [
+                                        {
+                                            label: '2.1.1 Good water-absorbing quality',
+                                            text: 'text...'
+                                        },
+                                        {
+                                            label: '2.1.2 Good air-permability',
+                                            text: 'text...'
+                                        }
+                                    ]
+                                },
+                                {
+                                    label: '2.2 Disadvantages',
+                                    text: 'text...'
+                                }
+                            ]
+                        },
+                        {
+                            label: '3 Principles',
+                            text: 'text...'
+                        }
+                    ]
+                };
             }
         },
         mounted() {

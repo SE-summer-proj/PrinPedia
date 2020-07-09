@@ -1,5 +1,5 @@
 <template>
-
+  <div>准备中 Coming Soon</div>
 </template>
 
 <script>

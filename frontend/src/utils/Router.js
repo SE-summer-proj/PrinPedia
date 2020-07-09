@@ -14,12 +14,12 @@ const routes = [
         component: LoginPage
     },
     {
-        path: '/search',
+        path: '/index',
         component: SearchPage
     },
     {
         path: '/',
-        redirect: '/search'
+        redirect: '/index'
     },
     {
         path: '/entry/:entryName',

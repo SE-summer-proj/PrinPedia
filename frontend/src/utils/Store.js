@@ -7,7 +7,8 @@ export const store = new Vuex.Store({
     state: {
         userData: {
             avatar: '',
-            username: ''
+            username: '',
+            userId: ''
         }
     },
     mutations: {

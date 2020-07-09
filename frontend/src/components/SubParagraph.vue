@@ -1,9 +1,9 @@
 <template>
-  <div id="paragraph">
+  <div id="sub-paragraph">
     <el-row>
       <el-col :span="20">
-        <div class="paragraph-title">{{title}}</div>
-        <div class="paragraph-body" v-if="!isEditing">{{text}}</div>
+        <div class="sub-title">{{title}}</div>
+        <div class="sub-body" v-if="!isEditing">{{text}}</div>
         <div v-else>
           <el-input type="textarea" v-model="buffer" />
         </div>
@@ -25,7 +25,7 @@
 
 <script>
     export default {
-        name: "Paragraph",
+        name: "SubParagraph",
         data: function () {
             return {
                 isEditing: false,
@@ -56,13 +56,13 @@
 </script>
 
 <style scoped>
-  #paragraph {
+  #sub-paragraph {
     text-align: left;
     font-size: medium;
-    margin: 10px 10px 10px 10px;
+    margin: 10px 10px 10px 30px;
   }
-  .paragraph-title {
-    font-weight: bold;
-    font-size: larger;
+  .sub-title {
+    font-size: medium;
+    font-weight: bolder;
   }
 </style>

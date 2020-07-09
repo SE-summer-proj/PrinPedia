@@ -17,7 +17,7 @@
         name: "SearchBar",
         data: function () {
             return {
-                searchKeyword: this.props.keyword
+                searchKeyword: ''
             };
         },
         props: {
@@ -27,6 +27,9 @@
             search() {
                 this.$router.push('/result/' + this.searchKeyword);
             }
+        },
+        mounted() {
+            this.searchKeyword = this.keyword;
         }
     }
 </script>

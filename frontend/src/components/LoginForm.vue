@@ -16,6 +16,9 @@
 </template>
 
 <script>
+    import {loginUrl} from "@/utils/Constants";
+    import {POST} from "@/utils/Utils";
+
     export default {
         name: "LoginForm",
         data: function () {
@@ -29,7 +32,12 @@
         },
         methods: {
             login() {
-                //
+                POST(loginUrl, {
+                    username: this.form.username,
+                    password: this.form.password
+                }, (data) => {
+                    this.$store.commit('setUserData', data.userData);
+                });
             }
         }
     }

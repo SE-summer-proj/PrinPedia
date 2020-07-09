@@ -16,6 +16,9 @@
 </template>
 
 <script>
+    import {POST} from "@/utils/Utils";
+    import {registerUrl} from "@/utils/Constants";
+
     export default {
         name: "RegisterForm",
         data: function () {
@@ -29,7 +32,9 @@
         },
         methods: {
             register() {
-                //
+                POST(registerUrl, this.form, (data) => {
+                    console.log(data);
+                })
             }
         }
     }
