@@ -36,9 +36,7 @@ public class Entry {
         this.summary = summary;
     }
 
-    public String getTitle() {
-        return title;
-    }
+    public String getTitle() { return title; }
     public void setTitle(String title) {
         this.title = title;
     }
