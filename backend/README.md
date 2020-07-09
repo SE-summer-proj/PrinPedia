@@ -5,7 +5,7 @@ The app is created using springboot.
 Run "BackendApplication" to run this backend.
 It runs on localhost:8080 by default.
 
-## example
+## Example
 
 ### User registration
 
@@ -198,4 +198,69 @@ response:
     "status": 0                   
 }
 
+## How to store entries
+
+Entries' details are stored in mongoDB.
+
+If you want to transfer entries' data from files to mongoDB, you can call the method
+in class "src/test/java/com.prinpedia.backend/dataProcess/initEntryData.java".
+Please make sure the data in files is formatted before performing insertion.You should
+configure the path of your datasource file on your own.
+
+Here is the data structure in mongoDB's "entry" collection.
+
+{
+
+    "title": "This is the title of the entry",
+    "summary": "This is summary of the entry",
+    "content": [
+        {
+            "label": "1 first"
+        },
+        {
+            "label"： “2 second",
+            "children": [
+                {
+                    "label": "2.1 lalala"
+                },
+                {
+                    "label": "2.2 hahaha",
+                    "children": [
+                        {
+                            "label": "2.2.1 xixixi"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+    "sectionList": [
+        {
+            "sectionTitle": "first",
+            "sectionText": "this is first..."
+        },
+        {
+            "sectionTitle": "second",
+            "sectionText": "this is second..."
+        },
+        {
+            "sectionTitle": "lalala",
+            "sectionText": "this is 2.1"
+        },
+        {
+            "sectionTitle": "hahaha",
+            "sectionText": "this is 2.2"
+        }
+        {
+            "sectionTitle": "xixixi",
+            "sectionText": "this is 2.2.1"
+        }
+    ]
+}
+
+Note: "content" attribute stores an array of documents, which may recursively own 
+an array
+of documents("children"). In fact, you can view it as a tree structure. "sectionList"
+attribute is an array of documents, which are just simple documents with two
+attributes.
 
