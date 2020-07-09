@@ -1,83 +1,201 @@
-**This is the backend app of this project.**
+# This is the backend app of this project
 
 The app is created using springboot.
 
 Run "BackendApplication" to run this backend.
 It runs on localhost:8080 by default.
 
-****example****
+## example
 
-**User registration**
+### User registration
 
 url: http://localhost:8080/user/register
 
 method: post
 
-body:
-{
-    "username": "user0",
+body:{
+
+    "username": "user0",  
     "password": "password",
     "email": "123@123.com"
 }
 
 response: nothing
 
-**User login**
+### User login
 
 url: http://localhost:8080/user/login
 
 method: post
 
-body:
-{
+body:{
+
     "username": "user0",
     "password": "password"
 }
 
-response:
-{
-    "userType": 1,
-    "username": "user0"
+response:{
+
+    "extraData": {
+        "userType": 1,
+        "username": "user0"
+    },
+    "message": "Login succeed",
+    "status": 0
 }
 
-note: if login fail, "userType" is 0; "userType" will be 1 if this is a normal user
+Note: if login fail, "userType" is 0; "userType" will be 1 if this is a normal user
 
-**rank**
+If login fails:
+
+response: {
+
+    "extraData": {
+        "userType": 0,
+        "username": "123"
+    },
+    "message": "Wrong username or password",
+    "status": -1
+}
+
+### rank
 
 url: http://localhost:8080/rank
 
 method: get
 
-response:
-[
-    {
-        "change": 5,
-        "type": "教育",
-        "word": "上海交通大学"
-    }
-]
+response:{
 
-**recommend**
+    "extraData": [
+        {
+            "change": 5,
+            "type": "教育",
+            "word": "上海交通大学"
+        },
+        {
+            "change": -1,
+            "type": "卖弱",
+            "word": "迟先生"
+        }
+    ],
+    "message": "success",
+    "status": 0
+}
+
+### recommend
 
 url: http://localhost:8080/recommend?userId=?
 
 method: get
 
-response:
-[
-    "哈哈哈",
-    "嘻嘻嘻"
-]
+response:{
 
-**search**
+    "extraData": [
+        "哈哈哈",
+        "嘻嘻嘻"
+    ],
+    "message": "success",
+    "status": 0
+}
+
+### search
+
+Note: up to now, user can find an entry only when the keyword is exactly the same
+as some entry's title. If it doesn't, the search will get fail response.
+
+Here are examples of success search and failed search respectively:
+
 url: http://localhost:8080/search?keyword=?
 
 method: get
 
+succeed:
+
 response:
-[
-    "第一条结果",
-    "第二条结果",
-    "The third item"
-]
+{
+
+    "extraData": [
+        "Science"
+    ],
+    "message": "success",
+    "status": 0
+}
+
+fail(or no match):
+
+response:
+{
+
+    "extraData": [
+        "第一条结果",
+        "第二条结果",
+        "The third item"
+    ],
+    "message": "cannot find matched entry",
+    "status": -1
+}
+
+### fetch entry details
+
+url: http://localhost:8080/entry?entryName=?
+
+method: get
+
+Note: response may be very long, following is just an example.
+Note!: catalog
+
+response:
+{
+
+    "extraData": {
+        "title": "This is the title of the entry",
+        "summary": "This is summary of the entry",
+        "content": [
+            {
+                "label": "1 first"
+            },
+            {
+                "label"： “2 second",
+                "children": [
+                    {
+                        "label": "2.1 lalala"
+                    },
+                    {
+                        "label": "2.2 hahaha",
+                        "children": [
+                            {
+                                "label": "2.2.1 xixixi"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+        "text": [
+            {
+                "sectionTitle": "first",
+                "sectionText": "this is first..."
+            },
+            {
+                "sectionTitle": "second",
+                "sectionText": "this is second..."
+            },
+            {
+                "sectionTitle": "lalala",
+                "sectionText": "this is 2.1"
+            },
+            {
+                "sectionTitle": "hahaha",
+                "sectionText": "this is 2.2"
+            }
+            {
+                "sectionTitle": "xixixi",
+                "sectionText": "this is 2.2.1"
+            }
+        ] 
+    }
+    "message": "fetch detail success",
+    "status": 0                   
+}
+
 
