@@ -23,6 +23,10 @@ public class RankController {
         jsonObject1.put("type", "卖弱");
         jsonObject1.put("change", -1);
         jsonArray.add(jsonObject1);
-        return jsonArray.toJSONString();
+        JSONObject response = new JSONObject();
+        response.put("status", 0);
+        response.put("message", "success");
+        response.put("extraData", jsonArray);
+        return response.toJSONString();
     }
 }
