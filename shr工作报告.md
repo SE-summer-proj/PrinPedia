@@ -21,3 +21,11 @@
 实现将爬取的词条数据存储到数据库中并进行简单的搜索
 
 具体工作详见backend-basic分支
+
+## 7.10
+
+学习了Elasticsearch相关知识
+
+进一步改进了搜索算法，将词条的词条名和摘要存储在了Elasticsearch中，以便搜索
+
+具体工作详见backend-basic分支
