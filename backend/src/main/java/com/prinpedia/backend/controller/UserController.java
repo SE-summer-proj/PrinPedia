@@ -3,6 +3,7 @@ package com.prinpedia.backend.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.prinpedia.backend.entity.User;
 import com.prinpedia.backend.service.UserService;
+import com.sun.istack.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,7 +16,7 @@ public class UserController {
     @CrossOrigin
     @ResponseBody
     @PostMapping(value = "/register")
-    public String register(@RequestBody JSONObject jsonObject) {
+    public String register(@RequestBody @NotNull JSONObject jsonObject) {
         String username = jsonObject.getString("username");
         String password = jsonObject.getString("password");
         String email = jsonObject.getString("mailAddr");
@@ -36,7 +37,7 @@ public class UserController {
     @CrossOrigin
     @ResponseBody
     @PostMapping(value = "/login")
-    public String login(@RequestBody JSONObject jsonObject) {
+    public String login(@RequestBody @NotNull JSONObject jsonObject) {
         String username = jsonObject.getString("username");
         String password = jsonObject.getString("password");
         JSONObject jsonObject1 = new JSONObject();

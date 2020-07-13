@@ -2,6 +2,7 @@ package com.prinpedia.backend.controller;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.hankcs.hanlp.HanLP;
 import com.prinpedia.backend.entity.Entry;
 import com.prinpedia.backend.service.EntryService;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -58,6 +58,13 @@
             <artifactId>spring-boot-starter-data-elasticsearch</artifactId>
             <version>2.3.1.RELEASE</version>
         </dependency>
+        <dependency>
+            <groupId>com.hankcs</groupId>
+            <artifactId>hanlp</artifactId>
+            <version>1.7.8</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/src/main/resources/lib/hanlp-1.7.8.jar</systemPath>
+        </dependency>
     </dependencies>
 
     <build>
