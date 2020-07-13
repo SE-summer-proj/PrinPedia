@@ -1,39 +1,29 @@
 <template>
   <div id="main-text">
-    <el-row>
-      <el-col :span="21">
-        <Paragraph
-            index="summary"
-            :is-edit-mode="isEditing"
-            :text="contents.summary"
-            title="Summary" />
-      </el-col>
-      <el-col :span="3">
-        <el-button @click="changeEditState" type="primary">{{isEditing ? '结束编辑' : '编辑正文'}}</el-button>
-      </el-col>
-    </el-row>
+    <div>
+      <div>
+        <span class="title">{{contents.title}}</span>
+        <span>
+          <el-button type="text" size="mini" icon="el-icon-edit">编辑</el-button>
+        </span>
+      </div>
+      <div class="summary">{{contents.summary}}</div>
+    </div>
     <el-collapse v-model="activeNames">
       <el-collapse-item
-          v-for="catalogItem in contents.catalog"
-          :key="catalogItem.label"
-          :title="catalogItem.label">
-        <Paragraph
-            :index="catalogItem.label"
-            :is-edit-mode="isEditing"
-            :text="catalogItem.text"
-            :title="''" />
-        <div v-for="subItem in catalogItem.children" :key="subItem.label">
-          <Paragraph
-              :index="subItem.label"
-              :is-edit-mode="isEditing"
-              :text="subItem.text"
-              :title="subItem.label" />
-          <div v-for="subSubItem in subItem.children" :key="subSubItem.label">
-            <SubParagraph
-                :index="subSubItem.label"
-                :is-edit-mode="isEditing"
-                :text="subSubItem.text"
-                :title="subSubItem.label" />
+          v-for="(item, i) in contents.catalog" :key="i"
+          :title="getTitle(item.label, i)">
+        <div class="paragraph">{{item.text}}</div>
+        <div v-for="(subItem, j) in item.children" :key="j">
+          <div class="sub-title">
+            {{getTitle(subItem.label, i, j)}}
+          </div>
+          <div class="paragraph">{{subItem.text}}</div>
+          <div v-for="(subSubItem, k) in subItem.children" :key="k">
+            <div class="sub-sub-title">
+              {{getTitle(subSubItem.label, i, j, k)}}
+            </div>
+            <div class="paragraph">{{subSubItem.text}}</div>
           </div>
         </div>
       </el-collapse-item>
@@ -42,21 +32,20 @@
 </template>
 
 <script>
-    import Paragraph from "@/components/Paragraph";
-    import SubParagraph from "@/components/SubParagraph";
     export default {
         name: "MainText",
-        components: {SubParagraph, Paragraph},
         data: function () {
             return {
                 activeNames: [],
-                isEditing: false
             }
         },
         props: ['contents'],
         methods: {
-            changeEditState() {
-                this.isEditing = !this.isEditing;
+            getTitle(label, i, j, k) {
+                let index = (i+1).toString(10);
+                if (j != null) index += ('.' + (j+1).toString(10));
+                if (k != null) index += ('.' + (k+1).toString(10));
+                return index + ' ' + label;
             }
         }
     }

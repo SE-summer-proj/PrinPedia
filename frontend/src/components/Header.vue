@@ -1,8 +1,8 @@
 <template>
   <div id="header">
-    <el-row v-if="userData.username === ''" type="flex" justify="end">
+    <el-row v-if="!logged" type="flex" justify="end">
       <el-col :span="2">
-        <router-link to="/login">登录</router-link>
+        <el-button type="text" @click="loginDialogVisible = true">登录</el-button>
       </el-col>
     </el-row>
     <el-row v-else type="flex" justify="end">
@@ -13,18 +13,25 @@
         </span>
       </el-col>
     </el-row>
+    <el-dialog :visible.sync="loginDialogVisible">
+      <LoginDialog />
+    </el-dialog>
   </div>
 </template>
 
 <script>
+    import LoginDialog from "@/components/LoginDialog";
     export default {
         name: "Header",
+        components: {LoginDialog},
         data: function () {
             return {
                 userData: {
                     avatar: this.$store.state.avatar,
                     username: this.$store.state.username
-                }
+                },
+                logged: this.$store.state.logged,
+                loginDialogVisible: false
             }
         }
     }

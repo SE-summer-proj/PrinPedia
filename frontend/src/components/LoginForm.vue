@@ -4,7 +4,7 @@
       <el-input v-model="form.username" aria-placeholder="请输入用户名" />
     </el-form-item>
     <el-form-item label="密码">
-      <el-input v-model="form.password" aria-placeholder="请输入密码" />
+      <el-input v-model="form.password" aria-placeholder="请输入密码" show-password />
     </el-form-item>
     <el-form-item label="记住我">
       <el-switch v-model="form.rememberMe" />
@@ -36,7 +36,7 @@
                     username: this.form.username,
                     password: this.form.password
                 }, (data) => {
-                    this.$store.commit('setUserData', data.userData);
+                    this.$store.commit('setUserData', data.extraData);
                 });
             }
         }

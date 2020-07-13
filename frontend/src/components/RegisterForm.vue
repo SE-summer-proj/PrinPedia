@@ -4,7 +4,7 @@
       <el-input v-model="form.username" aria-placeholder="请输入用户名" />
     </el-form-item>
     <el-form-item label="密码">
-      <el-input v-model="form.password" aria-placeholder="请输入密码" />
+      <el-input v-model="form.password" aria-placeholder="请输入密码" show-password />
     </el-form-item>
     <el-form-item label="邮箱">
       <el-input v-model="form.mailAddress" aria-placeholder="请输入邮箱" />

@@ -27,7 +27,7 @@
                 // }, (data) => {
                 //     this.entries = data;
                 // });
-                this.entries = ['老大NB','教务处SB'];
+                this.entries = ['上海交大','迟先生'];
             }
         },
         mounted() {

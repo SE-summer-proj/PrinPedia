@@ -57,12 +57,12 @@
                         change: -1
                     },
                     {
-                        word: '学费',
+                        word: '迟先生',
                         type: '',
                         change: 2
                     },
                     {
-                        word: '大减价',
+                        word: '苏大佬',
                         type: '荐',
                         change: 0
                     }

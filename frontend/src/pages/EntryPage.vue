@@ -6,8 +6,8 @@
       </el-header>
       <el-container>
         <el-aside>
-          <el-button @click="dialogVisible = true" type="success">新增段落</el-button>
-          <Catalog :catalog-data="contents.catalog" />
+          <el-button @click="dialogVisible = true" type="success">开始编辑</el-button>
+          <Catalog :catalog="contents.catalog" />
         </el-aside>
         <el-main>
           <MainText :contents="contents" />
@@ -17,22 +17,20 @@
         <Footer />
       </el-footer>
     </el-container>
-    <el-dialog title="新增段落" :visible.sync="dialogVisible">
-      <el-container>
-        <el-aside><Catalog :catalog-data="contents.catalog" /></el-aside>
-      </el-container>
+    <el-dialog title="编辑" :visible.sync="dialogVisible">
+      Coming Soon...
     </el-dialog>
   </div>
 </template>
 
 <script>
-    import Catalog from "@/components/Catalog";
     import MainText from "@/components/MainText";
     import Header from "@/components/Header";
     import Footer from "@/components/Footer";
+    import Catalog from "@/components/Catalog";
     export default {
         name: "EntryPage",
-        components: {Footer, Header, MainText, Catalog},
+        components: {Catalog, Footer, Header, MainText},
         data: function () {
             return {
                 contents: [],
@@ -42,51 +40,52 @@
         },
         methods: {
             getContents() {
-                console.log(this.entryName);
-                // setData: contents
+                // console.log(this.entryName);
+                // setData: contents = extraData
                 this.contents = {
+                    title: this.entryName,
                     summary: 'Summary text of ' + this.entryName,
                     catalog: [
                         {
-                            label: '1 History',
+                            label: 'History',
                             text: 'text...',
                             children: [
                                 {
-                                    label: '1.1 Ancient History',
+                                    label: 'Ancient History',
                                     text: 'text...'
                                 },
                                 {
-                                    label: '1.2 Modern History',
+                                    label: 'Modern History',
                                     text: 'text...',
                                 }
                             ]
                         },
                         {
-                            label: '2 Features',
+                            label: 'Features',
                             text: 'text...',
                             children: [
                                 {
-                                    label: '2.1 Advantages',
+                                    label: 'Advantages',
                                     text: 'text...',
                                     children: [
                                         {
-                                            label: '2.1.1 Good water-absorbing quality',
+                                            label: 'Good water-absorbing quality',
                                             text: 'text...'
                                         },
                                         {
-                                            label: '2.1.2 Good air-permability',
+                                            label: 'Good air-permability',
                                             text: 'text...'
                                         }
                                     ]
                                 },
                                 {
-                                    label: '2.2 Disadvantages',
+                                    label: 'Disadvantages',
                                     text: 'text...'
                                 }
                             ]
                         },
                         {
-                            label: '3 Principles',
+                            label: 'Principles',
                             text: 'text...'
                         }
                     ]
