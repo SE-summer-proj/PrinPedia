@@ -19,11 +19,18 @@ public class UserController {
         String username = jsonObject.getString("username");
         String password = jsonObject.getString("password");
         String email = jsonObject.getString("mailAddr");
-        userService.register(username, password, email);
-        JSONObject jsonObject1 = new JSONObject();
-        jsonObject1.put("status", 0);
-        jsonObject1.put("message", "Registration succeed.");
-        return jsonObject1.toJSONString();
+        if(userService.register(username, password, email)) {
+            JSONObject jsonObject1 = new JSONObject();
+            jsonObject1.put("status", 0);
+            jsonObject1.put("message", "Registration succeed.");
+            return jsonObject1.toJSONString();
+        }
+        else {
+            JSONObject jsonObject1 = new JSONObject();
+            jsonObject1.put("status", -1);
+            jsonObject1.put("message", "Registration fails");
+            return jsonObject1.toJSONString();
+        }
     }
 
     @CrossOrigin

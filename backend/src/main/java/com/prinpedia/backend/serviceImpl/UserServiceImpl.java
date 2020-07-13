@@ -12,19 +12,25 @@ public class UserServiceImpl implements UserService {
     UserDao userDao;
 
     @Override
-    public void createUser(User user) {
+    public Boolean createUser(User user) {
+        if(user == null) return false;
+        if(user.getUsername() == null || user.getPassword() == null) {
+            return false;
+        }
         userDao.update(user);
+        return true;
     }
 
     @Override
-    public void register(String username, String password, String email) {
-        if(userDao.findByName(username) != null) return;
+    public Boolean register(String username, String password, String email) {
+        if(userDao.findByName(username) != null) return false;
         User user = new User();
         user.setUsername(username);
         user.setPassword(password);
         user.setEmail(email);
         user.setAuthority(1);
         userDao.update(user);
+        return true;
     }
 
     @Override
