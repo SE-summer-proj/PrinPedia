@@ -45,10 +45,10 @@ class EntryServiceTest {
 
     @DisplayName("Suggestion search")
     @Test
-    public void searchTitleAndSummary() {
+    public void  searchTitleAndSummary() {
         String []strings = {
                 "greek",
-                "shit",
+                "technique",
                 "hahaha"
         };
 
