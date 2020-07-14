@@ -32,3 +32,8 @@
 
 * Improved the display functionality of entry page.
 * Implemented the edit functionality of entry page.
+
+### 2020-07-14
+
+* Improve editing entries.
+* Implement creating entries.
