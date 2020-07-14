@@ -182,47 +182,30 @@ response:
             "summary": "This is summary of the entry",
             "content": [
                 {
-                    "label": "1 first"
+                    "label": "first",
+                    "text": "this is the first",
                 },
                 {
-                    "label"： “2 second",
+                    "label"： "2 second",
+                    "text": "this is the second",
                     "children": [
                         {
-                            "label": "2.1 lalala"
+                            "label": "2.1 lalala",
+                            "text": "this is 2.1"
                         },
                         {
                             "label": "2.2 hahaha",
+                            "text": "this is 2.2",
                             "children": [
                                 {
-                                    "label": "2.2.1 xixixi"
+                                    "label": "2.2.1 xixixi",
+                                    "text": "this is 2.2.1"
                                 }
                             ]
                         }
                     ]
                 }
             ]
-            "text": [
-                {
-                    "sectionTitle": "first",
-                    "sectionText": "this is first..."
-                },
-                {
-                    "sectionTitle": "second",
-                    "sectionText": "this is second..."
-                },
-                {
-                    "sectionTitle": "lalala",
-                    "sectionText": "this is 2.1"
-                },
-                {
-                    "sectionTitle": "hahaha",
-                    "sectionText": "this is 2.2"
-                }
-                {
-                    "sectionTitle": "xixixi",
-                    "sectionText": "this is 2.2.1"
-                }
-            ] 
         }
         "message": "fetch detail success",
         "status": 0                   

@@ -49,15 +49,14 @@ public class UserController {
             jsonObject1.put("avatar", user.getAvatarBase64());
             response.put("status", 0);
             response.put("message", "Login succeed");
-            response.put("extraData", jsonObject1);
         }
         else {
             jsonObject1.put("username", username);
             jsonObject1.put("userType", 0);
             response.put("status", -1);
             response.put("message", "Wrong username or password");
-            response.put("extraData", jsonObject1);
         }
+        response.put("extraData", jsonObject1);
         return response.toJSONString();
     }
 }

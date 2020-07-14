@@ -3,14 +3,23 @@ package com.prinpedia.backend;
 import com.hankcs.hanlp.HanLP;
 import com.hankcs.hanlp.corpus.dependency.CoNll.CoNLLSentence;
 import com.hankcs.hanlp.corpus.dependency.CoNll.CoNLLWord;
+import com.hankcs.hanlp.seg.common.Term;
+import com.hankcs.hanlp.tokenizer.IndexTokenizer;
 import org.junit.jupiter.api.Test;
+
+import java.util.List;
 
 
 class BackendApplicationTests {
 
     @Test
     void contextLoads() {
-        CoNLLSentence sentence = HanLP.parseDependency("上海的历史");
+        List<Term> termList = IndexTokenizer.segment("的");
+        for (Term term : termList)
+        {
+            System.out.println(term + " [" + term.offset + ":" + (term.offset + term.word.length()) + "]");
+        }
+        /*CoNLLSentence sentence = HanLP.parseDependency("上海的历史");
         System.out.println(sentence);
         // 可以方便地遍历它
         for (CoNLLWord word : sentence)
@@ -30,7 +39,7 @@ class BackendApplicationTests {
         {
             if (head == CoNLLWord.ROOT) System.out.println(head.LEMMA);
             else System.out.printf("%s --(%s)--> ", head.LEMMA, head.DEPREL);
-        }
+        }*/
     }
 
 

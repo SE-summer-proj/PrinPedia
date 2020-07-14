@@ -20,7 +20,7 @@ public class SearchController {
     @ResponseBody
     @GetMapping
     public String search(@RequestParam(value = "keyword") String keyword) {
-        String title =entryService.searchTitle(keyword);
+        String title = entryService.searchTitle(keyword);
         JSONArray jsonArray = new JSONArray();
         JSONObject response = new JSONObject();
         if(title != null) {
@@ -42,6 +42,5 @@ public class SearchController {
             response.put("message", "cannot find matched entry");
         }
         return response.toJSONString();
-
     }
 }

@@ -29,19 +29,11 @@ public class EntryController {
             jsonObject.put("summary", entry.getSummary());
             JSONArray jsonArray = new JSONArray();
             List<Content> contentList = entry.getContent();
+            List<Section> sectionList = entry.getSectionList();
             for(Content content : contentList) {
-                addContentToJson(jsonArray, content);
+                addContentToJson(jsonArray, content, sectionList);
             }
             jsonObject.put("content", jsonArray);
-            JSONArray jsonArray1 = new JSONArray();
-            List<Section> sectionList = entry.getSectionList();
-            for(Section section : sectionList) {
-                JSONObject jsonObject1 = new JSONObject();
-                jsonObject1.put("sectionTitle", section.getSectionTitle());
-                jsonObject1.put("sectionText", section.getSectionText());
-                jsonArray1.add(jsonObject1);
-            }
-            jsonObject.put("text", jsonArray1);
             response.put("status", 0);
             response.put("message", "fetch detail success");
             response.put("extraData", jsonObject);
@@ -53,13 +45,23 @@ public class EntryController {
         return response.toJSONString();
     }
 
-    private void addContentToJson(JSONArray jsonArray, Content content) {
+    private void addContentToJson(JSONArray jsonArray,
+                                  Content content, List<Section> sectionList) {
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put("label", content.getLabel());
+        String label = content.getLabel();
+        int split = label.indexOf(' ');
+        label = label.substring(split + 1);
+        jsonObject.put("label", label);
+        for(Section section : sectionList) {
+            if(section.getSectionTitle().equals(label)) {
+                jsonObject.put("text", section.getSectionText());
+                break;
+            }
+        }
         if(content.getChildren() != null && content.getChildren().size() > 0) {
             JSONArray jsonArray1 = new JSONArray();
             for(Content child : content.getChildren()) {
-                addContentToJson(jsonArray1, child);
+                addContentToJson(jsonArray1, child, sectionList);
             }
             jsonObject.put("children", jsonArray1);
         }

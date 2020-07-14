@@ -1,15 +1,15 @@
 package com.prinpedia.backend.serviceImpl;
 
+import com.hankcs.hanlp.seg.common.Term;
+import com.hankcs.hanlp.tokenizer.IndexTokenizer;
 import com.prinpedia.backend.dao.EntryDao;
 import com.prinpedia.backend.entity.ElasticEntry;
 import com.prinpedia.backend.entity.Entry;
 import com.prinpedia.backend.service.EntryService;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
-import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.elasticsearch.core.ElasticsearchRestTemplate;
-import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
 import org.springframework.data.elasticsearch.core.SearchHit;
 import org.springframework.data.elasticsearch.core.SearchHits;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQuery;
@@ -51,9 +51,16 @@ public class EntryServiceImpl implements EntryService {
 
     @Override
     public List<String> searchTitleAndSummary(String keyword) {
-        BoolQueryBuilder boolBuilder = new BoolQueryBuilder()
-                .should(QueryBuilders.matchQuery("entryTitle", keyword))
-                .should(QueryBuilders.matchQuery("entrySummary", keyword));
+        List<Term> termList = IndexTokenizer.segment(keyword);
+        BoolQueryBuilder boolBuilder = new BoolQueryBuilder();
+        for(Term term : termList) {
+            boolBuilder
+                    .should(QueryBuilders
+                            .matchQuery("entryTitle", term.word).boost(2))
+                    .should(QueryBuilders
+                            .matchQuery("entrySummary", term.word));
+        }
+
         NativeSearchQuery searchQuery = new NativeSearchQueryBuilder()
                 .withQuery(boolBuilder)
                 .build();
