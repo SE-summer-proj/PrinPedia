@@ -1,5 +1,5 @@
 <template>
-  <el-tree :data="catalog" :props="defaultProps" />
+  <el-tree :data="catalog" :props="defaultProps" default-expand-all />
 </template>
 
 <script>

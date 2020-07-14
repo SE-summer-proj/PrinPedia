@@ -6,7 +6,13 @@
     <el-container>
       <el-main>
         <SearchBar :keyword="keyword" />
-        <div v-if="notFound">没有找到相应词条"{{keyword}}"。您可能想要的是以下结果：</div>
+        <div v-if="notFound">
+          <div>
+            没有找到相应词条"{{keyword}}"。
+            <el-button type="text" @click="createEntry">创建词条</el-button>
+          </div>
+          <div>您可能想要的是以下结果：</div>
+        </div>
         <SearchResult v-for="result in searchResults" :key="result.title" :result="result" />
       </el-main>
       <el-aside><Ranking :columns="1" /></el-aside>
@@ -44,6 +50,10 @@
                 //     }
                 // });
                 this.searchResults = [{title: 'sample title', description: 'sample description'}];
+            },
+            createEntry() {
+                // POST
+                this.$router.push('/edit/' + this.keyword);
             }
         },
         mounted() {

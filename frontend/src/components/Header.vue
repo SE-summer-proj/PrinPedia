@@ -7,7 +7,7 @@
     </el-row>
     <el-row v-else type="flex" justify="end">
       <el-col :span="4">
-        <el-avatar size="small" :src="userData.avatar" style="margin-right: 10px" />
+<!--        <el-avatar size="small" :src="userData.avatar" style="margin-right: 10px" />-->
         <span>
           <router-link :to="'/' + userData.username">{{userData.username}}</router-link>
         </span>

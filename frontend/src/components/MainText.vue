@@ -4,7 +4,7 @@
       <div>
         <span class="title">{{contents.title}}</span>
         <span>
-          <el-button type="text" size="mini" icon="el-icon-edit">编辑</el-button>
+          <el-button type="text" size="mini" icon="el-icon-edit" @click="edit">编辑</el-button>
         </span>
       </div>
       <div class="summary">{{contents.summary}}</div>
@@ -46,6 +46,9 @@
                 if (j != null) index += ('.' + (j+1).toString(10));
                 if (k != null) index += ('.' + (k+1).toString(10));
                 return index + ' ' + label;
+            },
+            edit() {
+                this.$router.push('/edit/' + this.contents.title);
             }
         }
     }
