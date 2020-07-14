@@ -38,3 +38,15 @@
 则可以在本地进行分析，故初步尝试了HanLP
 
 将HanLP相关依赖引入项目，并对此API进行了简单的测试
+
+具体工作详见backend-basic分支
+
+## 7.14
+
+完善了对后端Controller层以及Service层的单元测试
+
+将HanLP集成到search方法中，进行分词，改善了搜索
+
+学习了Spring Security的基本配置方案，基本掌握了在前后端分离框架下的认证授权的方法（目前尚未集成到后端）
+
+具体工作详见backend-basic分支

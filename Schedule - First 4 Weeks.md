@@ -10,11 +10,11 @@
 7. learn some tools
 
 ## Week 2
-1. processing and clean data
-2. implement authentication and authorization
-3. aggregete some algorithms into backend
-4. unit test
-5. more functional frontend(add and modify entries)
+1. use crawler to grab more data
+2. aggregete nlp and search algorithms into backend
+3. unit test
+4. more functional frontend(add and modify entries) and backend
+5. authorization and authentication
 
 ## Week 3
 1. performence test
