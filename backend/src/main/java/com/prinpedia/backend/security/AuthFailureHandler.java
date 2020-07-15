@@ -19,7 +19,7 @@ public class AuthFailureHandler implements AuthenticationFailureHandler {
                                         AuthenticationException exception)
             throws IOException {
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put("message", "Login failure(Security)");
+        jsonObject.put("message", "Login failure");
         jsonObject.put("status", -1);
         response.setContentType("text/json;charset=utf-8");
         response.getWriter().write(jsonObject.toJSONString());
