@@ -1,5 +1,6 @@
 package com.prinpedia.backend.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.prinpedia.backend.entity.User;
 import com.prinpedia.backend.repository.UserRepository;
 import org.junit.jupiter.api.AfterEach;
@@ -14,6 +15,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -51,8 +54,11 @@ class UserControllerTest {
                                 "\"mailAddr\": \"123!123.com\"}"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andReturn();
-        System.out.println("Register result is: " + result.getResponse()
-                .getContentAsString());
+        String resultStr = result.getResponse().getContentAsString();
+        System.out.println("Register result is: " + resultStr);
+        JSONObject jsonObject = JSONObject.parseObject(resultStr);
+        assertEquals(0, jsonObject.getInteger("status"),
+                "Status don't match");
 
         result = mockMvc
                 .perform(MockMvcRequestBuilders
@@ -62,27 +68,47 @@ class UserControllerTest {
                                 "\"mailAddr\": \"123!123.com\"}"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andReturn();
-        System.out.println("Register with duplicate username: " + result.getResponse()
-                .getContentAsString());
+        resultStr = result.getResponse().getContentAsString();
+        System.out.println("Register with duplicate username: " + resultStr);
+        jsonObject = JSONObject.parseObject(resultStr);
+        assertEquals(-1, jsonObject.getInteger("status"),
+                "Status don't match");
 
         result = mockMvc
                 .perform(MockMvcRequestBuilders
-                        .post("/user/login")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"username\": \"test\", \"password\": \"test\"}"))
+                        .post("/login")
+                        .param("username", "test")
+                        .param("password", "test"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andReturn();
-        System.out.println("Login: " + result.getResponse()
-                .getContentAsString());
+        resultStr = result.getResponse().getContentAsString();
+        System.out.println("Login: " + resultStr);
+        jsonObject = JSONObject.parseObject(resultStr);
+        assertEquals(0, jsonObject.getInteger("status"),
+                "Status don't match");
 
         result = mockMvc
                 .perform(MockMvcRequestBuilders
-                        .post("/user/login")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"username\": \"test\", \"password\": \"wrong\"}"))
+                        .post("/login")
+                        .param("username", "test")
+                        .param("password", "wrong"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andReturn();
-        System.out.println("Login with wrong password: " + result.getResponse()
-                .getContentAsString());
+        resultStr = result.getResponse().getContentAsString();
+        System.out.println("Login with wrong password: " + resultStr);
+        jsonObject = JSONObject.parseObject(resultStr);
+        assertEquals(-1, jsonObject.getInteger("status"),
+                "Status don't match");
+
+        result = mockMvc
+                .perform(MockMvcRequestBuilders
+                        .get("/logout"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andReturn();
+        resultStr = result.getResponse().getContentAsString();
+        System.out.println("Logout: " + resultStr);
+        jsonObject = JSONObject.parseObject(resultStr);
+        assertEquals(0, jsonObject.getInteger("status"),
+                "Status don't match");
     }
 }
