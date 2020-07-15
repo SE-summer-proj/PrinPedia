@@ -1,4 +1,4 @@
-package com.prinpedia.backend.serviceImpl;
+package com.prinpedia.backend.security;
 
 import com.prinpedia.backend.entity.User;
 import com.prinpedia.backend.service.UserService;
@@ -8,12 +8,10 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Service
 public class UserSecurityServiceImpl implements UserDetailsService {
     @Autowired
     private UserService userService;

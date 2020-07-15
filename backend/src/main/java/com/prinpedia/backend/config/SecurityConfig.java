@@ -2,8 +2,9 @@ package com.prinpedia.backend.config;
 
 import com.prinpedia.backend.security.AuthEntryPoint;
 import com.prinpedia.backend.security.AuthFailureHandler;
+import com.prinpedia.backend.security.AuthLogoutSuccessHandler;
 import com.prinpedia.backend.security.AuthSuccessHandler;
-import com.prinpedia.backend.serviceImpl.UserSecurityServiceImpl;
+import com.prinpedia.backend.security.UserSecurityServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -25,7 +26,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 
-
     @Autowired
     AuthEntryPoint authenticationEntryPoint;
 
@@ -34,6 +34,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     AuthFailureHandler authenticationFailureHandler;
+
+    @Autowired
+    AuthLogoutSuccessHandler logoutSuccessHandler;
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -45,17 +48,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable();
         http.authorizeRequests()
-                .antMatchers("/entry").permitAll()
+                .antMatchers("/entry").authenticated()
                 .antMatchers("/search").permitAll()
                 .antMatchers("/rank").permitAll()
                 .antMatchers("/user/register").permitAll()
-                .antMatchers("/login").permitAll()
                 .and().formLogin()
-                .loginProcessingUrl("/login")
+                .permitAll()
                 .usernameParameter("username")
                 .passwordParameter("password")
                 .successHandler(authenticationSuccessHandler)
                 .failureHandler(authenticationFailureHandler)
+                .and().logout()
+                .permitAll()
+                .logoutSuccessHandler(logoutSuccessHandler)
+                .deleteCookies("JSESSIONID")
                 .and().exceptionHandling()
                 .authenticationEntryPoint(authenticationEntryPoint);
 //        super.configure(http);

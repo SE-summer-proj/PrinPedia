@@ -37,29 +37,29 @@ public class UserController {
         }
     }
 
-    @CrossOrigin
-    @ResponseBody
-    @PostMapping(value = "/login")
-    public String login(@RequestBody @NotNull JSONObject jsonObject) {
-        String username = jsonObject.getString("username");
-        String password = jsonObject.getString("password");
-        JSONObject jsonObject1 = new JSONObject();
-        JSONObject response = new JSONObject();
-        if(userService.validate(username, password)) {
-            User user = userService.findUserByName(username);
-            jsonObject1.put("username", username);
-            jsonObject1.put("userType", user.getAuthority());
-            jsonObject1.put("avatar", user.getAvatarBase64());
-            response.put("status", 0);
-            response.put("message", "Login succeed");
-        }
-        else {
-            jsonObject1.put("username", username);
-            jsonObject1.put("userType", 0);
-            response.put("status", -1);
-            response.put("message", "Wrong username or password");
-        }
-        response.put("extraData", jsonObject1);
-        return response.toJSONString();
-    }
+//    @CrossOrigin
+//    @ResponseBody
+//    @PostMapping(value = "/login")
+//    public String login(@RequestBody @NotNull JSONObject jsonObject) {
+//        String username = jsonObject.getString("username");
+//        String password = jsonObject.getString("password");
+//        JSONObject jsonObject1 = new JSONObject();
+//        JSONObject response = new JSONObject();
+//        if(userService.validate(username, password)) {
+//            User user = userService.findUserByName(username);
+//            jsonObject1.put("username", username);
+//            jsonObject1.put("userType", user.getAuthority());
+//            jsonObject1.put("avatar", user.getAvatarBase64());
+//            response.put("status", 0);
+//            response.put("message", "Login succeed");
+//        }
+//        else {
+//            jsonObject1.put("username", username);
+//            jsonObject1.put("userType", 0);
+//            response.put("status", -1);
+//            response.put("message", "Wrong username or password");
+//        }
+//        response.put("extraData", jsonObject1);
+//        return response.toJSONString();
+//    }
 }
