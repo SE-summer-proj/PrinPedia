@@ -22,7 +22,7 @@ public class initEntryData {
     @Test
     public void InsertThroughFile() {
         //change "path" to your file path
-        String path = "G:\\webWorkspace\\prinpedia\\test4.txt";
+        String path = "G:\\webWorkspace\\prinpedia\\data0.txt";
 
         File file = new File(path);
         String tmp;

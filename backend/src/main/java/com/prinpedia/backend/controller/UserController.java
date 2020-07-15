@@ -5,6 +5,7 @@ import com.prinpedia.backend.entity.User;
 import com.prinpedia.backend.service.UserService;
 import com.sun.istack.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -20,6 +21,8 @@ public class UserController {
         String username = jsonObject.getString("username");
         String password = jsonObject.getString("password");
         String email = jsonObject.getString("mailAddr");
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        password = passwordEncoder.encode(password);
         if(userService.register(username, password, email)) {
             JSONObject jsonObject1 = new JSONObject();
             jsonObject1.put("status", 0);
