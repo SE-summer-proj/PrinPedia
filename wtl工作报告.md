@@ -37,3 +37,7 @@
 
 * Improve editing entries.
 * Implement creating entries.
+
+### 2020-07-15
+
+* Write some test samples.
