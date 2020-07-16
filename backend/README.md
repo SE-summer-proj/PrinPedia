@@ -29,10 +29,16 @@ response: nothing
 
 ### User login
 
-url: http://localhost:8080/login?username=xxx&password=xxx
+url: http://localhost:8080/login
 
 method: post
 
+content-type: application/x-www-form-urlencoded
+
+body:
+
+    username=xxx&password=xxx
+    
 response:
 
     {
