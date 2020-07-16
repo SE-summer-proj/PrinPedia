@@ -8,4 +8,5 @@ public interface EntryService {
     Entry findByTitle(String title);
     String searchTitle(String keyword);
     List<String> searchTitleAndSummary(String keyword);
+    Boolean createEntry(String title);
 }

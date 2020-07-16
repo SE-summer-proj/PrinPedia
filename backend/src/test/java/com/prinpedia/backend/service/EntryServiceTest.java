@@ -1,10 +1,15 @@
 package com.prinpedia.backend.service;
 
 import com.prinpedia.backend.entity.Entry;
+import com.prinpedia.backend.repository.ElasticEntryRepository;
+import com.prinpedia.backend.repository.EntryRepository;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Rollback;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -14,6 +19,12 @@ import static org.junit.jupiter.api.Assertions.*;
 class EntryServiceTest {
     @Autowired
     private EntryService entryService;
+
+    @Autowired
+    private EntryRepository entryRepository;
+
+    @Autowired
+    private ElasticEntryRepository elasticEntryRepository;
 
     @DisplayName("Find an entry by title")
     @Test
@@ -56,5 +67,30 @@ class EntryServiceTest {
             List<String> result = entryService.searchTitleAndSummary(keyword);
             System.out.println("Search with keyword (" + keyword + "): " + result);
         }
+    }
+
+    @DisplayName("Create new entry")
+    @Test
+    @Transactional
+    @Rollback
+    public void createEntry() {
+        Boolean result = entryService.createEntry("Science");
+        assertFalse(result, "Created duplicate entry");
+
+        result = entryService.createEntry("Created Entry");
+        assertTrue(result, "Creating entry failed");
+
+        Entry entry = entryService.findByTitle("Created Entry");
+        assertNotNull(entry, "Can't find created entry");
+        assertEquals("Created Entry", entry.getTitle(),
+                "Title don't match");
+
+        String search = entryService.searchTitle("Created Entry");
+        assertNotNull(search, "Can't search created entry");
+        assertEquals("Created Entry", search,
+                "Searching result don't match");
+
+        entryRepository.deleteByTitle("Created Entry");
+        elasticEntryRepository.deleteByEntryTitle("Created Entry");
     }
 }

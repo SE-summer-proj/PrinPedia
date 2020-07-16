@@ -5,6 +5,7 @@ import com.hankcs.hanlp.tokenizer.IndexTokenizer;
 import com.prinpedia.backend.dao.EntryDao;
 import com.prinpedia.backend.entity.ElasticEntry;
 import com.prinpedia.backend.entity.Entry;
+import com.prinpedia.backend.repository.ElasticEntryRepository;
 import com.prinpedia.backend.service.EntryService;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
@@ -75,5 +76,13 @@ public class EntryServiceImpl implements EntryService {
         }
         else
             return null;
+    }
+
+    @Override
+    public Boolean createEntry(String title) {
+        if(entryDao.findByTitle(title).isPresent()) return false;
+        Entry entry = new Entry();
+        entry.setTitle(title);
+        return entryDao.create(entry);
     }
 }

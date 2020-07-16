@@ -7,4 +7,5 @@ import java.util.Optional;
 public interface EntryDao {
     Optional<Entry> findById(Integer entryId);
     Optional<Entry> findByTitle(String title);
+    Boolean create(Entry entry);
 }
