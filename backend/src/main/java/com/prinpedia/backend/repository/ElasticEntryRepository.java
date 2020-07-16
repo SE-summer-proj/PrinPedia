@@ -5,4 +5,6 @@ import org.springframework.data.elasticsearch.repository.ElasticsearchRepository
 
 public interface ElasticEntryRepository extends ElasticsearchRepository<ElasticEntry, Integer> {
     ElasticEntry findByEntryTitle(String science);
+
+    void deleteByEntryTitle(String title);
 }

@@ -29,10 +29,16 @@ response: nothing
 
 ### User login
 
-url: http://localhost:8080/login?username=xxx&password=xxx
+url: http://localhost:8080/login
 
 method: post
 
+content-type: application/x-www-form-urlencoded
+
+body:
+
+    username=xxx&password=xxx
+    
 response:
 
     {
@@ -185,7 +191,7 @@ response:
             "content": [
                 {
                     "label": "first",
-                    "text": "this is the first",
+                    "text": "this is the first"
                 },
                 {
                     "label"： "2 second",
@@ -211,6 +217,76 @@ response:
         }
         "message": "fetch detail success",
         "status": 0                   
+    }
+    
+### Create entry
+
+url: http://localhost:8080/create
+
+method: post
+
+body:
+
+    {
+        "keyword": "New entry title"
+    }
+    
+response:
+
+    {
+        "extraData": {
+            "title": "New entry title",
+            "summary": "",
+            "content": []
+        }
+        "status": 0,
+        "message": "Successfully created"
+    }
+
+### Edit entry
+
+url: http://localhost:8080/edit
+
+method: post
+
+body:
+
+    {
+        "title": "Edit entry title",
+        "summary": "Summary",
+        "content": [
+            {
+                "label": "first",
+                "text": "text"
+            },
+            {
+                "label"： "second",
+                "text": "text",
+                "children": [
+                    {
+                        "label": "2.1",
+                        "text": "text 2.1"
+                    },
+                    {
+                        "label": "2.2",
+                        "text": "text2.2",
+                        "children": [
+                            {
+                                "label": "2.2.1",
+                                "text": "text2.2.1"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+    
+response:
+
+    {
+        "status": 0,
+        "message": "Successfully edited"
     }
 
 ## Test and Run

@@ -77,8 +77,8 @@ class UserControllerTest {
         result = mockMvc
                 .perform(MockMvcRequestBuilders
                         .post("/login")
-                        .param("username", "test")
-                        .param("password", "test"))
+                        .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                        .content("username=test&password=test"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andReturn();
         resultStr = result.getResponse().getContentAsString();
@@ -90,8 +90,8 @@ class UserControllerTest {
         result = mockMvc
                 .perform(MockMvcRequestBuilders
                         .post("/login")
-                        .param("username", "test")
-                        .param("password", "wrong"))
+                        .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                        .content("username=test&password=wrong"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andReturn();
         resultStr = result.getResponse().getContentAsString();

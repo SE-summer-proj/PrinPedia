@@ -7,4 +7,6 @@ import java.util.Optional;
 
 public interface EntryRepository extends MongoRepository<Entry, Integer> {
     Optional<Entry> findByTitle(String title);
+
+    void deleteByTitle(String title);
 }
