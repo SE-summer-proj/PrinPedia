@@ -8,4 +8,5 @@ public interface EntryDao {
     Optional<Entry> findById(Integer entryId);
     Optional<Entry> findByTitle(String title);
     Boolean create(Entry entry);
+    Boolean update(Entry entry);
 }

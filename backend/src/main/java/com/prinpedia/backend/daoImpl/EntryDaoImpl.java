@@ -37,4 +37,35 @@ public class EntryDaoImpl implements EntryDao {
         elasticEntryRepository.save(elasticEntry);
         return true;
     }
+
+    @Override
+    public Boolean update(Entry entry) {
+        if(entry == null) return false;
+        Optional<Entry> optionalEntry =
+                entryRepository.findByTitle(entry.getTitle());
+        if(optionalEntry.isPresent()) {
+            entryRepository.deleteByTitle(entry.getTitle());
+        }
+        entryRepository.save(entry);
+
+        ElasticEntry elasticEntry =
+                elasticEntryRepository.findByEntryTitle(entry.getTitle());
+        if(elasticEntry != null) {
+            if(elasticEntry.getEntrySummary().equals(entry.getSummary())) {
+                elasticEntryRepository.deleteByEntryTitle(entry.getTitle());
+                ElasticEntry elasticEntry1 = new ElasticEntry();
+                elasticEntry1.setEntryTitle(entry.getTitle());
+                elasticEntry1.setEntrySummary(entry.getSummary());
+                elasticEntryRepository.save(elasticEntry1);
+            }
+        }
+        else {
+            ElasticEntry elasticEntry1 = new ElasticEntry();
+            elasticEntry1.setEntryTitle(entry.getTitle());
+            elasticEntry1.setEntrySummary(entry.getSummary());
+            elasticEntryRepository.save(elasticEntry1);
+        }
+
+        return true;
+    }
 }

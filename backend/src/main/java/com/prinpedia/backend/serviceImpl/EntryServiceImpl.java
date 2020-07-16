@@ -3,8 +3,10 @@ package com.prinpedia.backend.serviceImpl;
 import com.hankcs.hanlp.seg.common.Term;
 import com.hankcs.hanlp.tokenizer.IndexTokenizer;
 import com.prinpedia.backend.dao.EntryDao;
+import com.prinpedia.backend.entity.Content;
 import com.prinpedia.backend.entity.ElasticEntry;
 import com.prinpedia.backend.entity.Entry;
+import com.prinpedia.backend.entity.Section;
 import com.prinpedia.backend.repository.ElasticEntryRepository;
 import com.prinpedia.backend.service.EntryService;
 import org.elasticsearch.index.query.BoolQueryBuilder;
@@ -84,5 +86,16 @@ public class EntryServiceImpl implements EntryService {
         Entry entry = new Entry();
         entry.setTitle(title);
         return entryDao.create(entry);
+    }
+
+    @Override
+    public Boolean editEntry(String title, String summary, List<Content> contentList,
+                     List<Section> sectionList) {
+        Entry entry = new Entry();
+        entry.setTitle(title);
+        entry.setSummary(summary);
+        entry.setContent(contentList);
+        entry.setSectionList(sectionList);
+        return entryDao.update(entry);
     }
 }
