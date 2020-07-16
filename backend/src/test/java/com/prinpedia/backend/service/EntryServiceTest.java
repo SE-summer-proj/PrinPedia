@@ -24,7 +24,7 @@ class EntryServiceTest {
         assertNotNull(entry, "Cannot find entry by title");
         assertEquals(title, entry.getTitle(), "Titles don't match");
 
-        title = "abc";
+        title = "123";
 
         entry = entryService.findByTitle(title);
         assertNull(entry, "Find an entry which shouldn't exist");
@@ -49,13 +49,12 @@ class EntryServiceTest {
         String []strings = {
                 "greek",
                 "technique",
-                "hahaha"
+                "mission"
         };
 
         for(String keyword : strings) {
             List<String> result = entryService.searchTitleAndSummary(keyword);
             System.out.println("Search with keyword (" + keyword + "): " + result);
         }
-
     }
 }

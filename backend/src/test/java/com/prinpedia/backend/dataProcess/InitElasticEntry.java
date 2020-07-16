@@ -20,6 +20,7 @@ public class InitElasticEntry {
 
     @Test
     public void indexElasticEntry() {
+        elasticEntryRepository.deleteAll();
         List<Entry> entryList = entryRepository.findAll();
         for(Entry entry : entryList) {
             ElasticEntry elasticEntry = new ElasticEntry();
