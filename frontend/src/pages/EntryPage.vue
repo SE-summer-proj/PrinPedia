@@ -24,7 +24,8 @@
     import Header from "@/components/Header";
     import Footer from "@/components/Footer";
     import Catalog from "@/components/Catalog";
-    import {contents} from "@/test_data/test_data";
+    import {GET} from "@/ajax";
+    import {entryUrl} from "@/utils/constants";
     export default {
         name: "EntryPage",
         components: {Catalog, Footer, Header, MainText},
@@ -36,8 +37,11 @@
         },
         methods: {
             getContents() {
-                // setData: contents = extraData
-                this.contents = contents(this.entryName);
+                GET(entryUrl, {
+                    entryName: this.entryName
+                }, (data) => {
+                    this.contents = data.extraData
+                });
             }
         },
         mounted() {

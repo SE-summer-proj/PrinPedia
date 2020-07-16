@@ -10,8 +10,8 @@
 </template>
 
 <script>
-    // import {GET} from "@/utils/Utils";
-    // import {recommendUrl} from "@/utils/Constants";
+    import {GET} from "@/ajax";
+    import {recommendUrl} from "@/utils/constants";
 
     export default {
         name: "Recommend",
@@ -22,12 +22,11 @@
         },
         methods: {
             getRecommend() {
-                // GET(recommendUrl, {
-                //     userId: this.$store.state.userData.userId
-                // }, (data) => {
-                //     this.entries = data;
-                // });
-                this.entries = ['上海交大','迟先生'];
+                GET(recommendUrl, {
+                    userId: this.$store.state.userData.userId
+                }, (data) => {
+                    this.entries = data.extraData;
+                });
             }
         },
         mounted() {

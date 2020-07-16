@@ -16,8 +16,8 @@
 </template>
 
 <script>
-    import {loginUrl} from "@/utils/Constants";
-    import {POST} from "@/utils/Utils";
+    import {loginUrl} from "@/utils/constants";
+    import {POST} from "@/ajax";
 
     export default {
         name: "LoginForm",

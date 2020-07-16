@@ -63,10 +63,12 @@
 </template>
 
 <script>
-    import {contents} from "@/test_data/test_data";
+    import {contents} from "../../tests/test_data";
     import Header from "@/components/Header";
     import Footer from "@/components/Footer";
     import MainText from "@/components/MainText";
+    import {GET, POST} from "@/ajax";
+    import {editUrl, entryUrl} from "@/utils/constants";
 
     export default {
         name: "EditPage",
@@ -92,7 +94,11 @@
         },
         methods: {
             getContents() {
-                this.contents = contents(this.entryName);
+                GET(entryUrl, {
+                    entryName: this.entryName
+                }, (data) => {
+                    this.contents = data.extraData
+                });
             },
             handleNodeClick(data, node) {
                 this.activeName = 'editing';
@@ -135,7 +141,10 @@
                 this.selected.data = null;
             },
             submit() {
-                //
+                POST(editUrl, { contents: this.contents }, (data) => {
+                    this.contents = data.extraData;
+                    this.$router.push('/entry/' + this.entryName);
+                })
             },
             cancel() {
                 const msg = '是否提交修改？';

@@ -3,7 +3,7 @@
     <div>
       <div>
         <span class="title">{{contents.title}}</span>
-        <span>
+        <span v-if="!editing">
           <el-button type="text" size="mini" icon="el-icon-edit" @click="edit">编辑</el-button>
         </span>
       </div>
@@ -39,7 +39,7 @@
                 activeNames: [],
             }
         },
-        props: ['contents'],
+        props: ['contents', 'editing'],
         methods: {
             getTitle(label, i, j, k) {
                 let index = (i+1).toString(10);

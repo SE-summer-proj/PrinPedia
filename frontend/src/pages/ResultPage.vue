@@ -25,8 +25,8 @@
     import Ranking from "@/components/Ranking";
     import SearchBar from "@/components/SearchBar";
     import SearchResult from "@/components/SearchResult";
-    // import {searchUrl} from "@/utils/Constants";
-    // import {GET} from "@/utils/Utils";
+    import {createUrl, searchUrl} from "@/utils/Constants";
+    import {GET, POST} from "@/ajax";
     export default {
         name: "ResultPage",
         components: {SearchResult, SearchBar, Ranking, Header},
@@ -39,21 +39,19 @@
         },
         methods: {
             search() {
-                // GET(searchUrl, {
-                //     keyword: this.keyword
-                // }, (data) => {
-                //     this.searchResults = data.extraData;
-                //     if (data.status === -1) {
-                //         this.notFound = true;
-                //     } else {
-                //         this.notFound = false;
-                //     }
-                // });
-                this.searchResults = [{title: 'sample title', description: 'sample description'}];
+                GET(searchUrl, {
+                    keyword: this.keyword
+                }, (data) => {
+                    this.searchResults = data.extraData;
+                    this.notFound = data.status === -1;
+                });
             },
             createEntry() {
-                // POST
-                this.$router.push('/edit/' + this.keyword);
+                POST(createUrl, {
+                    keyword: this.keyword
+                }, () => {
+                    this.$router.push('/edit/' + this.keyword);
+                });
             }
         },
         mounted() {

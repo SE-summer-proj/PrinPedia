@@ -1,0 +1,10 @@
+const apiUrl = 'http://localhost:8080';
+export const loginUrl = apiUrl + '/login';
+export const logoutUrl = apiUrl + '/logout';
+export const registerUrl = apiUrl + '/register';
+export const recommendUrl = apiUrl + '/recommend';
+export const searchUrl = apiUrl + '/search';
+export const createUrl = apiUrl + '/create';
+export const editUrl = apiUrl + '/edit';
+export const rankingUrl = apiUrl + '/ranking';
+export const entryUrl = apiUrl + '/entry';

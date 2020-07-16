@@ -16,8 +16,8 @@
 </template>
 
 <script>
-    import {POST} from "@/utils/Utils";
-    import {registerUrl} from "@/utils/Constants";
+    import {POST} from "@/ajax";
+    import {registerUrl} from "@/utils/constants";
 
     export default {
         name: "RegisterForm",
@@ -26,15 +26,13 @@
                 form: {
                     username: '',
                     password: '',
-                    mailAddress: ''
+                    mailAddr: ''
                 }
             };
         },
         methods: {
             register() {
-                POST(registerUrl, this.form, (data) => {
-                    console.log(data);
-                })
+                POST(registerUrl, this.form, () => {});
             }
         }
     }

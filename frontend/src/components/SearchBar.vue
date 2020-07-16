@@ -1,8 +1,8 @@
 <template>
-  <div id="searchbar">
-    <el-input v-model="searchKeyword" placeholder="搜点什么……" clearable>
+  <div class="searchbar">
+    <el-input id="searchbar" v-model="searchKeyword" placeholder="搜点什么……" clearable>
       <el-button
-          id="search-button"
+          class="search-button"
           type="primary"
           icon="el-icon-search"
           @click="search"
@@ -35,11 +35,11 @@
 </script>
 
 <style scoped>
-  #search-button {
+  .search-button {
     background-color: aqua;
     color: darkblue;
   }
-  #searchbar {
+  .searchbar {
     box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
     margin-top: 10px;
     margin-bottom: 10px;
