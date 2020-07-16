@@ -101,11 +101,13 @@ public class EntryController {
         JSONArray content = jsonObject.getJSONArray("content");
         List<Content> contents = new ArrayList<>();
         List<Section> sectionList = new ArrayList<>();
-        for(int i = 0; i < content.size(); i++) {
-            JSONObject child = content.getJSONObject(i);
-            Content childContent = new Content();
-            addJsonToContent(child, childContent, sectionList);
-            contents.add(childContent);
+        if(content != null) {
+            for (int i = 0; i < content.size(); i++) {
+                JSONObject child = content.getJSONObject(i);
+                Content childContent = new Content();
+                addJsonToContent(child, childContent, sectionList);
+                contents.add(childContent);
+            }
         }
 
         entryService.editEntry(title, summary, contents, sectionList);

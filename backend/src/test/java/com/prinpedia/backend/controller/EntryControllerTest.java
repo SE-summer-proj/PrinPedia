@@ -61,4 +61,87 @@ class EntryControllerTest {
         entryRepository.deleteByTitle("Created Title");
         elasticEntryRepository.deleteByEntryTitle("Created Title");
     }
+
+    @DisplayName("Edit entry")
+    @Test
+    public void editEntry() throws Exception {
+        String contentString = "{" +
+            "\"title\": \"Edit test\"," +
+            "\"summary\": \"This is summary of the entry\"" +
+        "}";
+
+        MvcResult result = mockMvc
+                .perform(MockMvcRequestBuilders.post("/edit")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(contentString))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andReturn();
+        String responseString = result.getResponse().getContentAsString();
+        JSONObject jsonObject = JSONObject.parseObject(responseString);
+        assertEquals(0, jsonObject.getInteger("status"));
+
+        result = mockMvc
+                .perform(MockMvcRequestBuilders.get("/entry")
+                        .param("entryName", "Edit test"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andReturn();
+        System.out.println("response is:" + result.getResponse().getContentAsString());
+        jsonObject = JSONObject.parseObject(result.getResponse().getContentAsString());
+        assertEquals(0, jsonObject.getInteger("status"),
+                "Status don't match");
+
+        contentString = "{" +
+            "\"title\":\"Edit test\"," +
+            "\"summary\":\"New summary\"," +
+            "\"content\":[" +
+            "{" +
+                "\"label\":\"content1\"," +
+                "\"text\":\"text1\"" +
+            "}," +
+            "{" +
+                "\"label\":\"content2\"," +
+                "\"text\":\"text2\"," +
+                "\"children\":[" +
+                "{" +
+                    "\"label\":\"content2.1\"," +
+                    "\"text\":\"text2.1\"" +
+                "}," +
+                "{" +
+                    "\"label\": \"content2.2\"," +
+                    "\"text\": \"text2.2\"," +
+                    "\"children\": [" +
+                    "{" +
+                        "\"label\": \"content2.2.1\"," +
+                        "\"text\": \"text2.2.1\"" +
+                    "}]" +
+                "}]" +
+            "}]" +
+        "}";
+
+        result = mockMvc
+                .perform(MockMvcRequestBuilders.post("/edit")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(contentString))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andReturn();
+        responseString = result.getResponse().getContentAsString();
+        jsonObject = JSONObject.parseObject(responseString);
+        assertEquals(0, jsonObject.getInteger("status"));
+
+        result = mockMvc
+                .perform(MockMvcRequestBuilders.get("/entry")
+                        .param("entryName", "Edit test"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andReturn();
+        System.out.println("response is:" + result.getResponse().getContentAsString());
+        jsonObject = JSONObject.parseObject(result.getResponse().getContentAsString());
+        assertEquals(0, jsonObject.getInteger("status"),
+                "Status don't match");
+        assertEquals("New summary",
+                jsonObject.getJSONObject("extraData").getString("summary"),
+                "Summary don't match");
+
+        entryRepository.deleteByTitle("Edit test");
+        elasticEntryRepository.deleteByEntryTitle("Edit test");
+    }
 }
