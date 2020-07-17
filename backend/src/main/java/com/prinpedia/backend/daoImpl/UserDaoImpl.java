@@ -25,7 +25,7 @@ public class UserDaoImpl implements UserDao {
         Optional<UserOther> userOther =
                 userOtherRepository.findByUserId(user.getUserId());
         userOther.ifPresent(other -> user.setAvatarBase64(other.getAvatarBase64()));
-        return userRepository.getOne(userId);
+        return user;
     }
 
     @Override
@@ -36,7 +36,16 @@ public class UserDaoImpl implements UserDao {
         if(userOther.isPresent()) {
             if(user.getAvatarBase64() != null) {
                 userOther.get().setAvatarBase64(user.getAvatarBase64());
+                userOtherRepository.deleteByUserId(user1.getUserId());
                 userOtherRepository.save(userOther.get());
+            }
+        }
+        else {
+            if(user.getAvatarBase64() != null) {
+                UserOther userOther1 = new UserOther();
+                userOther1.setUserId(user1.getUserId());
+                userOther1.setAvatarBase64(user.getAvatarBase64());
+                userOtherRepository.save(userOther1);
             }
         }
     }

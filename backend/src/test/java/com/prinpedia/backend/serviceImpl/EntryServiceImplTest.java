@@ -1,11 +1,10 @@
-package com.prinpedia.backend.service;
+package com.prinpedia.backend.serviceImpl;
 
 import com.prinpedia.backend.entity.Content;
 import com.prinpedia.backend.entity.Entry;
 import com.prinpedia.backend.entity.Section;
 import com.prinpedia.backend.repository.ElasticEntryRepository;
 import com.prinpedia.backend.repository.EntryRepository;
-import com.prinpedia.backend.serviceImpl.EntryServiceImpl;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +17,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-class EntryServiceTest {
+class EntryServiceImplTest {
 
     @Autowired
     private EntryServiceImpl entryService;

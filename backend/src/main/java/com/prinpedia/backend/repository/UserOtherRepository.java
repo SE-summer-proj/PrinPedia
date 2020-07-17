@@ -8,4 +8,6 @@ import java.util.Optional;
 
 public interface UserOtherRepository extends MongoRepository<UserOther, Integer> {
     Optional<UserOther> findByUserId(Integer userId);
+
+    void deleteByUserId(int userId);
 }
