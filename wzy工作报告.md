@@ -33,3 +33,6 @@
 配置云端Linux虚拟机的jdk环境
 学习junit相关
 ### 7-16
+将后端部署到aws ec2虚拟机上并成功运行
+配置虚拟机上mysql、mongodb和python3环境
+### 7-17
