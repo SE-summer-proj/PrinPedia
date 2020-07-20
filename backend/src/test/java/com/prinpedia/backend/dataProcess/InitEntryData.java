@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @SpringBootTest
-public class initEntryData {
+public class InitEntryData {
     @Autowired
     private EntryRepository entryRepository;
 
