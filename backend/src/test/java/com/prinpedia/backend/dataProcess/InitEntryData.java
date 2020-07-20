@@ -4,6 +4,7 @@ import com.prinpedia.backend.entity.Content;
 import com.prinpedia.backend.entity.Entry;
 import com.prinpedia.backend.entity.Section;
 import com.prinpedia.backend.repository.EntryRepository;
+import org.junit.Ignore;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -14,11 +15,13 @@ import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
 
+@Ignore
 @SpringBootTest
 public class InitEntryData {
     @Autowired
     private EntryRepository entryRepository;
 
+    @Ignore
     @Test
     public void InsertThroughFile() {
         //change "path" to your file path

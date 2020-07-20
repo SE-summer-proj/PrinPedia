@@ -2,19 +2,20 @@ package com.prinpedia.backend.dataProcess;
 
 import com.prinpedia.backend.entity.EntryNode;
 import com.prinpedia.backend.repository.EntryNodeRepository;
+import org.junit.Ignore;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.io.*;
-import java.util.Arrays;
-import java.util.List;
 
+@Ignore
 @SpringBootTest
 public class InitEntryNode {
     @Autowired
     private EntryNodeRepository entryNodeRepository;
 
+    @Ignore
     @Test
     public void entryNode() throws IOException {
         String path = "G:\\webWorkspace\\prinpedia\\entryIndexTest.txt";

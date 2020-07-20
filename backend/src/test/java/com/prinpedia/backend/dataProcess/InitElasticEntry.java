@@ -4,12 +4,14 @@ import com.prinpedia.backend.entity.ElasticEntry;
 import com.prinpedia.backend.entity.Entry;
 import com.prinpedia.backend.repository.ElasticEntryRepository;
 import com.prinpedia.backend.repository.EntryRepository;
+import org.junit.Ignore;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
 
+@Ignore
 @SpringBootTest
 public class InitElasticEntry {
     @Autowired
@@ -18,6 +20,7 @@ public class InitElasticEntry {
     @Autowired
     private EntryRepository entryRepository;
 
+    @Ignore
     @Test
     public void indexElasticEntry() {
         elasticEntryRepository.deleteAll();
