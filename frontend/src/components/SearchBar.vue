@@ -1,8 +1,12 @@
 <template>
   <div class="searchbar">
-    <el-input id="searchbar" v-model="searchKeyword" placeholder="搜点什么……" clearable>
+    <el-input
+        id="search-input"
+        v-model="searchKeyword"
+        placeholder="搜点什么……"
+        clearable>
       <el-button
-          class="search-button"
+          id="search-button"
           type="primary"
           icon="el-icon-search"
           @click="search"
@@ -25,7 +29,8 @@
         },
         methods: {
             search() {
-                this.$router.push('/result/' + this.searchKeyword);
+                if (this.searchKeyword !== '')
+                    this.$router.push('/result/' + this.searchKeyword);
             }
         },
         mounted() {
@@ -35,7 +40,7 @@
 </script>
 
 <style scoped>
-  .search-button {
+  #search-button {
     background-color: aqua;
     color: darkblue;
   }

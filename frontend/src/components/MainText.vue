@@ -4,7 +4,7 @@
       <div>
         <span class="title">{{contents.title}}</span>
         <span v-if="!editing">
-          <el-button type="text" size="mini" icon="el-icon-edit" @click="edit">编辑</el-button>
+          <el-button id="edit-btn" type="text" size="mini" icon="el-icon-edit" @click="edit">编辑</el-button>
         </span>
       </div>
       <div class="summary">{{contents.summary}}</div>

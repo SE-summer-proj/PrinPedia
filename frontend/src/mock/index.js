@@ -1,9 +1,11 @@
 import Mock from 'mockjs';
-import {loginUrl, logoutUrl, rankingUrl, recommendUrl, registerUrl, searchUrl} from "@/utils/constants";
+import {entryUrl, loginUrl, logoutUrl, rankingUrl, recommendUrl, registerUrl, searchUrl} from "@/utils/constants";
 import {users, entries} from "../../tests/test_data";
+import {getParamValue} from '../../tests/utils';
 
 Mock.mock(loginUrl, 'post', (options) => {
-    const userData = options.body;
+    const userData = JSON.parse(options.body);
+    console.log(userData);
     let index = users.findIndex((item) => {
         return (item.username === userData.username && item.password === userData.password);
     });
@@ -32,7 +34,18 @@ Mock.mock(logoutUrl, 'post', () => {
     }
 });
 
-Mock.mock(registerUrl, 'post', () => null);
+Mock.mock(registerUrl, 'post', (configs) => {
+    const username = configs.body.username;
+    if (users.findIndex((user) => user.username === username))
+        return {
+            message: "Register failed. Username duplicated.",
+            status: -1
+        }
+    else return {
+        message: "Register success",
+        status: 0
+    }
+});
 
 Mock.mock(rankingUrl, 'get', () => {
     return {
@@ -53,7 +66,7 @@ Mock.mock(rankingUrl, 'get', () => {
     }
 });
 
-Mock.mock(recommendUrl, 'get', () => {
+Mock.mock(new RegExp(recommendUrl + '.*'), 'get', () => {
     return {
         extraData: ["哈哈哈", "嘻嘻嘻"],
         message: "success",
@@ -61,8 +74,37 @@ Mock.mock(recommendUrl, 'get', () => {
     }
 });
 
-// Mock.mock(searchUrl, 'get', (options) => {
-//     const keyword = options.body.keyword;
-// })
+Mock.mock(new RegExp(searchUrl + '.*'), 'get', (options) => {
+    const url = options.url;
+    const keyword = getParamValue(url);
+    if (entries.findIndex((entry) => entry.title === keyword) !== -1) {
+        return {
+            extraData: [keyword],
+            message: "success",
+            status: 0
+        };
+    } else return {
+        extraData: ["第一条结果", "第二条结果", "The third item"],
+        message: "cannot find matched entry",
+        status: -1
+    }
+});
+
+Mock.mock(new RegExp(entryUrl + '.*'), 'get', (options) => {
+    const url = options.url;
+    const entryName = getParamValue(url);
+    const index = entries.findIndex((entry) => entry.title === entryName);
+    if (index !== -1) {
+        return {
+            extraData: entries[index],
+            message: "fetch detail success",
+            status: 0
+        }
+    } else return {
+        extraData: null,
+        message: 'entry does not exist',
+        status: 0
+    }
+})
 
 export default Mock;

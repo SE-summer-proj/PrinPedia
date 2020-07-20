@@ -1,5 +1,5 @@
 <template>
-  <div id="recommend">
+  <div class="recommend">
     <el-row>
       <el-col :span="4">猜你想搜：</el-col>
       <el-col :span="(20 - 20 % entries.length) / entries.length" v-for="entry in entries" :key="entry.K">
@@ -22,9 +22,7 @@
         },
         methods: {
             getRecommend() {
-                GET(recommendUrl, {
-                    userId: this.$store.state.userData.userId
-                }, (data) => {
+                GET(recommendUrl, {}, (data) => {
                     this.entries = data.extraData;
                 });
             }
@@ -36,7 +34,7 @@
 </script>
 
 <style scoped>
-  #recommend {
+  .recommend {
     margin-top: 10px;
     margin-bottom: 10px;
   }

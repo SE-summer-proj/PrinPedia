@@ -5,6 +5,7 @@ import EntryPage from "@/pages/EntryPage";
 import ResultPage from "@/pages/ResultPage";
 import UserPage from "@/pages/UserPage";
 import EditPage from "@/pages/EditPage";
+import LoginPage from "@/pages/LoginPage";
 
 Vue.use(VueRouter);
 
@@ -32,6 +33,10 @@ const routes = [
     {
         path: '/edit/:entryName',
         component: EditPage
+    },
+    {
+        path: '/login',
+        component: LoginPage
     }
 ];
 

@@ -11,7 +11,7 @@ function httpError(status, statusText) {
 
 /* Public */
 export function POST(url, data, callback) {
-    axios
+    return axios
         .post(url, data)
         .then((res) => {
             if (res.status === 200) {
@@ -26,7 +26,7 @@ export function POST(url, data, callback) {
 }
 
 export function GET(url, params, callback) {
-    axios
+    return axios
         .get(url, {params: params})
         .then((res) => {
             if (res.status === 200) {

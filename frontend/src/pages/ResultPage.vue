@@ -6,14 +6,16 @@
     <el-container>
       <el-main>
         <SearchBar :keyword="keyword" />
-        <div v-if="notFound">
+        <div class="not-found" v-if="notFound">
           <div>
             没有找到相应词条"{{keyword}}"。
             <el-button type="text" @click="createEntry">创建词条</el-button>
           </div>
           <div>您可能想要的是以下结果：</div>
         </div>
-        <SearchResult v-for="result in searchResults" :key="result.title" :result="result" />
+        <div class="found">
+          <SearchResult v-for="(result, i) in searchResults" :key="i" :result="result" />
+        </div>
       </el-main>
       <el-aside><Ranking :columns="1" /></el-aside>
     </el-container>
@@ -25,7 +27,7 @@
     import Ranking from "@/components/Ranking";
     import SearchBar from "@/components/SearchBar";
     import SearchResult from "@/components/SearchResult";
-    import {createUrl, searchUrl} from "@/utils/Constants";
+    import {createUrl, searchUrl} from "@/utils/constants";
     import {GET, POST} from "@/ajax";
     export default {
         name: "ResultPage",

@@ -5,15 +5,16 @@
     </el-header>
     <el-container>
       <el-aside>
-        <el-button-group>
-          <el-button type="success" @click="showAppendDialog" :disabled="!appendOK || selected.data === null">
+        <el-button-group id="edit-btn-grp">
+          <el-button id="append-btn"
+                     type="success" @click="showAppendDialog" :disabled="!appendOK || selected.data === null">
             添加段落
           </el-button>
-          <el-button type="danger" @click="remove" :disabled="selected.data === null">
+          <el-button id="delete-btn" type="danger" @click="remove" :disabled="selected.data === null">
             删除段落
           </el-button>
         </el-button-group>
-        <el-dialog title="添加子段" :visible.sync="appendDialogVisible">
+        <el-dialog id="append-dialog" title="添加子段" :visible.sync="appendDialogVisible">
           <div>
             <el-input v-model="newChild.label" aria-placeholder="编辑标题" @input="checkDup" />
             <span v-if="newChild.label === ''" style="color: red">
@@ -29,25 +30,26 @@
             <el-button @click="appendDialogVisible = false">取消</el-button>
           </el-button-group>
         </el-dialog>
-        <el-tree
+        <el-tree id="edit-catalog"
             draggable default-expand-all
             :expand-on-click-node="false"
             :data="contents.catalog"
             @node-click="handleNodeClick" />
-        <el-button-group>
-          <el-button type="primary" @click="submit">提交修改</el-button>
-          <el-button @click="cancel">取消修改</el-button>
+        <el-button-group id="decide-btn-grp">
+          <el-button id="submit-btn" type="primary" @click="submit">提交修改</el-button>
+          <el-button id="cancel-btn" @click="cancel">取消修改</el-button>
         </el-button-group>
       </el-aside>
       <el-main>
-        <el-tabs v-model="activeName">
-          <el-tab-pane label="预览" name="preview">
+        <el-tabs id="edit" v-model="activeName">
+          <el-tab-pane id="edit-preview" label="预览" name="preview">
             <MainText :contents="contents" />
           </el-tab-pane>
-          <el-tab-pane label="编辑" name="editing">
+          <el-tab-pane id="edit-panel" label="编辑" name="editing">
             <div v-if="selected.data !== null">
-              <el-input v-model="selected.data.label" aria-placeholder="编辑标题" />
-              <el-input v-model="selected.data.text" type="textarea" :rows="10" aria-placeholder="编辑段落" />
+              <el-input id="edit-title" v-model="selected.data.label" aria-placeholder="编辑标题" />
+              <el-input id="edit-text"
+                        v-model="selected.data.text" type="textarea" :rows="10" aria-placeholder="编辑段落" />
             </div>
             <div v-else>
               <div style="color: gray; font-size: smaller">请选择段落</div>
@@ -63,7 +65,6 @@
 </template>
 
 <script>
-    import {contents} from "../../tests/test_data";
     import Header from "@/components/Header";
     import Footer from "@/components/Footer";
     import MainText from "@/components/MainText";
@@ -94,7 +95,7 @@
         },
         methods: {
             getContents() {
-                GET(entryUrl, {
+                return GET(entryUrl, {
                     entryName: this.entryName
                 }, (data) => {
                     this.contents = data.extraData
@@ -165,7 +166,7 @@
             }
         },
         mounted() {
-            this.getContents();
+            return this.getContents();
         }
     }
 </script>
