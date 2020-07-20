@@ -38,9 +38,21 @@ class EntryControllerTest {
                         .param("entryName", "Science"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andReturn();
-        System.out.println("response is:" + result.getResponse().getContentAsString());
-        JSONObject jsonObject = JSONObject.parseObject(result.getResponse().getContentAsString());
+        String responseString = result.getResponse().getContentAsString();
+        System.out.println("Found response is:" + responseString);
+        JSONObject jsonObject = JSONObject.parseObject(responseString);
         assertEquals(0, jsonObject.getInteger("status"),
+                "Status don't match");
+
+        result = mockMvc
+                .perform(MockMvcRequestBuilders.get("/entry")
+                        .param("entryName", "Lalala"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andReturn();
+        responseString = result.getResponse().getContentAsString();
+        System.out.println("Found response is:" + responseString);
+        jsonObject = JSONObject.parseObject(responseString);
+        assertEquals(-1, jsonObject.getInteger("status"),
                 "Status don't match");
     }
 
@@ -57,6 +69,17 @@ class EntryControllerTest {
         JSONObject jsonObject = JSONObject.parseObject(resultString);
         assertEquals(0, jsonObject.getInteger("status"));
         System.out.println("Create response: " + resultString);
+
+        result = mockMvc
+                .perform(MockMvcRequestBuilders.post("/create")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"keyword\": \"Created Title\"}"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andReturn();
+        resultString = result.getResponse().getContentAsString();
+        jsonObject = JSONObject.parseObject(resultString);
+        assertEquals(-1, jsonObject.getInteger("status"));
+        System.out.println("Create duplicate response: " + resultString);
 
         entryRepository.deleteByTitle("Created Title");
         elasticEntryRepository.deleteByEntryTitle("Created Title");

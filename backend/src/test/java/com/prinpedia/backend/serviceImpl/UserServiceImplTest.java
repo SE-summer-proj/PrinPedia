@@ -1,4 +1,4 @@
-package com.prinpedia.backend.service;
+package com.prinpedia.backend.serviceImpl;
 
 import com.prinpedia.backend.entity.User;
 import com.prinpedia.backend.repository.UserRepository;
@@ -14,10 +14,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-@DisplayName("UserService test")
-class UserServiceTest {
+@DisplayName("UserServiceImpl test")
+class UserServiceImplTest {
     @Autowired
-    private UserService userService;
+    private UserServiceImpl userService;
 
     @Autowired
     private UserRepository userRepository;
