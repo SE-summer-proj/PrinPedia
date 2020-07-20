@@ -2,12 +2,14 @@ package com.prinpedia.backend.nlp;
 
 import com.hankcs.hanlp.seg.common.Term;
 import com.hankcs.hanlp.tokenizer.IndexTokenizer;
+import org.junit.Ignore;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-
+@Ignore
 public class HanLPTest {
+    @Ignore
     @Test
     void hanLPTest() {
         List<Term> termList = IndexTokenizer.segment("的");
