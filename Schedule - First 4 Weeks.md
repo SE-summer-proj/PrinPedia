@@ -17,11 +17,14 @@
 5. authorization and authentication
 
 ## Week 3
-1. performence test
-3. improve algorithms
-4. design more functions according to connections between entries
-5. beautify frontend
-6. frontend: management
+1. find and store relationships between entries
+2. frontend: improve entries' displaying and edition
+3. frontend: visulization of relationships between entries
+4. improve unit tests
+5. e2e test
+6. improve authentication and authorization
+7. keep crawler running and grab more data
+8. beautify frontend
 
 ## Week 4
 1. test and optimize
