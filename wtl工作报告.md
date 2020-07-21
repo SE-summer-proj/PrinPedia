@@ -41,3 +41,17 @@
 ### 2020-07-15
 
 * Write some test samples.
+
+### 2020-07-16
+
+* Completed Mock configurations.
+
+### 2020-07-17
+
+* Completed main unit tests.
+
+## Week 3
+
+### 2020-07-20
+
+* Testing and adapting visualization components.
