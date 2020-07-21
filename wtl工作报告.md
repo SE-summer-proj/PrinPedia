@@ -56,6 +56,6 @@
 
 * Testing and adapting visualization components.
 
-### 2020-07-20
+### 2020-07-21
 
 * Testing and adapting components to display wiki pages.
