@@ -15,7 +15,7 @@ have not been covered in Postman document yet would be stated here.
 
 Postman document URL: https://documenter.getpostman.com/view/11974581/T1DiHg68
 
-The above API document was updated on 7.17. If you have any questions, please contact
+The above API document was updated on 7.21. If you have any questions, please contact
 SHR for more details.
 
 ## Test and Run
@@ -24,7 +24,7 @@ If you want to run this app successfully, please check following points previous
 
 1. You must check ./src/main/java/com.prinpedia.backend/resources/
 application.properties. As you can see in this file, we use 3 different DBs in this
-app: MySQL, MongoDB and ElasticSearch. Please configure the urls of these DBs
+app: MySQL, MongoDB, ElasticSearch and Neo4j. Please configure the urls of these DBs
 to ensure successful connection. Besides, please ensure there is a schema named
 "prinpedia" in your MySQL and a database named "prinpedia" in your MongoDB.
 (If you don't have them, please create them first or do some configuration job in
@@ -35,12 +35,15 @@ created automatically.
 2. You'd better insert a few entries into databases before you run this app.
 The example entry data file ./data.txt is in this folder, which is very small(only 
 contains about 10 entries). To insert these entries, you should navigate to
-./src/text/java/com.prinpedia.backend/dataProcess/initEntryData.java first.
+./src/text/java/com.prinpedia.backend/dataProcess/InitEntryData.java first.
 You must configure the file path of ./data in the class. Then run this class
 (by clicking the button on the left of the classname or press Ctrl+Shift+F10).
 This action will insert data into MongoDB. Second, you should navigate to
 ./src/text/java/com.prinpedia.backend/dataProcess/InitElasticEntry.java.
 Run this class, and all the entries in MongoDB will be inserted into Elasticsearch.
+InitEntityNode.java and InitEntityRelation.java are used to initialize relationships
+between entries, if you want to insert some relationships into DB, please contact
+me to get formatted data files.
 
 3. After above configuration, you should navigate to
 ./src/text/java/com.prinpedia.backend/BackendApplicationTests.java and
@@ -72,8 +75,8 @@ Entries' details are stored in mongoDB.
 
 If you want to transfer entries' data from files to mongoDB, you can call the method
 in class "src/test/java/com.prinpedia.backend/dataProcess/initEntryData.java".
-Please make sure the data in files is formatted before performing insertion.You should
-configure the path of your datasource file on your own.
+Please make sure the data in files is formatted before performing insertion.
+You shouldconfigure the path of your datasource file on your own.
 
 Here is the data structure in mongoDB's "entry" collection.
 
