@@ -13,4 +13,6 @@ public interface EntryService {
     Boolean createEntry(String title);
     Boolean editEntry(String title, String summary, List<Content> contentList,
                       List<Section> sectionList);
+    List<String> findParents(String title);
+    List<String> findChildren(String title);
 }
