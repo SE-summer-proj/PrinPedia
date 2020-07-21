@@ -1,5 +1,6 @@
 package com.prinpedia.backend.security;
 
+import com.prinpedia.backend.entity.Role;
 import com.prinpedia.backend.entity.User;
 import com.prinpedia.backend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,7 @@ public class UserSecurityServiceImpl implements UserDetailsService {
             throw new RuntimeException("User not exist");
         }
 
+        List<Role> roleList = user.getRoleList();
         List<GrantedAuthority> grantedAuthorityList = new ArrayList<>();
         String auth = user.getAuthority().toString();
         GrantedAuthority grantedAuthority = new SimpleGrantedAuthority(auth);

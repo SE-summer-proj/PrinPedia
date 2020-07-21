@@ -1,15 +1,23 @@
 package com.prinpedia.backend.serviceImpl;
 
+import com.prinpedia.backend.dao.RoleDao;
 import com.prinpedia.backend.dao.UserDao;
+import com.prinpedia.backend.entity.Role;
 import com.prinpedia.backend.entity.User;
 import com.prinpedia.backend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 public class UserServiceImpl implements UserService {
     @Autowired
     UserDao userDao;
+
+    @Autowired
+    RoleDao roleDao;
 
     @Override
     public Boolean createUser(User user) {
@@ -29,6 +37,14 @@ public class UserServiceImpl implements UserService {
         user.setPassword(password);
         user.setEmail(email);
         user.setAuthority(1);
+        Role role = roleDao.findByRoleName("ROLE_USER");
+        if(role == null) {
+            role = new Role();
+            role.setRoleName("ROLE_USER");
+        }
+        List<Role> roleList = new ArrayList<>();
+        roleList.add(role);
+        user.setRoleList(roleList);
         userDao.update(user);
         return true;
     }
