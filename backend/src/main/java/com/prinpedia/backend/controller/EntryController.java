@@ -7,7 +7,6 @@ import com.prinpedia.backend.entity.Entry;
 import com.prinpedia.backend.entity.Section;
 import com.prinpedia.backend.service.EntryService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
