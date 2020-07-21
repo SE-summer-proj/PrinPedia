@@ -1,5 +1,6 @@
 package com.prinpedia.backend.controller;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.prinpedia.backend.repository.ElasticEntryRepository;
 import com.prinpedia.backend.repository.EntryRepository;
@@ -166,5 +167,26 @@ class EntryControllerTest {
 
         entryRepository.deleteByTitle("Edit test");
         elasticEntryRepository.deleteByEntryTitle("Edit test");
+    }
+
+    @DisplayName("Entry Relation")
+    @Test
+    public void entryRelation() throws Exception {
+        MvcResult result = mockMvc
+                .perform(MockMvcRequestBuilders.get("/relation")
+                        .param("title", "Title"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andReturn();
+        String resultString = result.getResponse().getContentAsString();
+        System.out.println("Response is: " + resultString);
+        assertTrue(resultString.contains("parents"),
+                "Results don't have parents");
+        assertTrue(resultString.contains("children"),
+                "Results don't have children");
+        JSONObject jsonObject = JSONObject.parseObject(resultString);
+        JSONArray jsonArray = jsonObject.getJSONArray("current");
+        String current = jsonArray.getString(0);
+        assertEquals("Title", current,
+                "Current title not match");
     }
 }

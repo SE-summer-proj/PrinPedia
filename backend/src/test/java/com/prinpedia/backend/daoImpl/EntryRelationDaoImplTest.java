@@ -65,8 +65,16 @@ class EntryRelationDaoImplTest {
         assertEquals(2, entryNodeList.size(),
                 "Parents size don't match");
 
+        result = entryRelationDao.createRelation(index1, index2);
+        assertTrue(result, "Create 3rd relation failed");
+
+        entryNodeList = entryRelationDao.findChildren(title1);
+        assertEquals(2, entryNodeList.size(),
+                "Parents size don't match");
+
         entryRelationRepository.deleteRelations(index1, index3);
         entryRelationRepository.deleteRelations(index2, index3);
+        entryRelationRepository.deleteRelations(index1, index2);
 
         entryNodeRepository.deleteByIndex(index1);
         entryNodeRepository.deleteByIndex(index2);
