@@ -141,4 +141,28 @@ public class EntryController {
         }
         content.setChildren(contents);
     }
+
+    @CrossOrigin
+    @ResponseBody
+    @GetMapping(value = "/relation")
+    public String getRelationByTitle(@RequestParam("title") String title) {
+        List<String> parents = entryService.findParents(title);
+        List<String> children = entryService.findChildren(title);
+
+        JSONObject jsonObject = new JSONObject();
+
+        JSONArray jsonParent = new JSONArray();
+        jsonParent.addAll(parents);
+        jsonObject.put("parents", jsonParent);
+
+        JSONArray jsonChild = new JSONArray();
+        jsonChild.addAll(children);
+        jsonObject.put("children", jsonChild);
+
+        JSONArray jsonCurrent = new JSONArray();
+        jsonCurrent.add(title);
+        jsonObject.put("current", jsonCurrent);
+
+        return jsonObject.toJSONString();
+    }
 }

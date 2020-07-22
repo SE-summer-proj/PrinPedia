@@ -3,10 +3,8 @@ package com.prinpedia.backend.serviceImpl;
 import com.hankcs.hanlp.seg.common.Term;
 import com.hankcs.hanlp.tokenizer.IndexTokenizer;
 import com.prinpedia.backend.dao.EntryDao;
-import com.prinpedia.backend.entity.Content;
-import com.prinpedia.backend.entity.ElasticEntry;
-import com.prinpedia.backend.entity.Entry;
-import com.prinpedia.backend.entity.Section;
+import com.prinpedia.backend.dao.EntryRelationDao;
+import com.prinpedia.backend.entity.*;
 import com.prinpedia.backend.repository.ElasticEntryRepository;
 import com.prinpedia.backend.service.EntryService;
 import org.elasticsearch.index.query.BoolQueryBuilder;
@@ -30,6 +28,9 @@ public class EntryServiceImpl implements EntryService {
 
     @Autowired
     private ElasticsearchRestTemplate elasticsearchRestTemplate;
+
+    @Autowired
+    private EntryRelationDao entryRelationDao;
 
     @Override
     public Entry findByTitle(String title) {
@@ -97,5 +98,25 @@ public class EntryServiceImpl implements EntryService {
         entry.setContent(contentList);
         entry.setSectionList(sectionList);
         return entryDao.update(entry);
+    }
+
+    @Override
+    public List<String> findParents(String title) {
+        List<EntryNode> entryNodeList = entryRelationDao.findParents(title);
+        List<String> result = new ArrayList<>();
+        for(EntryNode entryNode : entryNodeList) {
+            result.add(entryNode.getTitle());
+        }
+        return result;
+    }
+
+    @Override
+    public List<String> findChildren(String title) {
+        List<EntryNode> entryNodeList = entryRelationDao.findChildren(title);
+        List<String> result = new ArrayList<>();
+        for(EntryNode entryNode : entryNodeList) {
+            result.add(entryNode.getTitle());
+        }
+        return result;
     }
 }

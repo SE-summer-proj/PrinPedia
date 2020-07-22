@@ -6,6 +6,8 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import javax.persistence.*;
 
+import java.util.List;
+
 import static javax.persistence.GenerationType.IDENTITY;
 
 @Entity
@@ -21,6 +23,7 @@ public class User {
     private String email;
     private Integer authority; // 1--ordinary user
     private String avatarBase64;
+    private List<Role> roleList;
 
     @Id
     @GeneratedValue(strategy = IDENTITY)
@@ -59,5 +62,14 @@ public class User {
     public String getAvatarBase64() { return avatarBase64; }
     public void setAvatarBase64(String avatarBase64) {
         this.avatarBase64 = avatarBase64;
+    }
+
+    @ManyToMany(cascade = CascadeType.PERSIST)
+    @JsonIgnoreProperties(value = "userList")
+    public List<Role> getRoleList() {
+        return roleList;
+    }
+    public void setRoleList(List<Role> roleList) {
+        this.roleList = roleList;
     }
 }
