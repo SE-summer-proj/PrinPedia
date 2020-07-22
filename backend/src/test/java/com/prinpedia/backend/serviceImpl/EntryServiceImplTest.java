@@ -28,32 +28,16 @@ class EntryServiceImplTest {
     @Autowired
     private ElasticEntryRepository elasticEntryRepository;
 
-    @DisplayName("Find an entry by title")
-    @Test
-    public void findByTitle() {
-        String title = "Science";
-
-        Entry entry = entryService.findByTitle(title);
-        assertNotNull(entry, "Cannot find entry by title");
-        assertEquals(title, entry.getTitle(), "Titles don't match");
-
-        title = "123";
-
-        entry = entryService.findByTitle(title);
-        assertNull(entry, "Find an entry which shouldn't exist");
-    }
-
     @DisplayName("Search title")
     @Test
     public void searchTitle() {
         String keyword = "science";
-
         String result = entryService.searchTitle(keyword);
-        assertNotNull(result, "Cannot find entry by title");
         System.out.println("Search with keyword(" + keyword + "): " + result);
 
-        result = entryService.searchTitle("hahaha");
-        assertNull(result, "Find an entry which shouldn't exist");
+        keyword = "hahaha";
+        result = entryService.searchTitle(keyword);
+        System.out.println("Search with keyword(" + keyword + "): " + result);
     }
 
     @DisplayName("Suggestion search")
@@ -75,11 +59,11 @@ class EntryServiceImplTest {
     @Test
     @Transactional
     public void createEntry() {
-        Boolean result = entryService.createEntry("Science");
-        assertFalse(result, "Created duplicate entry");
+        Boolean result = entryService.createEntry("Created Entry");
+        assertTrue(result, "Create entry failed");
 
         result = entryService.createEntry("Created Entry");
-        assertTrue(result, "Creating entry failed");
+        assertFalse(result, "Created duplicate entry");
 
         Entry entry = entryService.findByTitle("Created Entry");
         assertNotNull(entry, "Can't find created entry");
