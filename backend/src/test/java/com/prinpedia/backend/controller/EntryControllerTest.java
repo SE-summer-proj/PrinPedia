@@ -51,7 +51,7 @@ class EntryControllerTest {
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andReturn();
         responseString = result.getResponse().getContentAsString();
-        System.out.println("Found response is:" + responseString);
+        System.out.println("Not found response is:" + responseString);
         jsonObject = JSONObject.parseObject(responseString);
         assertEquals(-1, jsonObject.getInteger("status"),
                 "Status don't match");

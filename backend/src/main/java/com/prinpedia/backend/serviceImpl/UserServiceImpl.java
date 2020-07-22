@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -45,6 +46,7 @@ public class UserServiceImpl implements UserService {
         List<Role> roleList = new ArrayList<>();
         roleList.add(role);
         user.setRoleList(roleList);
+        user.setUserId(-1);
         userDao.update(user);
         return true;
     }
