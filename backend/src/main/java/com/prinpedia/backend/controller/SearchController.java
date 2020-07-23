@@ -31,8 +31,15 @@ public class SearchController {
             return response.toJSONString();
         }
         List<String> stringList = entryService.searchTitleAndSummary(keyword);
+
         if(stringList != null) {
-            jsonArray.addAll(stringList);
+            for(String sugTitle: stringList) {
+                JSONObject suggestion = new JSONObject();
+                suggestion.put("title", sugTitle);
+                suggestion.put("summary",
+                        entryService.findByTitle(sugTitle).getSummary());
+                jsonArray.add(suggestion);
+            }
             response.put("status", 1);
             response.put("message", "no exactly matched entry, find suggestions");
             response.put("extraData", jsonArray);
