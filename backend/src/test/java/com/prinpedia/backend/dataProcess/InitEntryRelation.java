@@ -12,7 +12,7 @@ import java.io.FileReader;
 import java.io.IOException;
 
 @SpringBootTest
-public class InitEntityRelation {
+public class InitEntryRelation {
     @Autowired
     private EntryRelationRepository entryRelationRepository;
 
