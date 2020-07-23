@@ -15,7 +15,7 @@ have not been covered in Postman document yet would be stated here.
 
 Postman document URL: https://documenter.getpostman.com/view/11974581/T1DiHg68
 
-The above API document was updated on 7.21. If you have any questions, please contact
+The above API document was updated on 7.23. If you have any questions, please contact
 SHR for more details.
 
 ## Test and Run
@@ -23,7 +23,7 @@ SHR for more details.
 If you want to run this app successfully, please check following points previously.
 
 1. You must check ./src/main/java/com.prinpedia.backend/resources/
-application.properties. As you can see in this file, we use 3 different DBs in this
+application.properties. As you can see in this file, we use 4 different DBs in this
 app: MySQL, MongoDB, ElasticSearch and Neo4j. Please configure the urls of these DBs
 to ensure successful connection. Besides, please ensure there is a schema named
 "prinpedia" in your MySQL and a database named "prinpedia" in your MongoDB.
@@ -32,7 +32,19 @@ to ensure successful connection. Besides, please ensure there is a schema named
 Note: You **DO NOT** need to create tables or documents manually, since they will be
 created automatically.
 
-2. You'd better insert a few entries into databases before you run this app.
+2. You should configure HanLP next. Please check 
+./src/main/java/com.prinpedia.backend/resources/hanlp.properties.
+You only need to configure the "root" property in this file.
+Please download the HanLP dictionary and change the root path to the path of the
+downloaded dictionary.
+You can download HanLP dictionary at
+http://nlp.hankcs.com/download.php?file=data
+**Note: Next step (insert entry data) is depreciated since we have changed the
+entry data format stored in DB. Now we use wiki markup language to store entries.
+Unfortunately, up to now, I have not get any effective test data yet.
+Maybe you can't insert data so that unit test won't pass.**
+
+3. You'd better insert a few entries into databases before you run this app.
 The example entry data file ./data.txt is in this folder, which is very small(only 
 contains about 10 entries). To insert these entries, you should navigate to
 ./src/text/java/com.prinpedia.backend/dataProcess/InitEntryData.java first.
@@ -45,20 +57,20 @@ InitEntityNode.java and InitEntityRelation.java are used to initialize relations
 between entries, if you want to insert some relationships into DB, please contact
 me to get formatted data files.
 
-3. After above configuration, you should navigate to
+4. After above configuration, you should navigate to
 ./src/text/java/com.prinpedia.backend/BackendApplicationTests.java and
 run this class. This action will perform all the tests automatically.
 If all tests are passed, congratulations! If not, please contact me.
 
-4. After you pass all tests, you can simply run this app and test APIs.
+5. After you pass all tests, you can simply run this app and test APIs.
 
 ## Authentication and authorization
 
 This app use SpringSecurity to implement authentication and authorization.
 
-Some resources(or websites) are not accessible if the user don't own specific 
-authorities. If you send a request to such resources without authentication, you
-will get the following response.
+Some resources(or websites) are not accessible if the user don't own 
+authentication. If you send a request to such resources without authentication,
+you will get the following response.
 
     {
         "message": "No authentication"
@@ -69,71 +81,60 @@ For such resources, you can access them only when you have logged in before.
 If you log out by sending a request to "/logout",
 you are not able to access them until you log in again.
 
+Some resources(or websites) are not accessible if the user don't own specific
+authorities. If you send a request to such resources without those authorities,
+you will get the following response.
+
+    {
+        "timestamp": "2020-07-23T02:53:33.567+00:00",
+        "status": 403,
+        "error": "Forbidden",
+        "message": "",
+        "path": "/recommend"
+    }
+
 ## How to store entries
 
 Entries' details are stored in mongoDB.
 
-If you want to transfer entries' data from files to mongoDB, you can call the method
-in class "src/test/java/com.prinpedia.backend/dataProcess/initEntryData.java".
+If you want to transfer entries' data from files to mongoDB.
 Please make sure the data in files is formatted before performing insertion.
-You shouldconfigure the path of your datasource file on your own.
+You should configure the path of your datasource file on your own.
 
 Here is the data structure in mongoDB's "entry" collection.
 
     {
         "title": "This is the title of the entry",
-        "summary": "This is summary of the entry",
-        "content": [
-            {
-                "label": "1 first"
-            },
-            {
-                "label"： “2 second",
-                "children": [
-                    {
-                        "label": "2.1 lalala"
-                    },
-                    {
-                        "label": "2.2 hahaha",
-                        "children": [
-                            {
-                                "label": "2.2.1 xixixi"
-                            }
-                        ]
-                    }
-                ]
-            }
-        ]
-        "sectionList": [
-            {
-                "sectionTitle": "first",
-                "sectionText": "this is first..."
-            },
-            {
-                "sectionTitle": "second",
-                "sectionText": "this is second..."
-            },
-            {
-                "sectionTitle": "lalala",
-                "sectionText": "this is 2.1"
-            },
-            {
-                "sectionTitle": "hahaha",
-                "sectionText": "this is 2.2"
-            }
-            {
-                "sectionTitle": "xixixi",
-                "sectionText": "this is 2.2.1"
-            }
-        ]
+        "wikiText": "Wiki markup language"
     }
 
-Note: "content" attribute stores an array of documents, which may recursively own 
-an array
-of documents("children"). In fact, you can view it as a tree structure. "sectionList"
-attribute is an array of documents, which are just simple documents with two
-attributes.
+Besides, Elasticsearch and Neo4j are used to store some other information about
+entries.
 
+Entries' titles and summaries are stored in Elasticsearch so that they can be
+searched faster.Here is the data structure in Elasticsearch's "entry" index. 
+(You can view "index"as "collection" in MongoDB)
+
+    {
+        "entryTitle": "This is the title of the entry",
+        "entrySummary": "This is the summary of the entry"
+    }
+    
+Relationships between entries are stored in Neo4j. Here is the data structure
+in Neo4j.
+
+    EntryNode:
+    {
+        "index": "This is the inner index of the entry",
+        "title": "This is the title of the entry"
+    }
+    
+    EntryRelation:
+    {
+        "start": EntryNode,
+        "end": EntryNode
+    }
+        
 ## Elasticsearch
 
 Now, we use Elasticsearch to store entries' titles and summaries.
@@ -147,3 +148,15 @@ https://www.elastic.co/cn/elasticsearch/
 
 https://www.elastic.co/guide/cn/elasticsearch/guide/current/index.html
 
+## Neo4j
+
+Now, we use Elasticsearch to store entries' relationships.
+
+Neo4j is a native graph database, built from the ground up to leverage 
+not only data but also data relationships. Neo4j connects data as it’s stored.
+
+You can go to the following websites to learn more about Elasticsearch.
+
+https://neo4j.com/
+
+https://neo4j.com/docs/
