@@ -20,13 +20,13 @@ class RecommendControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-    @DisplayName("Rank controller")
+    @DisplayName("Recommend controller")
     @Test
     @WithMockUser(username = "test")
     public void rankTest() throws Exception {
         MvcResult result = mockMvc
                 .perform(MockMvcRequestBuilders.get("/recommend")
-                        .param("userId", "1"))
+                        .param("username", "test"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andReturn();
         String responseString = result.getResponse().getContentAsString();

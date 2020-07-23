@@ -36,7 +36,7 @@ class EntryControllerTest {
     public void getEntryDetail() throws Exception {
         MvcResult result = mockMvc
                 .perform(MockMvcRequestBuilders.get("/entry")
-                        .param("entryName", "Science"))
+                        .param("entryName", "数学"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andReturn();
         String responseString = result.getResponse().getContentAsString();
@@ -51,7 +51,7 @@ class EntryControllerTest {
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andReturn();
         responseString = result.getResponse().getContentAsString();
-        System.out.println("Found response is:" + responseString);
+        System.out.println("Not found response is:" + responseString);
         jsonObject = JSONObject.parseObject(responseString);
         assertEquals(-1, jsonObject.getInteger("status"),
                 "Status don't match");
@@ -91,7 +91,7 @@ class EntryControllerTest {
     public void editEntry() throws Exception {
         String contentString = "{" +
             "\"title\": \"Edit test\"," +
-            "\"summary\": \"This is summary of the entry\"" +
+            "\"wikiText\": \"This is wiki markup of the entry\"" +
         "}";
 
         MvcResult result = mockMvc
@@ -116,30 +116,7 @@ class EntryControllerTest {
 
         contentString = "{" +
             "\"title\":\"Edit test\"," +
-            "\"summary\":\"New summary\"," +
-            "\"content\":[" +
-            "{" +
-                "\"label\":\"content1\"," +
-                "\"text\":\"text1\"" +
-            "}," +
-            "{" +
-                "\"label\":\"content2\"," +
-                "\"text\":\"text2\"," +
-                "\"children\":[" +
-                "{" +
-                    "\"label\":\"content2.1\"," +
-                    "\"text\":\"text2.1\"" +
-                "}," +
-                "{" +
-                    "\"label\": \"content2.2\"," +
-                    "\"text\": \"text2.2\"," +
-                    "\"children\": [" +
-                    "{" +
-                        "\"label\": \"content2.2.1\"," +
-                        "\"text\": \"text2.2.1\"" +
-                    "}]" +
-                "}]" +
-            "}]" +
+            "\"wikiText\": \"New wiki markup\"" +
         "}";
 
         result = mockMvc
@@ -161,9 +138,9 @@ class EntryControllerTest {
         jsonObject = JSONObject.parseObject(result.getResponse().getContentAsString());
         assertEquals(0, jsonObject.getInteger("status"),
                 "Status don't match");
-        assertEquals("New summary",
-                jsonObject.getJSONObject("extraData").getString("summary"),
-                "Summary don't match");
+        assertEquals("New wiki markup",
+                jsonObject.getJSONObject("extraData").getString("wikiText"),
+                "Wiki text don't match");
 
         entryRepository.deleteByTitle("Edit test");
         elasticEntryRepository.deleteByEntryTitle("Edit test");

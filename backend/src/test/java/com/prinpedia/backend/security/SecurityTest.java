@@ -27,7 +27,7 @@ public class SecurityTest {
     public void noAuthentication() throws Exception {
         MvcResult result = mockMvc
                 .perform(MockMvcRequestBuilders.get("/recommend")
-                        .param("userId", "1"))
+                        .param("username", "test"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andReturn();
         String responseString = result.getResponse().getContentAsString();
@@ -42,7 +42,7 @@ public class SecurityTest {
     public void withAuthentication() throws Exception {
         MvcResult result = mockMvc
                 .perform(MockMvcRequestBuilders.get("/recommend")
-                        .param("userId", "1"))
+                        .param("username", "test"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andReturn();
         String responseString = result.getResponse().getContentAsString();

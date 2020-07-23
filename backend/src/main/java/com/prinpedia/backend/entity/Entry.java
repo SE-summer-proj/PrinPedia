@@ -1,20 +1,25 @@
 package com.prinpedia.backend.entity;
 
 import org.bson.types.ObjectId;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.MongoId;
 
-import javax.persistence.Id;
 import java.util.List;
 
 @Document(collection = "entry")
 public class Entry {
+    @MongoId
     ObjectId entryId;
+
     List<Content> content;
     String summary;
+
+    @Indexed
     String title;
     List<Section> sectionList;
+    String wikiText;
 
-    @Id
     public ObjectId getEntryId() {
         return entryId;
     }
@@ -46,5 +51,12 @@ public class Entry {
     }
     public void setSectionList(List<Section> sectionList) {
         this.sectionList = sectionList;
+    }
+
+    public String getWikiText() {
+        return wikiText;
+    }
+    public void setWikiText(String wikiText) {
+        this.wikiText = wikiText;
     }
 }

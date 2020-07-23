@@ -90,13 +90,13 @@ public class EntryServiceImpl implements EntryService {
     }
 
     @Override
-    public Boolean editEntry(String title, String summary, List<Content> contentList,
-                     List<Section> sectionList) {
-        Entry entry = new Entry();
-        entry.setTitle(title);
-        entry.setSummary(summary);
-        entry.setContent(contentList);
-        entry.setSectionList(sectionList);
+    public Boolean editEntry(String title, String wikiText) {
+        Entry entry = findByTitle(title);
+        if(entry == null) {
+            entry = new Entry();
+            entry.setTitle(title);
+        }
+        entry.setWikiText(wikiText);
         return entryDao.update(entry);
     }
 

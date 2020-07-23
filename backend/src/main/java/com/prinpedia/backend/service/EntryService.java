@@ -11,8 +11,9 @@ public interface EntryService {
     String searchTitle(String keyword);
     List<String> searchTitleAndSummary(String keyword);
     Boolean createEntry(String title);
-    Boolean editEntry(String title, String summary, List<Content> contentList,
-                      List<Section> sectionList);
+    /*Boolean editEntryOld(String title, String summary, List<Content> contentList,
+                      List<Section> sectionList);*/
+    Boolean editEntry(String title, String wikiText);
     List<String> findParents(String title);
     List<String> findChildren(String title);
 }

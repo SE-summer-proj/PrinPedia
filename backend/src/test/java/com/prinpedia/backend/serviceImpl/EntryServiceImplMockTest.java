@@ -1,7 +1,10 @@
 package com.prinpedia.backend.serviceImpl;
 
+import com.prinpedia.backend.dao.EntryDao;
 import com.prinpedia.backend.dao.EntryRelationDao;
+import com.prinpedia.backend.entity.Entry;
 import com.prinpedia.backend.entity.EntryNode;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -9,9 +12,11 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.elasticsearch.core.ElasticsearchRestTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -21,8 +26,33 @@ class EntryServiceImplMockTest {
     @Mock
     private EntryRelationDao entryRelationDao;
 
+    @Mock
+    private EntryDao entryDao;
+
     @InjectMocks
     private EntryServiceImpl entryService = new EntryServiceImpl();
+
+    @DisplayName("Find an entry by title")
+    @Test
+    public void findByTitle() {
+        Entry entry = new Entry();
+        entry.setTitle("Test");
+        Optional<Entry> optionalEntry = Optional.of(entry);
+        Mockito.when(entryDao.findByTitle("Test")).thenReturn(optionalEntry);
+        Optional<Entry> optionalEntry1 = Optional.empty();
+        Mockito.when(entryDao.findByTitle("123")).thenReturn(optionalEntry1);
+
+        String title = "Test";
+
+        Entry result = entryService.findByTitle(title);
+        assertNotNull(result, "Cannot find entry by title");
+        assertEquals(title, result.getTitle(), "Titles don't match");
+
+        title = "123";
+
+        result = entryService.findByTitle(title);
+        assertNull(result, "Find an entry which shouldn't exist");
+    }
 
     @Test
     public void findParentsAndChildren() {
