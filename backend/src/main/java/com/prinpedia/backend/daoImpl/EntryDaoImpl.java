@@ -26,6 +26,7 @@ public class EntryDaoImpl implements EntryDao {
     @Override
     public Boolean create(Entry entry) {
         if(entry == null) return false;
+        if(entry.getTitle() == null) return false;
         entryRepository.insert(entry);
         ElasticEntry elasticEntry = new ElasticEntry();
         elasticEntry.setEntryTitle(entry.getTitle());
@@ -35,33 +36,17 @@ public class EntryDaoImpl implements EntryDao {
 
     @Override
     public Boolean update(Entry entry) {
-        if(entry == null) return false;
-        Optional<Entry> optionalEntry =
-                entryRepository.findByTitle(entry.getTitle());
-        if(optionalEntry.isPresent()) {
-            entryRepository.deleteByTitle(entry.getTitle());
-        }
         entryRepository.save(entry);
 
         ElasticEntry elasticEntry =
                 elasticEntryRepository.findByEntryTitle(entry.getTitle());
-        if(elasticEntry != null) {
-            if(elasticEntry.getEntrySummary() == null ||
-                    !elasticEntry.getEntrySummary().equals(entry.getSummary())) {
-                elasticEntryRepository.deleteByEntryTitle(entry.getTitle());
-                ElasticEntry elasticEntry1 = new ElasticEntry();
-                elasticEntry1.setEntryTitle(entry.getTitle());
-                elasticEntry1.setEntrySummary(entry.getSummary());
-                elasticEntryRepository.save(elasticEntry1);
-            }
-            return true;
 
+        if(elasticEntry == null) {
+            ElasticEntry newElasticEntry = new ElasticEntry();
+            newElasticEntry.setEntryTitle(entry.getTitle());
+            elasticEntryRepository.save(newElasticEntry);
         }
 
-        ElasticEntry elasticEntry1 = new ElasticEntry();
-        elasticEntry1.setEntryTitle(entry.getTitle());
-        elasticEntry1.setEntrySummary(entry.getSummary());
-        elasticEntryRepository.save(elasticEntry1);
         return true;
     }
 

@@ -5,7 +5,6 @@ import com.prinpedia.backend.entity.Entry;
 import com.prinpedia.backend.repository.ElasticEntryRepository;
 import com.prinpedia.backend.repository.EntryRepository;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,7 +60,7 @@ class EntryDaoImplTest {
         assertNotNull(elasticEntry, "Can't find entry in elastic");
         assertEquals("test", elasticEntry.getEntryTitle());
 
-        entry.setSummary("summary");
+        entry.setWikiText("wikiText");
         updateResult = entryDao.update(entry);
         assertTrue(updateResult, "Updated entry failure");
 
@@ -69,15 +68,15 @@ class EntryDaoImplTest {
         assertTrue(entryOptional.isPresent(), "Can't find entry by title");
         assertEquals("test", entryOptional.get().getTitle(),
                 "Entry title don't match");
-        assertEquals("summary", entryOptional.get().getSummary(),
-                "Entry summary don't match");
+        assertEquals("wikiText", entryOptional.get().getWikiText(),
+                "Entry wiki text don't match");
 
         elasticEntry =
                 elasticEntryRepository.findByEntryTitle("test");
         assertNotNull(elasticEntry, "Can't find entry in elastic");
         assertEquals("test", elasticEntry.getEntryTitle());
-        assertEquals("summary", elasticEntry.getEntrySummary());
 
+        entry.setWikiText("new wikiText");
         updateResult = entryDao.update(entry);
         assertTrue(updateResult, "Updated entry failure");
 
@@ -85,21 +84,24 @@ class EntryDaoImplTest {
         assertTrue(entryOptional.isPresent(), "Can't find entry by title");
         assertEquals("test", entryOptional.get().getTitle(),
                 "Entry title don't match");
-        assertEquals("summary", entryOptional.get().getSummary(),
-                "Entry summary don't match");
+        assertEquals("new wikiText", entryOptional.get().getWikiText(),
+                "Entry wikiText don't match");
 
         elasticEntry =
                 elasticEntryRepository.findByEntryTitle("test");
         assertNotNull(elasticEntry, "Can't find entry in elastic");
         assertEquals("test", elasticEntry.getEntryTitle());
-        assertEquals("summary", elasticEntry.getEntrySummary());
     }
 
     @Test
     public void createEntry() {
         Entry entry = new Entry();
-        entry.setTitle("test");
+
         Boolean createResult = entryDao.create(entry);
+        assertFalse(createResult, "Created entry without a title");
+
+        entry.setTitle("test");
+        createResult = entryDao.create(entry);
         assertTrue(createResult, "Create entry failure");
 
         Optional<Entry> entryOptional = entryDao.findByTitle("test");
