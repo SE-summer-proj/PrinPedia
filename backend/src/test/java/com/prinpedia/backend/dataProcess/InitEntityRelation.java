@@ -1,7 +1,7 @@
 package com.prinpedia.backend.dataProcess;
 
 import com.prinpedia.backend.repository.EntryRelationRepository;
-import org.junit.Ignore;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -11,16 +11,15 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 
-@Ignore
 @SpringBootTest
 public class InitEntityRelation {
     @Autowired
     private EntryRelationRepository entryRelationRepository;
 
-    @Ignore
+    @Disabled
     @Test
     public void entryRelation() throws IOException {
-        String path = "G:\\webWorkspace\\prinpedia\\entryLinkTest.txt";
+        String path = "G:\\webWorkspace\\prinpedia\\selected_inlinks.txt";
 
         File file = new File(path);
         String tmp;

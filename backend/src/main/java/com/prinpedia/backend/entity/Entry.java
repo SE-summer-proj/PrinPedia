@@ -11,11 +11,10 @@ import java.util.List;
 public class Entry {
     @MongoId
     ObjectId entryId;
-
+    Integer index;
     List<Content> content;
     String summary;
-
-    @Indexed
+    @Indexed(unique = true)
     String title;
     List<Section> sectionList;
     String wikiText;
@@ -25,6 +24,13 @@ public class Entry {
     }
     public void setEntryId(ObjectId entryId) {
         this.entryId = entryId;
+    }
+
+    public Integer getIndex() {
+        return index;
+    }
+    public void setIndex(Integer index) {
+        this.index = index;
     }
 
     public List<Content> getContent() {
