@@ -1,0 +1,19 @@
+<template>
+  <div id="search-result">
+    <router-link :to="'/entry/' + result">{{result.title}}</router-link>
+    <div style="font-size: small">{{result.summary}}</div>
+  </div>
+</template>
+
+<script>
+    export default {
+        name: "SearchResult",
+        props: ['result']
+    }
+</script>
+
+<style scoped>
+  #search-result {
+    text-align: left;
+  }
+</style>
