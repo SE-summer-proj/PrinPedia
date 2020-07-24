@@ -5,7 +5,7 @@
 <script>
     import echarts from "echarts/lib/echarts";
     import "echarts/lib/chart/graph";
-    import {Constants} from "@/utils/Constants";
+    import {Constants} from "@/utils/constants";
     import {GET} from "@/ajax";
 
     export default {
