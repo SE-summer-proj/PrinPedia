@@ -67,3 +67,8 @@
 ### 2020-07-23
 
 * Modified frontend to be consistent with backend APIs.
+* Modified and added text samples.
+
+### 2020-07-24
+
+* Fixed many bugs.
