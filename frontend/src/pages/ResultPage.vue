@@ -6,6 +6,9 @@
     <el-container>
       <el-main>
         <SearchBar :keyword="keyword" />
+        <el-dialog title="推荐词条" :visible.sync="dialogVisible">
+          <KnowledgeGraph />
+        </el-dialog>
         <div class="not-found" v-if="notFound">
           没有找到相应词条"{{keyword}}"。您可能想要的是以下结果：
         </div>
@@ -25,14 +28,16 @@
     import SearchResult from "@/components/SearchResult";
     import {Constants} from "@/utils/constants";
     import {GET} from "@/ajax";
+    import KnowledgeGraph from "@/components/KnowledgeGraph";
     export default {
         name: "ResultPage",
-        components: {SearchResult, SearchBar, Ranking, Header},
+        components: {KnowledgeGraph, SearchResult, SearchBar, Ranking, Header},
         data: function () {
             return {
                 keyword: this.$route.params.keyword,
                 searchResults: [],
-                notFound: false
+                notFound: false,
+                dialogVisible: false
             };
         },
         methods: {

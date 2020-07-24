@@ -8,5 +8,6 @@ export const Constants = {
     createUrl: apiUrl + '/create',
     editUrl: apiUrl + '/edit',
     rankingUrl: apiUrl + '/ranking',
-    entryUrl: apiUrl + '/entry'
+    entryUrl: apiUrl + '/entry',
+    graphUrl: apiUrl + '/relation',
 };
