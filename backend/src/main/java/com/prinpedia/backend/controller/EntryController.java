@@ -118,9 +118,7 @@ public class EntryController {
             children.add(jsonObject);
         }
 
-        if(children.size() > 0) {
-            result.put("children", children);
-        }
+        if(children.size() > 0) { result.put("children", children); }
         return index;
     }
     /*

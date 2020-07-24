@@ -7,17 +7,21 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.Optional;
 
 @SpringBootTest
-public class InitEntryWikiText {
+public class InitEntrySummary {
     @Autowired
     private EntryDao entryDao;
 
     @Test
     @Disabled
-    public void entryWikiText() throws IOException {
-        String path = "G:\\webWorkspace\\prinpedia\\selected_simplified.txt";
+    public void entrySummary() throws IOException {
+        String path = "G:\\webWorkspace\\prinpedia\\selected_pages_summary.txt";
 
         File file = new File(path);
         FileReader fileReader = new FileReader(file);
@@ -26,11 +30,13 @@ public class InitEntryWikiText {
         String tmp;
         while((tmp = bufferedReader.readLine()) != null) {
             String []strings = tmp.split("\\t");
-            Entry entry = new Entry();
-            entry.setIndex(Integer.parseInt(strings[0]));
-            entry.setTitle(strings[1]);
-            entry.setWikiText(strings[2]);
-            entryDao.create(entry);
+            Optional<Entry> entryOptional = entryDao.findByTitle(strings[1]);
+            if(entryOptional.isEmpty()) continue;
+            Entry entry = entryOptional.get();
+            if(strings.length > 2) {
+                entry.setSummary(strings[2]);
+                entryDao.update(entry);
+            }
         }
     }
 }

@@ -64,7 +64,12 @@ public class EntryDaoImpl implements EntryDao {
         if(elasticEntry == null) {
             ElasticEntry newElasticEntry = new ElasticEntry();
             newElasticEntry.setEntryTitle(entry.getTitle());
+            newElasticEntry.setEntrySummary(entry.getSummary());
             elasticEntryRepository.save(newElasticEntry);
+        }
+        else {
+            elasticEntry.setEntrySummary(entry.getSummary());
+            elasticEntryRepository.save(elasticEntry);
         }
 
         return true;
