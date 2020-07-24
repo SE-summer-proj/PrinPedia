@@ -59,3 +59,11 @@
 ### 2020-07-21
 
 * Testing and adapting components to display wiki pages.
+
+### 2020-07-22
+
+* Testing and adapting components to display and edit wiki pages.
+
+### 2020-07-23
+
+* Modified frontend to be consistent with backend APIs.
