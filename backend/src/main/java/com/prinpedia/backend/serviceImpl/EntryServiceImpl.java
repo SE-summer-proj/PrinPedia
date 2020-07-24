@@ -40,7 +40,7 @@ public class EntryServiceImpl implements EntryService {
     @Override
     public String searchTitle(String keyword) {
         NativeSearchQuery searchQuery = new NativeSearchQueryBuilder()
-                .withQuery(QueryBuilders.matchQuery("entryTitle", keyword))
+                .withQuery(QueryBuilders.termQuery("entryTitle", keyword))
                 .build();
         SearchHit<ElasticEntry> searchHit =
                 elasticsearchRestTemplate.searchOne(searchQuery, ElasticEntry.class);
