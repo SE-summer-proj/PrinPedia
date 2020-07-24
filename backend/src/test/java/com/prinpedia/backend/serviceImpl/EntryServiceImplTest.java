@@ -1,29 +1,17 @@
 package com.prinpedia.backend.serviceImpl;
 
-import com.prinpedia.backend.entity.Entry;
-import com.prinpedia.backend.repository.ElasticEntryRepository;
-import com.prinpedia.backend.repository.EntryRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 class EntryServiceImplTest {
 
     @Autowired
     private EntryServiceImpl entryService;
-
-    @Autowired
-    private EntryRepository entryRepository;
-
-    @Autowired
-    private ElasticEntryRepository elasticEntryRepository;
 
     @DisplayName("Search title")
     @Test
@@ -51,7 +39,7 @@ class EntryServiceImplTest {
             System.out.println("Search with keyword (" + keyword + "): " + result);
         }
     }
-
+    /*
     @DisplayName("Create new entry")
     @Test
     @Transactional
@@ -105,4 +93,5 @@ class EntryServiceImplTest {
         entryRepository.deleteByTitle(title);
         elasticEntryRepository.deleteByEntryTitle(title);
     }
+    */
 }

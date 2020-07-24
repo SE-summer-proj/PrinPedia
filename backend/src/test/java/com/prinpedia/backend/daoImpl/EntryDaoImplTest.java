@@ -2,13 +2,17 @@ package com.prinpedia.backend.daoImpl;
 
 import com.prinpedia.backend.entity.ElasticEntry;
 import com.prinpedia.backend.entity.Entry;
+import com.prinpedia.backend.entity.EntryNode;
 import com.prinpedia.backend.repository.ElasticEntryRepository;
+import com.prinpedia.backend.repository.EntryNodeRepository;
 import com.prinpedia.backend.repository.EntryRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Rollback;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -25,12 +29,16 @@ class EntryDaoImplTest {
     @Autowired
     ElasticEntryRepository elasticEntryRepository;
 
+    @Autowired
+    EntryNodeRepository entryNodeRepository;
+
     @BeforeEach
     public void setup() {
         Optional<Entry> optionalEntry = entryRepository.findByTitle("test");
         if(optionalEntry.isPresent()) {
             entryRepository.deleteByTitle("test");
             elasticEntryRepository.deleteByEntryTitle("test");
+            entryNodeRepository.deleteByTitle("test");
         }
     }
 
@@ -40,10 +48,13 @@ class EntryDaoImplTest {
         if(optionalEntry.isPresent()) {
             entryRepository.deleteByTitle("test");
             elasticEntryRepository.deleteByEntryTitle("test");
+            entryNodeRepository.deleteByTitle("test");
         }
     }
 
     @Test
+    @Transactional
+    @Rollback
     public void updateEntry() {
         Entry entry = new Entry();
         entry.setTitle("test");
@@ -60,6 +71,7 @@ class EntryDaoImplTest {
         assertNotNull(elasticEntry, "Can't find entry in elastic");
         assertEquals("test", elasticEntry.getEntryTitle());
 
+        entry = entryOptional.get();
         entry.setWikiText("wikiText");
         updateResult = entryDao.update(entry);
         assertTrue(updateResult, "Updated entry failure");
@@ -94,6 +106,8 @@ class EntryDaoImplTest {
     }
 
     @Test
+    @Transactional
+    @Rollback
     public void createEntry() {
         Entry entry = new Entry();
 
@@ -113,5 +127,11 @@ class EntryDaoImplTest {
                 elasticEntryRepository.findByEntryTitle("test");
         assertNotNull(elasticEntry, "Can't find entry in elastic");
         assertEquals("test", elasticEntry.getEntryTitle());
+
+        EntryNode entryNode =
+                entryNodeRepository.findByIndex(entryOptional.get().getIndex());
+        assertNotNull(entryNode, "Can't find entry in Neo4j");
+        assertEquals("test", entryNode.getTitle(),
+                "Entry title don't match");
     }
 }

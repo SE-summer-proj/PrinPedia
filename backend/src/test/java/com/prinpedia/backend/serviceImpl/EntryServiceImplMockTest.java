@@ -12,7 +12,6 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.elasticsearch.core.ElasticsearchRestTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,6 +53,49 @@ class EntryServiceImplMockTest {
         assertNull(result, "Find an entry which shouldn't exist");
     }
 
+    @Test
+    public void createEntry() {
+        String dup = "duplicate";
+        String create = "create";
+
+        Entry entry = new Entry();
+        entry.setTitle(dup);
+        Optional<Entry> entryOptional = Optional.of(entry);
+        Mockito.when(entryDao.findByTitle(dup)).thenReturn(entryOptional);
+        Optional<Entry> entryOptional1 = Optional.empty();
+        Mockito.when(entryDao.findByTitle(create))
+                .thenReturn(entryOptional1);
+        Mockito.when(entryDao.create(Mockito.any(Entry.class))).thenReturn(true);
+
+        Boolean result = entryService.createEntry(dup);
+        assertFalse(result, "Created duplicate entry");
+
+        result = entryService.createEntry(create);
+        assertTrue(result, "Create entry failure");
+    }
+
+    @Test
+    public void editEntry() {
+        String edit = "edit";
+        String emptyEdit = "empty";
+        String wiki = "wiki";
+
+        Entry entry = new Entry();
+        entry.setTitle(edit);
+        Optional<Entry> entryOptional = Optional.of(entry);
+        Mockito.when(entryDao.findByTitle(edit)).thenReturn(entryOptional);
+        Optional<Entry> entryOptional1 = Optional.empty();
+        Mockito.when(entryDao.findByTitle(emptyEdit)).thenReturn(entryOptional1);
+        Mockito.when(entryDao.update(Mockito.any(Entry.class))).thenReturn(true);
+
+        Boolean result = entryService.editEntry(edit, wiki);
+        assertTrue(result, "Can't edit entry");
+
+        result = entryService.editEntry(emptyEdit, wiki);
+        assertTrue(result, "Can't create new entry through edit");
+    }
+
+    @DisplayName("Find an entry's parents and children")
     @Test
     public void findParentsAndChildren() {
         EntryNode node1 = new EntryNode();

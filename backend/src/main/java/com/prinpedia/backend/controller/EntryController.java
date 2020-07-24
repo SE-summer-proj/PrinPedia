@@ -123,7 +123,7 @@ public class EntryController {
         }
         return index;
     }
-
+    /*
     //depreciated method
     @CrossOrigin
     @ResponseBody
@@ -175,7 +175,7 @@ public class EntryController {
         }
         jsonArray.add(jsonObject);
     }
-
+    */
     @CrossOrigin
     @ResponseBody
     @PostMapping(value = "/create")
