@@ -1,5 +1,6 @@
 <template>
   <div id="header">
+
     <el-row v-if="!$store.state.logged" type="flex" justify="end">
       <el-col :span="2">
         <el-button type="text" @click="$router.push('/login')">登录</el-button>
@@ -18,6 +19,7 @@
         </span>
       </el-col>
     </el-row>
+
   </div>
 </template>
 

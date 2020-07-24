@@ -48,6 +48,7 @@
     "parserOptions": {
       "parser": "babel-eslint"
     },
+
     "overrides": [
       {
         "files": [
@@ -65,6 +66,7 @@
     "> 1%",
     "last 2 versions",
     "not dead"
+
   ],
   "jest": {
     "preset": "@vue/cli-plugin-unit-jest",
