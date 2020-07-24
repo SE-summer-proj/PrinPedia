@@ -10,6 +10,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Rollback;
+import org.springframework.transaction.annotation.Transactional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -40,6 +42,8 @@ class UserServiceImplTest {
 
     @DisplayName("User's registration and validation")
     @Test
+    @Transactional
+    @Rollback
     void registerAndValidate() {
         String username = "test";
         String password = "test";
@@ -57,6 +61,8 @@ class UserServiceImplTest {
 
     @DisplayName("Create and find user")
     @Test
+    @Transactional
+    @Rollback
     void createAndFind() {
         String username = "test";
         String password = "test";

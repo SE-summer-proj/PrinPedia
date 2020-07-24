@@ -6,6 +6,8 @@ import com.prinpedia.backend.repository.UserRepository;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Rollback;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -40,7 +42,10 @@ class UserDaoImplTest {
         }
     }
 
+    @DisplayName("Update and find users")
     @Test
+    @Transactional
+    @Rollback
     public void userDaoTest() {
         User user = new User();
         user.setUsername("test");

@@ -2,7 +2,9 @@ package com.prinpedia.backend.controller;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.prinpedia.backend.entity.EntryNode;
 import com.prinpedia.backend.repository.ElasticEntryRepository;
+import com.prinpedia.backend.repository.EntryNodeRepository;
 import com.prinpedia.backend.repository.EntryRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -29,6 +31,9 @@ class EntryControllerTest {
 
     @Autowired
     private ElasticEntryRepository elasticEntryRepository;
+
+    @Autowired
+    private EntryNodeRepository entryNodeRepository;
 
     @DisplayName("Get entry details")
     @Test
@@ -84,6 +89,7 @@ class EntryControllerTest {
 
         entryRepository.deleteByTitle("Created Title");
         elasticEntryRepository.deleteByEntryTitle("Created Title");
+        entryRepository.deleteByTitle("Created Title");
     }
 
     @DisplayName("Edit entry")
@@ -142,8 +148,22 @@ class EntryControllerTest {
                 jsonObject.getJSONObject("extraData").getString("wikiText"),
                 "Wiki text don't match");
 
+        contentString = "{" +
+            "\"title\": \"Edit test\"" +
+        "}";
+        result = mockMvc
+                .perform(MockMvcRequestBuilders.post("/edit")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(contentString))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andReturn();
+        responseString = result.getResponse().getContentAsString();
+        jsonObject = JSONObject.parseObject(responseString);
+        assertEquals(-1, jsonObject.getInteger("status"));
+
         entryRepository.deleteByTitle("Edit test");
         elasticEntryRepository.deleteByEntryTitle("Edit test");
+        entryRepository.deleteByTitle("Edit test");
     }
 
     @DisplayName("Entry Relation")
@@ -164,6 +184,23 @@ class EntryControllerTest {
         JSONArray jsonArray = jsonObject.getJSONArray("current");
         String current = jsonArray.getString(0);
         assertEquals("Title", current,
+                "Current title not match");
+
+        result = mockMvc
+                .perform(MockMvcRequestBuilders.get("/relation")
+                        .param("title", "法国"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andReturn();
+        resultString = result.getResponse().getContentAsString();
+        System.out.println("Response is: " + resultString);
+        assertTrue(resultString.contains("parents"),
+                "Results don't have parents");
+        assertTrue(resultString.contains("children"),
+                "Results don't have children");
+        jsonObject = JSONObject.parseObject(resultString);
+        jsonArray = jsonObject.getJSONArray("current");
+        current = jsonArray.getString(0);
+        assertEquals("法国", current,
                 "Current title not match");
     }
 }

@@ -10,4 +10,8 @@ public interface EntryNodeRepository extends Neo4jRepository<EntryNode, Long> {
     @Query("match (e: Entry) where e.index = $index " +
             "delete e")
     void deleteByIndex(int index);
+
+    @Query("match (e: Entry) where e.title = $title " +
+            "delete e")
+    void deleteByTitle(String title);
 }

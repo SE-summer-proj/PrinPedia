@@ -39,10 +39,7 @@ public class UserServiceImpl implements UserService {
         user.setEmail(email);
         user.setAuthority(1);
         Role role = roleDao.findByRoleName("ROLE_USER");
-        if(role == null) {
-            role = new Role();
-            role.setRoleName("ROLE_USER");
-        }
+        if(role == null) { role = new Role(); role.setRoleName("ROLE_USER"); }
         List<Role> roleList = new ArrayList<>();
         roleList.add(role);
         user.setRoleList(roleList);
@@ -61,5 +58,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public User findUserByName(String username) {
         return userDao.findByName(username);
+    }
+
+    @Override
+    public List<User> findAllUsers() {
+        return userDao.findAllUsers();
     }
 }

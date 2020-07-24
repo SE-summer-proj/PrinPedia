@@ -39,25 +39,23 @@ Please download the HanLP dictionary and change the root path to the path of the
 downloaded dictionary.
 You can download HanLP dictionary at
 http://nlp.hankcs.com/download.php?file=data
-**Note: Next step (insert entry data) is depreciated since we have changed the
-entry data format stored in DB. Now we use wiki markup language to store entries.
-Unfortunately, up to now, I have not get any effective test data yet.
-Maybe you can't insert data so that unit test won't pass.**
 
 3. You'd better insert a few entries into databases before you run this app.
-The example entry data file ./data.txt is in this folder, which is very small(only 
-contains about 10 entries). To insert these entries, you should navigate to
-./src/text/java/com.prinpedia.backend/dataProcess/InitEntryData.java first.
-You must configure the file path of ./data in the class. Then run this class
+The example entry data file ./entries.txt is in this folder, which is very small(only 
+contains about 70 entries). To insert these entries, you should navigate to
+./src/text/java/com.prinpedia.backend/dataProcess/InitEntryWikiText.java first.
+You must configure the file path of ./entries in the class. Then run this class
 (by clicking the button on the left of the classname or press Ctrl+Shift+F10).
-This action will insert data into MongoDB. Second, you should navigate to
-./src/text/java/com.prinpedia.backend/dataProcess/InitElasticEntry.java.
-Run this class, and all the entries in MongoDB will be inserted into Elasticsearch.
-InitEntityNode.java and InitEntityRelation.java are used to initialize relationships
-between entries, if you want to insert some relationships into DB, please contact
-me to get formatted data files.
+This action will insert data into MongoDB, Elasticsearch and Neo4j simultaneously. 
+Second, you should navigate to
+./src/text/java/com.prinpedia.backend/dataProcess/InitEntryRelation.java.
+Also, you must configure the file path of ./relations, which contains some
+relations between entries. Then run this class, and all the relations will be inserted
+into Neo4j. Please don't run other classes in package "dataProcess" if you don't
+know what you are doing exactly.
 
-4. After above configuration, you should navigate to
+4. **Please skip this step now.**
+After above configurations, you should navigate to
 ./src/text/java/com.prinpedia.backend/BackendApplicationTests.java and
 run this class. This action will perform all the tests automatically.
 If all tests are passed, congratulations! If not, please contact me.

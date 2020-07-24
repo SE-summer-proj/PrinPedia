@@ -5,7 +5,6 @@ import com.hankcs.hanlp.tokenizer.IndexTokenizer;
 import com.prinpedia.backend.dao.EntryDao;
 import com.prinpedia.backend.dao.EntryRelationDao;
 import com.prinpedia.backend.entity.*;
-import com.prinpedia.backend.repository.ElasticEntryRepository;
 import com.prinpedia.backend.service.EntryService;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
@@ -41,7 +40,7 @@ public class EntryServiceImpl implements EntryService {
     @Override
     public String searchTitle(String keyword) {
         NativeSearchQuery searchQuery = new NativeSearchQueryBuilder()
-                .withQuery(QueryBuilders.matchQuery("entryTitle", keyword))
+                .withQuery(QueryBuilders.termQuery("entryTitle", keyword))
                 .build();
         SearchHit<ElasticEntry> searchHit =
                 elasticsearchRestTemplate.searchOne(searchQuery, ElasticEntry.class);

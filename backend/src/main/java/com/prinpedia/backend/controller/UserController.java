@@ -5,6 +5,7 @@ import com.prinpedia.backend.entity.User;
 import com.prinpedia.backend.service.UserService;
 import com.sun.istack.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -37,29 +38,26 @@ public class UserController {
         }
     }
 
-//    @CrossOrigin
-//    @ResponseBody
-//    @PostMapping(value = "/login")
-//    public String login(@RequestBody @NotNull JSONObject jsonObject) {
-//        String username = jsonObject.getString("username");
-//        String password = jsonObject.getString("password");
-//        JSONObject jsonObject1 = new JSONObject();
-//        JSONObject response = new JSONObject();
-//        if(userService.validate(username, password)) {
-//            User user = userService.findUserByName(username);
-//            jsonObject1.put("username", username);
-//            jsonObject1.put("userType", user.getAuthority());
-//            jsonObject1.put("avatar", user.getAvatarBase64());
-//            response.put("status", 0);
-//            response.put("message", "Login succeed");
-//        }
-//        else {
-//            jsonObject1.put("username", username);
-//            jsonObject1.put("userType", 0);
-//            response.put("status", -1);
-//            response.put("message", "Wrong username or password");
-//        }
-//        response.put("extraData", jsonObject1);
-//        return response.toJSONString();
-//    }
+    @CrossOrigin
+    @ResponseBody
+    @GetMapping(value = "/detail")
+    @PreAuthorize("principal.username.equals(#username)")
+    public String getUserDetail(@RequestParam("username") String username) {
+        User user = userService.findUserByName(username);
+        JSONObject response = new JSONObject();
+        if(user != null) {
+            response.put("status", 0);
+            response.put("message", "Get user detail success");
+            JSONObject extraData = new JSONObject();
+            extraData.put("username", user.getUsername());
+            extraData.put("email", user.getEmail());
+            extraData.put("avatarBase64", user.getAvatarBase64());
+            response.put("extraData", extraData);
+        }
+        else {
+            response.put("status", -1);
+            response.put("message", "Get user detail failure");
+        }
+        return response.toJSONString();
+    }
 }
