@@ -1,6 +1,6 @@
 <template>
   <div id="search-result">
-    <router-link :to="'/entry/' + result">{{result.title}}</router-link>
+    <router-link :to="'/entry/' + result.title">{{result.title}}</router-link>
     <div style="font-size: small">{{result.summary}}</div>
   </div>
 </template>
