@@ -1,5 +1,5 @@
 <template>
-  <div id="recommend">
+  <div class="recommend">
     <el-row>
       <el-col :span="4">猜你想搜：</el-col>
       <el-col :span="(20 - 20 % entries.length) / entries.length" v-for="entry in entries" :key="entry.K">
@@ -10,8 +10,8 @@
 </template>
 
 <script>
-    // import {GET} from "@/utils/Utils";
-    // import {recommendUrl} from "@/utils/Constants";
+    import {GET} from "@/ajax";
+    import {Constants} from "@/utils/constants";
 
     export default {
         name: "Recommend",
@@ -22,22 +22,19 @@
         },
         methods: {
             getRecommend() {
-                // GET(recommendUrl, {
-                //     userId: this.$store.state.userData.userId
-                // }, (data) => {
-                //     this.entries = data;
-                // });
-                this.entries = ['上海交大','迟先生'];
+                return GET(Constants.recommendUrl, {}, (data) => {
+                    this.entries = data.extraData;
+                });
             }
         },
         mounted() {
-            this.getRecommend();
+            return this.getRecommend();
         }
     }
 </script>
 
 <style scoped>
-  #recommend {
+  .recommend {
     margin-top: 10px;
     margin-bottom: 10px;
   }

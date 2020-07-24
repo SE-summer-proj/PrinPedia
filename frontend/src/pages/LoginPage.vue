@@ -1,34 +1,21 @@
 <template>
-  <el-row justify="center" type="flex" id="login-panel">
-    <el-col :span="6">
-      <el-tabs v-model="activeName" type="card">
-        <el-tab-pane label="登录" name="login">
-          <LoginForm />
-        </el-tab-pane>
-        <el-tab-pane label="注册" name="register">
-          <RegisterForm />
-        </el-tab-pane>
-      </el-tabs>
-    </el-col>
-  </el-row>
+  <el-container>
+    <el-header><Header /></el-header>
+    <el-main><LoginDialog /></el-main>
+    <el-footer><Footer /></el-footer>
+  </el-container>
 </template>
 
 <script>
-    import LoginForm from "@/components/LoginForm";
-    import RegisterForm from "@/components/RegisterForm";
+    import LoginDialog from "@/components/LoginDialog";
+    import Header from "@/components/Header";
+    import Footer from "@/components/Footer";
     export default {
         name: "LoginPage",
-        components: {LoginForm, RegisterForm},
-        data: function () {
-            return {
-                activeName: 'login'
-            };
-        }
+        components: {Footer, Header, LoginDialog}
     }
 </script>
 
 <style scoped>
-  #login-panel {
-    margin-top: 130px;
-  }
+
 </style>

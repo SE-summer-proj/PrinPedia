@@ -33,6 +33,9 @@
 
 <script>
     import Entry from "@/components/Entry";
+    import {GET} from "@/ajax";
+    import {Constants} from "@/utils/constants";
+
     export default {
         name: "Ranking",
         components: {Entry},
@@ -44,33 +47,13 @@
         props: ['columns'],
         methods: {
             getRanking() {
-                // setData: hotWords
-                this.hotWords = [
-                    {
-                        word: '上海交大',
-                        type: '新',
-                        change: 1
-                    },
-                    {
-                        word: '软件学院',
-                        type: '热',
-                        change: -1
-                    },
-                    {
-                        word: '迟先生',
-                        type: '',
-                        change: 2
-                    },
-                    {
-                        word: '苏大佬',
-                        type: '荐',
-                        change: 0
-                    }
-                ];
+                return GET(Constants.rankingUrl, {}, (data) => {
+                    this.hotWords = data.extraData
+                });
             }
         },
         mounted() {
-            this.getRanking();
+            return this.getRanking();
         }
     }
 </script>

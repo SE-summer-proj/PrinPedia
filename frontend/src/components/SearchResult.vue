@@ -1,11 +1,7 @@
 <template>
   <div id="search-result">
-    <el-row>
-      <el-col>
-        <router-link :to="'/entry/' + result.title">{{result.title}}</router-link>
-      </el-col>
-      <el-col>{{result.description}}</el-col>
-    </el-row>
+    <router-link :to="'/entry/' + result.title">{{result.title}}</router-link>
+    <div style="font-size: small">{{result.summary}}</div>
   </div>
 </template>
 

@@ -1,17 +1,17 @@
 <template>
-  <el-container id="search-page">
+  <el-container class="search-page">
     <el-header>
-      <Header />
+      <Header id="header-main" />
     </el-header>
-    <el-main class="el-main">
+    <el-main>
       <el-row type="flex" justify="center">
         <el-col :span="10">
-          <SearchBar style="text-align: center" />
+          <SearchBar id="searchbar-main" style="text-align: center" keyword="" />
         </el-col>
       </el-row>
       <el-row type="flex" justify="center">
         <el-col :span="10">
-          <Recommend />
+          <Recommend id="recommend" />
         </el-col>
       </el-row>
       <el-row type="flex" justify="center">
@@ -39,7 +39,7 @@
 </script>
 
 <style scoped>
-  #search-page {
+  .search-page {
     display: block;
     word-break: keep-all;
     white-space: nowrap;

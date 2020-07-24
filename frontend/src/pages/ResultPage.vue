@@ -6,14 +6,15 @@
     <el-container>
       <el-main>
         <SearchBar :keyword="keyword" />
-        <div v-if="notFound">
-          <div>
-            没有找到相应词条"{{keyword}}"。
-            <el-button type="text" @click="createEntry">创建词条</el-button>
-          </div>
-          <div>您可能想要的是以下结果：</div>
+        <el-dialog title="推荐词条" :visible.sync="dialogVisible">
+          <KnowledgeGraph />
+        </el-dialog>
+        <div class="not-found" v-if="notFound">
+          没有找到相应词条"{{keyword}}"。您可能想要的是以下结果：
         </div>
-        <SearchResult v-for="result in searchResults" :key="result.title" :result="result" />
+        <div class="found">
+          <SearchResult v-for="(result, i) in searchResults" :key="i" :result="result" />
+        </div>
       </el-main>
       <el-aside><Ranking :columns="1" /></el-aside>
     </el-container>
@@ -25,40 +26,39 @@
     import Ranking from "@/components/Ranking";
     import SearchBar from "@/components/SearchBar";
     import SearchResult from "@/components/SearchResult";
-    // import {searchUrl} from "@/utils/Constants";
-    // import {GET} from "@/utils/Utils";
+    import {Constants} from "@/utils/constants";
+    import {GET} from "@/ajax";
+    import KnowledgeGraph from "@/components/KnowledgeGraph";
     export default {
         name: "ResultPage",
-        components: {SearchResult, SearchBar, Ranking, Header},
+        components: {KnowledgeGraph, SearchResult, SearchBar, Ranking, Header},
         data: function () {
             return {
                 keyword: this.$route.params.keyword,
                 searchResults: [],
-                notFound: false
+                notFound: false,
+                dialogVisible: false
             };
         },
         methods: {
             search() {
-                // GET(searchUrl, {
-                //     keyword: this.keyword
-                // }, (data) => {
-                //     this.searchResults = data.extraData;
-                //     if (data.status === -1) {
-                //         this.notFound = true;
-                //     } else {
-                //         this.notFound = false;
-                //     }
-                // });
-                this.searchResults = [{title: 'sample title', description: 'sample description'}];
-            },
-            createEntry() {
-                // POST
-                this.$router.push('/edit/' + this.keyword);
+                return GET(Constants.searchUrl, {
+                    keyword: this.keyword
+                }, (data) => {
+                    this.searchResults = data.extraData;
+                    this.notFound = data.status === -1;
+                });
             }
         },
         mounted() {
-            this.search();
-        }
+            return this.search();
+        },
+        watch: {
+            '$route' () {
+                this.keyword = this.$route.params.keyword
+                this.search();
+            }
+        },
     }
 </script>
 

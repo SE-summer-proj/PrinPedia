@@ -6,10 +6,11 @@
       </el-header>
       <el-container>
         <el-aside>
-          <Catalog :catalog="contents.catalog" />
+          <Catalog :catalog="wikiData.content" />
         </el-aside>
         <el-main>
-          <MainText :contents="contents" />
+          <div class="entry-title">{{wikiData.title}}</div>
+          <VueWikitext :source="wikiData.wikiText" />
         </el-main>
       </el-container>
       <el-footer>
@@ -20,32 +21,39 @@
 </template>
 
 <script>
-    import MainText from "@/components/MainText";
     import Header from "@/components/Header";
     import Footer from "@/components/Footer";
     import Catalog from "@/components/Catalog";
-    import {contents} from "@/test_data/test_data";
+    import {GET} from "@/ajax";
+    import {Constants} from "@/utils/constants";
+    import VueWikitext from "@/components/VueWikitext";
     export default {
         name: "EntryPage",
-        components: {Catalog, Footer, Header, MainText},
+        components: {VueWikitext, Catalog, Footer, Header},
         data: function () {
             return {
-                contents: [],
+                wikiData: null,
                 entryName: this.$route.params.entryName
             }
         },
         methods: {
             getContents() {
-                // setData: contents = extraData
-                this.contents = contents(this.entryName);
+                return GET(Constants.entryUrl, {
+                    entryName: this.entryName
+                }, (data) => {
+                    this.wikiData = data.extraData
+                });
             }
         },
         mounted() {
-            this.getContents();
+            return this.getContents();
         }
     }
 </script>
 
 <style scoped>
-
+  .entry-title {
+    font-size: large;
+    font-weight: bold;
+  }
 </style>
