@@ -66,7 +66,8 @@ public class User {
         this.avatarBase64 = avatarBase64;
     }
 
-    @ManyToMany(cascade = CascadeType.PERSIST)
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE,
+            CascadeType.REFRESH})
     @JsonIgnoreProperties(value = "userList")
     public List<Role> getRoleList() {
         return roleList;
