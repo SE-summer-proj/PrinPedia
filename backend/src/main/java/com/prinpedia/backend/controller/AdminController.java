@@ -57,9 +57,9 @@ public class AdminController {
 
     @CrossOrigin
     @ResponseBody
-    @PostMapping(value = "/disable")
+    @PostMapping(value = "/ability")
     @PreAuthorize("hasRole('ADMIN')")
-    public String disableUser(@RequestBody JSONObject jsonObject) {
+    public String changeUserAbility(@RequestBody JSONObject jsonObject) {
         String username = jsonObject.getString("username");
         Boolean enabled = jsonObject.getBoolean("enabled");
         JSONObject response = new JSONObject();
