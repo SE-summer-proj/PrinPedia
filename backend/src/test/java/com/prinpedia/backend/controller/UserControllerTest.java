@@ -1,5 +1,6 @@
 package com.prinpedia.backend.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.prinpedia.backend.entity.User;
 import com.prinpedia.backend.repository.UserRepository;
@@ -167,5 +168,51 @@ class UserControllerTest {
                 .param("username", "other"))
                 .andExpect(MockMvcResultMatchers.status().is4xxClientError())
                 .andReturn();
+    }
+
+    @DisplayName("Edit user details")
+    @Test
+    @WithMockUser(username = "test")
+    public void editUserDetails() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders
+                        .post("/user/register")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"username\": \"test\", \"password\": \"test\", " +
+                                "\"mailAddr\": \"123@123.com\"}"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andReturn();
+
+        MvcResult result = mockMvc
+                .perform(MockMvcRequestBuilders
+                        .post("/user/edit")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"username\": \"test\", " +
+                                "\"email\": \"456@456.com\"}"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andReturn();
+
+        String resultString = result.getResponse().getContentAsString();
+        JSONObject resultJSON = JSON.parseObject(resultString);
+        assertEquals(0, resultJSON.getInteger("status"),
+                "Status don't match");
+    }
+
+    @DisplayName("Editing user details fails")
+    @Test
+    @WithMockUser(username = "wrong")
+    public void editUserDetailsFail() throws Exception {
+        MvcResult result = mockMvc
+                .perform(MockMvcRequestBuilders
+                        .post("/user/edit")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"username\": \"wrong\", " +
+                                "\"email\": \"456@456.com\"}"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andReturn();
+
+        String resultString = result.getResponse().getContentAsString();
+        JSONObject resultJSON = JSON.parseObject(resultString);
+        assertEquals(-1, resultJSON.getInteger("status"),
+                "Status don't match");
     }
 }

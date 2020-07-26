@@ -21,7 +21,6 @@ public class User {
     private String username;
     private String password;
     private String email;
-    private Integer authority; // 1--ordinary user
     private Boolean enabled;
     private String avatarBase64;
     private List<Role> roleList;
@@ -55,9 +54,6 @@ public class User {
     public void setEmail(String email) {
         this.email = email;
     }
-
-    public Integer getAuthority() { return authority; }
-    public void setAuthority(Integer authority) { this.authority = authority; }
 
     public Boolean getEnabled() { return enabled; }
     public void setEnabled(Boolean enabled) {

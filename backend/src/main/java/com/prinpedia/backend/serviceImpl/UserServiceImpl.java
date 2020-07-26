@@ -37,7 +37,6 @@ public class UserServiceImpl implements UserService {
         user.setUsername(username);
         user.setPassword(password);
         user.setEmail(email);
-        user.setAuthority(1);
         user.setEnabled(true);
         Role role = roleDao.findByRoleName("ROLE_USER");
         if(role == null) { role = new Role(); role.setRoleName("ROLE_USER"); }
@@ -71,8 +70,9 @@ public class UserServiceImpl implements UserService {
         if(user.getUsername() == null) return false;
         User oldUser = userDao.findByName(user.getUsername());
         if(oldUser == null) return false;
-        user.setUserId(oldUser.getUserId());
-        userDao.update(user);
+        oldUser.setEmail(user.getEmail());
+        oldUser.setAvatarBase64(user.getAvatarBase64());
+        userDao.update(oldUser);
         return true;
     }
 

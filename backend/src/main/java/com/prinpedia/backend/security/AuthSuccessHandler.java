@@ -32,7 +32,6 @@ public class AuthSuccessHandler implements AuthenticationSuccessHandler {
         JSONObject jsonObject = new JSONObject();
         JSONObject extraData = new JSONObject();
         extraData.put("username", user.getUsername());
-        extraData.put("type", user.getAuthority());
         jsonObject.put("extraData", extraData);
         jsonObject.put("message", "Login success");
         jsonObject.put("status", 0);

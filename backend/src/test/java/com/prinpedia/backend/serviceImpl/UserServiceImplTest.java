@@ -1,6 +1,7 @@
 package com.prinpedia.backend.serviceImpl;
 
 import com.prinpedia.backend.entity.User;
+import com.prinpedia.backend.repository.UserOtherRepository;
 import com.prinpedia.backend.repository.UserRepository;
 import com.prinpedia.backend.serviceImpl.UserServiceImpl;
 import org.aspectj.lang.annotation.Before;
@@ -24,11 +25,15 @@ class UserServiceImplTest {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private UserOtherRepository userOtherRepository;
+
     @BeforeEach()
     void setUp() {
         User test = userRepository.findByUsername("test");
         if(test != null) {
             userRepository.deleteById(test.getUserId());
+            userOtherRepository.deleteByUserId(test.getUserId());
         }
     }
 
@@ -37,6 +42,7 @@ class UserServiceImplTest {
         User test = userRepository.findByUsername("test");
         if(test != null) {
             userRepository.deleteById(test.getUserId());
+            userOtherRepository.deleteByUserId(test.getUserId());
         }
     }
 
@@ -86,5 +92,38 @@ class UserServiceImplTest {
         assertEquals(username, findResult.getUsername(), "User info not match");
         assertEquals(password, findResult.getPassword(), "User info not match");
         assertEquals(email, findResult.getEmail(), "User info not match");
+    }
+
+    @DisplayName("Edit user details")
+    @Test
+    @Transactional
+    @Rollback
+    public void editUserDetails() {
+        String username = "test";
+        String password = "test";
+        String email = "123@123.com";
+
+        userService.register(username, password, email);
+
+        User user = new User();
+        String newEmail = "456@456.com";
+        user.setUsername(username);
+        user.setPassword(password);
+        user.setEmail(newEmail);
+        Boolean result = userService.editUserDetail(user);
+        assertTrue(result, "Edit user detail failure");
+
+        user = userService.findUserByName(username);
+        assertEquals(newEmail, user.getEmail(), "New email not match");
+        assertEquals(true, user.getEnabled(),
+                "Enabled status changed");
+
+        user.setAvatarBase64("avatar");
+        result = userService.editUserDetail(user);
+        assertTrue(result, "Edit user detail failure");
+
+        user = userService.findUserByName(username);
+        assertEquals("avatar", user.getAvatarBase64(),
+                "Avatar not matched");
     }
 }
