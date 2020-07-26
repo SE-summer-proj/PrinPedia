@@ -9,6 +9,7 @@ import com.prinpedia.backend.service.EntryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -217,6 +218,26 @@ public class EntryController {
         return response.toJSONString();
     }
 
+    @CrossOrigin
+    @ResponseBody
+    @PostMapping(value = "/editRequest")
+    public String editEntryRequest(@RequestBody JSONObject jsonObject,
+                                   Principal principal) {
+        String username = principal.getName();
+        String title = jsonObject.getString("title");
+        String wikiText = jsonObject.getString("wikiText");
+        JSONObject response = new JSONObject();
+        if(title != null && wikiText != null && username != null) {
+            entryService.editEntryRequest(title, wikiText, username);
+            response.put("status", 0);
+            response.put("message", "Successfully edited");
+        }
+        else {
+            response.put("status", -1);
+            response.put("message", "Edition failure");
+        }
+        return response.toJSONString();
+    }
     /*
     //depreciated method
     @CrossOrigin

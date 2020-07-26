@@ -14,6 +14,7 @@ public interface EntryService {
     /*Boolean editEntryOld(String title, String summary, List<Content> contentList,
                       List<Section> sectionList);*/
     Boolean editEntry(String title, String wikiText);
+    Boolean editEntryRequest(String title, String wikiText, String username);
     List<String> findParents(String title);
     List<String> findChildren(String title);
 }

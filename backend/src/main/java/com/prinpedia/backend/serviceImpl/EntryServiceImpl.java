@@ -5,6 +5,7 @@ import com.hankcs.hanlp.tokenizer.IndexTokenizer;
 import com.prinpedia.backend.dao.EntryDao;
 import com.prinpedia.backend.dao.EntryRelationDao;
 import com.prinpedia.backend.entity.*;
+import com.prinpedia.backend.repository.EntryEditRequestRepository;
 import com.prinpedia.backend.service.EntryService;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
@@ -17,6 +18,7 @@ import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilde
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,6 +32,9 @@ public class EntryServiceImpl implements EntryService {
 
     @Autowired
     private EntryRelationDao entryRelationDao;
+
+    @Autowired
+    private EntryEditRequestRepository entryEditRequestRepository;
 
     @Override
     public Entry findByTitle(String title) {
@@ -97,6 +102,19 @@ public class EntryServiceImpl implements EntryService {
         }
         entry.setWikiText(wikiText);
         return entryDao.update(entry);
+    }
+
+    @Override
+    public Boolean editEntryRequest(String title, String wikiText,
+                                    String username) {
+        EntryEditRequest entryEditRequest = new EntryEditRequest();
+        entryEditRequest.setTitle(title);
+        entryEditRequest.setWikiText(wikiText);
+        entryEditRequest.setUsername(username);
+        entryEditRequest.setDate(new Date());
+        entryEditRequest.setStatus(0);
+        entryEditRequestRepository.save(entryEditRequest);
+        return true;
     }
 
     @Override
