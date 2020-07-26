@@ -22,6 +22,7 @@ public class User {
     private String password;
     private String email;
     private Integer authority; // 1--ordinary user
+    private Boolean enabled;
     private String avatarBase64;
     private List<Role> roleList;
 
@@ -57,6 +58,11 @@ public class User {
 
     public Integer getAuthority() { return authority; }
     public void setAuthority(Integer authority) { this.authority = authority; }
+
+    public Boolean getEnabled() { return enabled; }
+    public void setEnabled(Boolean enabled) {
+        this.enabled = enabled;
+    }
 
     @Transient
     public String getAvatarBase64() { return avatarBase64; }

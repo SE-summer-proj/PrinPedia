@@ -38,6 +38,7 @@ public class UserServiceImpl implements UserService {
         user.setPassword(password);
         user.setEmail(email);
         user.setAuthority(1);
+        user.setEnabled(true);
         Role role = roleDao.findByRoleName("ROLE_USER");
         if(role == null) { role = new Role(); role.setRoleName("ROLE_USER"); }
         List<Role> roleList = new ArrayList<>();
@@ -63,5 +64,44 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<User> findAllUsers() {
         return userDao.findAllUsers();
+    }
+
+    @Override
+    public Boolean editUserDetail(User user) {
+        if(user.getUsername() == null) return false;
+        User oldUser = userDao.findByName(user.getUsername());
+        if(oldUser == null) return false;
+        user.setUserId(oldUser.getUserId());
+        userDao.update(user);
+        return true;
+    }
+
+    @Override
+    public Boolean grantAdmin(String username) {
+        User user = userDao.findByName(username);
+        if(user == null) return false;
+        List<Role> roleList = user.getRoleList();
+        for(Role role : roleList) {
+            if(role.getRoleName().equals("ROLE_ADMIN")) return true;
+        }
+        Role admin = roleDao.findByRoleName("ROLE_ADMIN");
+        if(admin == null) { admin = new Role(); admin.setRoleName("ROLE_ADMIN"); }
+        roleList.add(admin);
+        user.setRoleList(roleList);
+        userDao.update(user);
+        return true;
+    }
+
+    @Override
+    public Boolean disableUser(String username) {
+        User user = userDao.findByName(username);
+        if(user == null) return false;
+        List<Role> roleList = user.getRoleList();
+        for(Role role : roleList) {
+            if(role.getRoleName().equals("ROLE_ADMIN")) return false;
+        }
+        user.setEnabled(false);
+        userDao.update(user);
+        return true;
     }
 }

@@ -60,4 +60,21 @@ public class UserController {
         }
         return response.toJSONString();
     }
+
+    @CrossOrigin
+    @ResponseBody
+    @PostMapping(value = "/edit")
+    @PreAuthorize("principal.username.equals(#user.getUsername())")
+    public String editUserDetail(@RequestBody User user) {
+        JSONObject response = new JSONObject();
+        if(userService.editUserDetail(user)) {
+            response.put("status", 0);
+            response.put("message", "Update user detail successfully");
+        }
+        else {
+            response.put("status", -1);
+            response.put("message", "Failure");
+        }
+        return response.toJSONString();
+    }
 }

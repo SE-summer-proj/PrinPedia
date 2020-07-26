@@ -35,4 +35,40 @@ public class AdminController {
         response.put("extraData", extraData);
         return response.toJSONString();
     }
+
+    @CrossOrigin
+    @ResponseBody
+    @PostMapping(value = "/grant")
+    @PreAuthorize("hasRole('ADMIN')")
+    public String grantAdmin(@RequestBody JSONObject jsonObject) {
+        String username = jsonObject.getString("username");
+        JSONObject response = new JSONObject();
+        if(userService.grantAdmin(username)) {
+            response.put("status", 0);
+            response.put("message", "Success");
+        }
+        else {
+            response.put("status", -1);
+            response.put("message", "Failure");
+        }
+        return response.toJSONString();
+    }
+
+    @CrossOrigin
+    @ResponseBody
+    @PostMapping(value = "/disable")
+    @PreAuthorize("hasRole('ADMIN')")
+    public String disableUser(@RequestBody JSONObject jsonObject) {
+        String username = jsonObject.getString("username");
+        JSONObject response = new JSONObject();
+        if(userService.disableUser(username)) {
+            response.put("status", 0);
+            response.put("message", "Success");
+        }
+        else {
+            response.put("status", -1);
+            response.put("message", "Failure, cannot disable this user");
+        }
+        return response.toJSONString();
+    }
 }
