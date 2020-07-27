@@ -7,6 +7,7 @@ import com.prinpedia.backend.dao.EntryRelationDao;
 import com.prinpedia.backend.entity.*;
 import com.prinpedia.backend.repository.EntryEditRequestRepository;
 import com.prinpedia.backend.service.EntryService;
+import org.bson.types.ObjectId;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -113,6 +114,45 @@ public class EntryServiceImpl implements EntryService {
         entryEditRequest.setUsername(username);
         entryEditRequest.setDate(new Date());
         entryEditRequest.setStatus(0);
+        entryEditRequestRepository.save(entryEditRequest);
+        return true;
+    }
+
+    @Override
+    public List<EntryEditRequest> getEditLogByUser(String username) {
+        return entryEditRequestRepository.findByUsername(username);
+    }
+
+    @Override
+    public EntryEditRequest getEditLogById(ObjectId id) {
+        Optional<EntryEditRequest> request =
+                entryEditRequestRepository.findById(id);
+        return request.orElse(null);
+    }
+
+    @Override
+    public List<EntryEditRequest> getEditLogAdmin(Boolean examined) {
+        if(examined) {
+            return entryEditRequestRepository.findByStatusGreaterThan(0);
+        }
+        else {
+            return entryEditRequestRepository.findByStatus(0);
+        }
+    }
+
+    @Override
+    public Boolean examineEditLog(ObjectId id, Boolean passed) {
+        Optional<EntryEditRequest> request =
+                entryEditRequestRepository.findById(id);
+        if(request.isEmpty()) return false;
+        EntryEditRequest entryEditRequest = request.get();
+        if(entryEditRequest.getStatus() != 0) return false;
+        if(passed) {
+            entryEditRequest.setStatus(1);
+            editEntry(entryEditRequest.getTitle(),
+                    entryEditRequest.getWikiText());
+        }
+        else entryEditRequest.setStatus(2);
         entryEditRequestRepository.save(entryEditRequest);
         return true;
     }

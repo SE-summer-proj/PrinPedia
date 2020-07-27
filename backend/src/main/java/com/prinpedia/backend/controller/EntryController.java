@@ -4,9 +4,12 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.prinpedia.backend.entity.Content;
 import com.prinpedia.backend.entity.Entry;
+import com.prinpedia.backend.entity.EntryEditRequest;
 import com.prinpedia.backend.entity.Section;
 import com.prinpedia.backend.service.EntryService;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
@@ -238,6 +241,97 @@ public class EntryController {
         }
         return response.toJSONString();
     }
+
+    @CrossOrigin
+    @ResponseBody
+    @GetMapping(value = "/editLog")
+    @PreAuthorize("principal.username.equals(#username) || hasRole('ADMIN')")
+    public String getEditLog(@RequestParam("username") String username) {
+        List<EntryEditRequest> entryEditRequestList =
+                entryService.getEditLogByUser(username);
+        JSONObject response = new JSONObject();
+        JSONArray extraData = new JSONArray();
+        for(EntryEditRequest request : entryEditRequestList) {
+            JSONObject item = new JSONObject();
+            item.put("id", request.getId());
+            item.put("date", request.getDate());
+            item.put("status", request.getStatus());
+            item.put("title", request.getTitle());
+            extraData.add(item);
+        }
+        response.put("status", 0);
+        response.put("message", "Success");
+        response.put("extraData", extraData);
+        return response.toJSONString();
+    }
+
+    @CrossOrigin
+    @ResponseBody
+    @GetMapping(value = "/editLog/detail")
+    public String getEditLogDetail(@RequestParam("id") ObjectId id) {
+        EntryEditRequest entryEditRequest = entryService.getEditLogById(id);
+        JSONObject response = new JSONObject();
+        if(entryEditRequest != null) {
+            JSONObject extraData = new JSONObject();
+            extraData.put("title", entryEditRequest.getTitle());
+            extraData.put("wikiText", entryEditRequest.getWikiText());
+            extraData.put("date", entryEditRequest.getDate());
+            extraData.put("status", entryEditRequest.getStatus());
+            extraData.put("id", entryEditRequest.getId());
+            response.put("status", 0);
+            response.put("message", "Success");
+            response.put("extraData", extraData);
+        }
+        else {
+            response.put("status", -1);
+            response.put("message", "Can't find edit log");
+        }
+        return response.toJSONString();
+    }
+
+    @CrossOrigin
+    @ResponseBody
+    @GetMapping(value = "/admin/editLogAll")
+    @PreAuthorize("hasRole('ADMIN')")
+    public String getEditLogAdmin(@RequestParam("examined") Boolean examined) {
+        List<EntryEditRequest> entryEditRequestList =
+                entryService.getEditLogAdmin(examined);
+        JSONObject response = new JSONObject();
+        JSONArray extraData = new JSONArray();
+        for(EntryEditRequest request : entryEditRequestList) {
+            JSONObject item = new JSONObject();
+            item.put("id", request.getId());
+            item.put("date", request.getDate());
+            item.put("status", request.getStatus());
+            item.put("title", request.getTitle());
+            extraData.add(item);
+        }
+        response.put("status", 0);
+        response.put("message", "Success");
+        response.put("extraData", extraData);
+        return response.toJSONString();
+    }
+
+    @CrossOrigin
+    @ResponseBody
+    @PostMapping(value = "/admin/editLog/examine")
+    @PreAuthorize("hasRole('ADMIN')")
+    public String examineEditLog(@RequestBody JSONObject jsonObject) {
+        Boolean passed = jsonObject.getBoolean("passed");
+        String idString = jsonObject.getString("id");
+        ObjectId id = new ObjectId(idString);
+        JSONObject response = new JSONObject();
+        if(entryService.examineEditLog(id, passed)) {
+            response.put("status", 0);
+            response.put("message", "Success");
+        }
+        else {
+            response.put("status", -1);
+            response.put("message", "Failure");
+        }
+        return response.toJSONString();
+    }
+
     /*
     //depreciated method
     @CrossOrigin
