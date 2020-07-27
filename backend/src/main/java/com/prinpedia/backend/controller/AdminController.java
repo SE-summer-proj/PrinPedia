@@ -40,7 +40,6 @@ public class AdminController {
     @CrossOrigin
     @ResponseBody
     @PostMapping(value = "/grant")
-    @PreAuthorize("hasRole('ADMIN')")
     public String grantAdmin(@RequestBody JSONObject jsonObject) {
         String username = jsonObject.getString("username");
         JSONObject response = new JSONObject();
