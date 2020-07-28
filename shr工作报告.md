@@ -134,3 +134,11 @@
 修复了一些已知的bug
 
 在AWS虚拟机上部署ElasticSearch
+
+## 7.28
+
+集成actuator，prometheus，grafana等工具对搜索接口进行性能测试
+
+实现并完善了对编辑审核词条相关功能的单元测试
+
+修复了一些bug
