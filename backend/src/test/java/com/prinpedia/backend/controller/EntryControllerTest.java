@@ -2,7 +2,6 @@ package com.prinpedia.backend.controller;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.prinpedia.backend.entity.EntryNode;
 import com.prinpedia.backend.repository.ElasticEntryRepository;
 import com.prinpedia.backend.repository.EntryNodeRepository;
 import com.prinpedia.backend.repository.EntryRepository;
@@ -89,7 +88,7 @@ class EntryControllerTest {
 
         entryRepository.deleteByTitle("Created Title");
         elasticEntryRepository.deleteByEntryTitle("Created Title");
-        entryRepository.deleteByTitle("Created Title");
+        entryNodeRepository.deleteByTitle("Created Title");
     }
 
     @DisplayName("Edit entry")
@@ -163,7 +162,7 @@ class EntryControllerTest {
 
         entryRepository.deleteByTitle("Edit test");
         elasticEntryRepository.deleteByEntryTitle("Edit test");
-        entryRepository.deleteByTitle("Edit test");
+        entryNodeRepository.deleteByTitle("Edit test");
     }
 
     @DisplayName("Entry Relation")

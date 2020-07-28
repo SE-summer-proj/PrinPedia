@@ -4,11 +4,15 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.prinpedia.backend.entity.Content;
 import com.prinpedia.backend.entity.Entry;
+import com.prinpedia.backend.entity.EntryEditRequest;
 import com.prinpedia.backend.entity.Section;
 import com.prinpedia.backend.service.EntryService;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -216,7 +220,6 @@ public class EntryController {
 
         return response.toJSONString();
     }
-
     /*
     //depreciated method
     @CrossOrigin

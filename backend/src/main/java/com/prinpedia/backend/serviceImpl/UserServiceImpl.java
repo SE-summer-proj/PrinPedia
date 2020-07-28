@@ -37,7 +37,7 @@ public class UserServiceImpl implements UserService {
         user.setUsername(username);
         user.setPassword(password);
         user.setEmail(email);
-        user.setAuthority(1);
+        user.setEnabled(true);
         Role role = roleDao.findByRoleName("ROLE_USER");
         if(role == null) { role = new Role(); role.setRoleName("ROLE_USER"); }
         List<Role> roleList = new ArrayList<>();
@@ -61,7 +61,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> findAllUsers() {
-        return userDao.findAllUsers();
+    public Boolean editUserDetail(User user) {
+        if(user.getUsername() == null) return false;
+        User oldUser = userDao.findByName(user.getUsername());
+        if(oldUser == null) return false;
+        oldUser.setEmail(user.getEmail());
+        oldUser.setAvatarBase64(user.getAvatarBase64());
+        userDao.update(oldUser);
+        return true;
     }
 }
