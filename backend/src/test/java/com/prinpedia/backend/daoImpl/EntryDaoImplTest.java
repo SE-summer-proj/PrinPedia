@@ -69,7 +69,8 @@ class EntryDaoImplTest {
         ElasticEntry elasticEntry =
                 elasticEntryRepository.findByEntryTitle("test");
         assertNotNull(elasticEntry, "Can't find entry in elastic");
-        assertEquals("test", elasticEntry.getEntryTitle());
+        assertEquals("test", elasticEntry.getEntryTitle(),
+                "Elastic entry title don't match");
 
         entry = entryOptional.get();
         entry.setWikiText("wikiText");
