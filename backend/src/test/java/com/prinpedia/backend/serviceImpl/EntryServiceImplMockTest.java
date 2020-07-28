@@ -3,7 +3,10 @@ package com.prinpedia.backend.serviceImpl;
 import com.prinpedia.backend.dao.EntryDao;
 import com.prinpedia.backend.dao.EntryRelationDao;
 import com.prinpedia.backend.entity.Entry;
+import com.prinpedia.backend.entity.EntryEditRequest;
 import com.prinpedia.backend.entity.EntryNode;
+import com.prinpedia.backend.repository.EntryEditRequestRepository;
+import org.bson.types.ObjectId;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -27,6 +30,9 @@ class EntryServiceImplMockTest {
 
     @Mock
     private EntryDao entryDao;
+
+    @Mock
+    private EntryEditRequestRepository entryEditRequestRepository;
 
     @InjectMocks
     private EntryServiceImpl entryService = new EntryServiceImpl();
@@ -93,6 +99,98 @@ class EntryServiceImplMockTest {
 
         result = entryService.editEntry(emptyEdit, wiki);
         assertTrue(result, "Can't create new entry through edit");
+    }
+
+    @Test
+    public void editEntryRequest() {
+        EntryEditRequest entryEditRequest = new EntryEditRequest();
+        String title = "test";
+        String wikiText = "wiki";
+        String username = "test";
+        Mockito.when(entryEditRequestRepository.
+                save(Mockito.any(EntryEditRequest.class)))
+                .thenReturn(entryEditRequest);
+
+        Boolean result =
+                entryService.editEntryRequest(title, wikiText, username);
+        assertTrue(result, "Edit entry request failure");
+    }
+
+    @Test
+    public void getEditLog() {
+        Mockito.when(entryEditRequestRepository
+                .findByUsername(Mockito.anyString()))
+                .thenReturn(null);
+        Mockito.when(entryEditRequestRepository
+                .findByStatusGreaterThan(Mockito.anyInt()))
+                .thenReturn(null);
+        Mockito.when(entryEditRequestRepository
+                .findByStatus(Mockito.anyInt()))
+                .thenReturn(null);
+        EntryEditRequest entryEditRequest = new EntryEditRequest();
+        Optional<EntryEditRequest> entryEditRequestOptional
+                = Optional.of(entryEditRequest);
+        Optional<EntryEditRequest> empty = Optional.empty();
+        ObjectId id1 = new ObjectId("5f06b9d4643cd113ed90bc5a");
+        ObjectId id2 = new ObjectId("5f06b9d5643cd113ed90bc5b");
+        Mockito.when(entryEditRequestRepository.findById(id1))
+                .thenReturn(entryEditRequestOptional);
+        Mockito.when(entryEditRequestRepository.findById(id2))
+                .thenReturn(empty);
+
+        entryService.getEditLogByUser("test");
+        entryService.getEditLogAdmin(true);
+        entryService.getEditLogAdmin(false);
+        EntryEditRequest result = entryService.getEditLogById(id1);
+        assertEquals(entryEditRequest, result, "Don't match");
+        result = entryService.getEditLogById(id2);
+        assertNull(result, "Don't match");
+    }
+
+    @Test
+    public void examine() {
+        Optional<EntryEditRequest> optional1 = Optional.empty();
+        ObjectId id1 = new ObjectId("5f06b9d4643cd113ed90bc5a");
+        Mockito.when(entryEditRequestRepository.findById(id1))
+                .thenReturn(optional1);
+        EntryEditRequest request1 = new EntryEditRequest();
+        request1.setStatus(1);
+        Optional<EntryEditRequest> optional2 = Optional.of(request1);
+        ObjectId id2 = new ObjectId("5f06b9d5643cd113ed90bc5b");
+        Mockito.when(entryEditRequestRepository.findById(id2))
+                .thenReturn(optional2);
+        Mockito.when(entryEditRequestRepository
+                .save(Mockito.any(EntryEditRequest.class)))
+                .thenReturn(null);
+        EntryEditRequest request2 = new EntryEditRequest();
+        request2.setStatus(0);
+        String title = "edit";
+        request2.setTitle(title);
+        request2.setWikiText("wiki");
+        Optional<EntryEditRequest> optional3 = Optional.of(request2);
+        ObjectId id3 = new ObjectId("5f06b9d5643cd113ed90bc5c");
+        Mockito.when(entryEditRequestRepository.findById(id3))
+                .thenReturn(optional3);
+        Entry entry = new Entry();
+        entry.setTitle(title);
+        Optional<Entry> entryOptional = Optional.of(entry);
+        Mockito.when(entryDao.findByTitle(title)).thenReturn(entryOptional);
+        Mockito.when(entryDao.update(Mockito.any(Entry.class))).thenReturn(true);
+
+        Boolean result = entryService.examineEditLog(id1, true);
+        assertFalse(result,
+                "Examination succeeds even with wrong id");
+
+        result = entryService.examineEditLog(id2, true);
+        assertFalse(result,
+                "Examination succeeds even when already examined ");
+
+        result = entryService.examineEditLog(id3, true);
+        assertTrue(result, "Pass edit request failure");
+
+        request2.setStatus(0);
+        result = entryService.examineEditLog(id3, false);
+        assertTrue(result, "Reject edit request failure");
     }
 
     @DisplayName("Find an entry's parents and children")
