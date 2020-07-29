@@ -72,3 +72,13 @@
 ### 2020-07-24
 
 * Fixed many bugs.
+
+## Week 4
+
+### 2020-07-27
+
+* Implemented pages to view details of edit requests.
+
+### 2020-07-28
+
+* Implemented pages for users and administrators to view edit requests and user lists.
