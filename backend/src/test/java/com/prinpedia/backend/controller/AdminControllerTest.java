@@ -134,7 +134,7 @@ class AdminControllerTest {
 
         result = mockMvc
                 .perform(MockMvcRequestBuilders
-                        .post("/admin/grant")
+                        .post("/admin/ability")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"username\": \"wrong\", " +
                                 "\"enabled\": \"false\"}"))
