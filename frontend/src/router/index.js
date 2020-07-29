@@ -31,6 +31,7 @@ const routes = [
     },
     {
         path: '/user',
+
         component: UserPage
     },
     {

@@ -5,7 +5,9 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "test:e2e": "vue-cli-service test:e2e",
+    "test:unit": "vue-cli-service test:unit"
   },
   "dependencies": {
     "core-js": "^3.6.5",
@@ -15,17 +17,21 @@
     "wtf_wikipedia": "^8.4.0"
   },
   "devDependencies": {
+    "@jest/globals": "^26.1.0",
     "@vue/cli-plugin-babel": "~4.4.0",
     "@vue/cli-plugin-eslint": "~4.4.0",
+    "@vue/cli-plugin-unit-jest": "^4.4.6",
     "@vue/cli-service": "~4.4.0",
+    "@vue/test-utils": "^1.0.3",
     "axios": "^0.19.2",
     "babel-eslint": "^10.1.0",
     "echarts": "^4.8.0",
     "eslint": "^6.7.2",
     "eslint-plugin-vue": "^6.2.2",
-    "vue-router": "^3.3.4",
+    "identity-obj-proxy": "^3.0.0",
+    "mockjs": "^1.1.0",
     "vue-template-compiler": "^2.6.11",
-    "vuex": "^3.5.1"
+    "wiky": "^0.95.1"
   },
   "eslintConfig": {
     "root": true,
@@ -39,11 +45,30 @@
     "parserOptions": {
       "parser": "babel-eslint"
     },
+
+    "overrides": [
+      {
+        "files": [
+          "**/__tests__/*.{j,t}s?(x)",
+          "**/tests/unit/**/*.spec.{j,t}s?(x)"
+        ],
+        "env": {
+          "jest": true
+        }
+      }
+    ],
     "rules": {}
   },
   "browserslist": [
     "> 1%",
     "last 2 versions",
     "not dead"
-  ]
+
+  ],
+  "jest": {
+    "preset": "@vue/cli-plugin-unit-jest",
+    "moduleNameMapper": {
+      "\\.(css|less)$": "identity-obj-proxy"
+    }
+  }
 }

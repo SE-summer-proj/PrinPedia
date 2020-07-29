@@ -34,7 +34,7 @@
                     keyword: this.$route.params.entryName
                 }, (data) => {
                     this.wikiData = data.extraData;
-                })
+                });
             }
         },
         mounted() {
