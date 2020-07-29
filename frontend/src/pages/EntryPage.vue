@@ -6,7 +6,10 @@
       </el-header>
       <el-container>
         <el-aside>
-          <el-button @click="$router.push('/edit/' + entryName)">编辑词条</el-button>
+          <el-button-group>
+            <el-button @click="$router.back()">返回</el-button>
+            <el-button type="primary" @click="$router.push('/edit/' + entryName)">编辑词条</el-button>
+          </el-button-group>
           <Catalog :catalog="wikiData.content" />
         </el-aside>
         <el-main>
@@ -42,8 +45,23 @@
                 return GET(Constants.entryUrl, {
                     entryName: this.entryName
                 }, (data) => {
-                    this.wikiData = data.extraData
+                    this.wikiData = data.extraData;
+                    this.wikiData.wikiText = this.fixWikitext(this.wikiData.wikiText);
                 });
+            },
+            fixWikitext(text) {
+                let unfinished = true;
+                let start = 0;
+                while (unfinished) {
+                    const index = text.indexOf('a href="./', start) + 8;
+                    if (index === -1) {
+                        unfinished = false;
+                    } else {
+                        text.splice(index, 1, '#/entry');
+                        start = index;
+                    }
+                }
+                return text;
             }
         },
         mounted() {

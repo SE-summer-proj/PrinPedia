@@ -30,7 +30,9 @@
     "eslint-plugin-vue": "^6.2.2",
     "identity-obj-proxy": "^3.0.0",
     "mockjs": "^1.1.0",
+    "vue-router": "^3.3.4",
     "vue-template-compiler": "^2.6.11",
+    "vuex": "^3.5.1",
     "wiky": "^0.95.1"
   },
   "eslintConfig": {
@@ -45,7 +47,6 @@
     "parserOptions": {
       "parser": "babel-eslint"
     },
-
     "overrides": [
       {
         "files": [
@@ -63,7 +64,6 @@
     "> 1%",
     "last 2 versions",
     "not dead"
-
   ],
   "jest": {
     "preset": "@vue/cli-plugin-unit-jest",
