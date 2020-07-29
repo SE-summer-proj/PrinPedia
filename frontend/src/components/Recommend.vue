@@ -1,0 +1,43 @@
+<template>
+  <div class="recommend">
+    <el-row>
+      <el-col :span="4">猜你想搜：</el-col>
+      <el-col :span="(20 - 20 % entries.length) / entries.length" v-for="entry in entries" :key="entry.K">
+        <router-link :to=" '/entry/' + entry">{{entry}}</router-link>
+      </el-col>
+    </el-row>
+  </div>
+</template>
+
+<script>
+    import {GET} from "@/ajax";
+    import {Constants} from "@/utils/constants";
+
+    export default {
+        name: "Recommend",
+        data: function () {
+            return {
+                entries: []
+            };
+        },
+        methods: {
+            getRecommend() {
+                return GET(Constants.recommendUrl, {
+                    username: this.$store.state.userData.username
+                }, (data) => {
+                    this.entries = data.extraData;
+                });
+            }
+        },
+        mounted() {
+            return this.getRecommend();
+        }
+    }
+</script>
+
+<style scoped>
+  .recommend {
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+</style>

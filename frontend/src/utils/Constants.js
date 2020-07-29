@@ -1,0 +1,22 @@
+export const Constants = {
+    apiUrl: 'http://localhost:8080',
+    loginUrl: this.apiUrl + '/login',
+    logoutUrl: this.apiUrl + '/logout',
+    registerUrl: this.apiUrl + '/register',
+    recommendUrl: this.apiUrl + '/recommend',
+    searchUrl: this.apiUrl + '/search',
+    createUrl: this.apiUrl + '/create',
+    editUrl: this.apiUrl + '/edit',
+    rankingUrl: this.apiUrl + '/ranking',
+    entryUrl: this.apiUrl + '/entry',
+    graphUrl: this.apiUrl + '/relation',
+    entryEditUrl: this.entryUrl + '/edit',
+    editDetailUrl: this.entryEditUrl + '/detail',
+    examineUrl: this.entryEditUrl + '/examine',
+    userLogUrl: this.entryEditUrl + '/userLog',
+    adminLogUrl: this.entryEditUrl + '/adminLog',
+    requestUrl: this.entryEditUrl + '/request',
+    adminUrl: this.apiUrl + '/admin',
+    usersUrl: this.adminUrl + '/allUser',
+    disableUrl: this.adminUrl + '/ability'
+};
