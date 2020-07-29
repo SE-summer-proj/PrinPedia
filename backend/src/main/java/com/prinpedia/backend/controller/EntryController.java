@@ -99,7 +99,7 @@ public class EntryController {
         }
         if(newLevel < level) return index;
         if(newLevel == level) {
-            result.put("title", cur);
+            result.put("label", cur);
         }
 
         index++;
