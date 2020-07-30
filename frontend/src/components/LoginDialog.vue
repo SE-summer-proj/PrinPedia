@@ -12,7 +12,7 @@
             </el-form-item>
             <el-form-item>
               <el-button-group>
-                <el-button type="primary" @click="login">登录</el-button>
+                <el-button type="primary" @click="login" id="login-btn">登录</el-button>
                 <el-button @click="$router.back()">取消</el-button>
               </el-button-group>
             </el-form-item>
@@ -55,9 +55,10 @@
     import {Constants} from "@/utils/constants";
     export default {
         name: "LoginDialog",
-        data: function () {
+        data() {
             return {
                 activeName: 'login',
+                isLogged: false,
                 loginForm: {
                     username: '',
                     password: ''
@@ -80,6 +81,7 @@
                         this.$message.success(data.message);
                         this.$store.commit('setUserData', data.extraData);
                         this.$router.push('/index');
+                        this.isLogged = true;
                     } else {
                         this.$message.error(data.message);
                     }

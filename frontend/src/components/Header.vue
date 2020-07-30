@@ -1,5 +1,6 @@
 <template>
   <div id="header">
+
     <el-row v-if="!$store.state.logged" type="flex" justify="end">
       <el-col :span="2">
         <el-button type="text" @click="$router.push('/login')">登录</el-button>
@@ -10,7 +11,7 @@
 <!--        <el-avatar size="small" :src="userData.avatar" style="margin-right: 10px" />-->
         <span>
           <el-button-group>
-            <el-button type="text" @click="$router.push('/user')">
+            <el-button type="text" @click="$router.push('/user')" disabled>
               {{$store.state.userData.username}}
             </el-button>
             <el-button type="text" @click="logout">登出</el-button>
@@ -18,6 +19,7 @@
         </span>
       </el-col>
     </el-row>
+
   </div>
 </template>
 

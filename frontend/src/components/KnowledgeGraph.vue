@@ -12,6 +12,7 @@
         name: 'KnowledgeGraph',
         data() {
             return {
+                keyword: this.$route.params.keyword,
                 graph: "",
                 pointData: [],
                 linkData: [],
@@ -59,9 +60,6 @@
                 }
             };
         },
-        props: {
-            centralWord: String
-        },
         methods: {
             setPointData(list, category) {
                 list.forEach((name, index) => {
@@ -99,16 +97,16 @@
                 // this.pointList3 = [this.keyword];
 
                 return GET(Constants.graphUrl, {
-                    title: this.centralWord
+                    title: this.keyword
                 }, (data) => {
                     this.pointList1 = data.parents;
                     this.pointList2 = data.children;
-                    this.pointList3 = [this.centralWord];
+                    this.pointList3 = [this.keyword];
                 });
             }
         },
-        async mounted() {
-            await this.getSourceData();
+        mounted() {
+            this.getSourceData();
             this.graph = echarts.init(document.getElementById("graph"));
             this.setPointData(this.pointList1, this.pointList1[0]);
             this.setPointData(this.pointList2, this.pointList2[0]);

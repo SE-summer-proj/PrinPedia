@@ -1,12 +1,13 @@
 <template>
   <el-container>
-    <el-header><Header /></el-header>
+    <el-header>
+      <Header />
+    </el-header>
     <el-container>
       <el-main>
         <SearchBar :keyword="keyword" />
-        <el-button type="main" @click="dialogVisible = true">显示推荐</el-button>
         <el-dialog title="推荐词条" :visible.sync="dialogVisible">
-          <KnowledgeGraph :central-word="searchResults[0].title" />
+          <KnowledgeGraph />
         </el-dialog>
         <div class="not-found" v-if="notFound">
           没有找到相应词条"{{keyword}}"。您可能想要的是以下结果：
@@ -14,14 +15,9 @@
         <div class="found">
           <SearchResult v-for="(result, i) in searchResults" :key="i" :result="result" />
         </div>
-        <div v-if="notFound">
-          <span>没有想要的结果？试试</span>
-          <el-button type="text" @click="createEntry">创建词条</el-button>
-        </div>
       </el-main>
       <el-aside><Ranking :columns="1" /></el-aside>
     </el-container>
-    <el-footer><Footer /></el-footer>
   </el-container>
 </template>
 
@@ -31,12 +27,11 @@
     import SearchBar from "@/components/SearchBar";
     import SearchResult from "@/components/SearchResult";
     import {Constants} from "@/utils/constants";
-    import {GET, POST} from "@/ajax";
+    import {GET} from "@/ajax";
     import KnowledgeGraph from "@/components/KnowledgeGraph";
-    import Footer from "@/components/Footer";
     export default {
         name: "ResultPage",
-        components: {Footer, KnowledgeGraph, SearchResult, SearchBar, Ranking, Header},
+        components: {KnowledgeGraph, SearchResult, SearchBar, Ranking, Header},
         data: function () {
             return {
                 keyword: this.$route.params.keyword,
@@ -52,13 +47,6 @@
                 }, (data) => {
                     this.searchResults = data.extraData;
                     this.notFound = data.status === -1;
-                });
-            },
-            createEntry() {
-                return POST(Constants.createUrl, {
-                    keyword: this.keyword
-                }, () => {
-                    this.$router.push('/edit/' + this.keyword);
                 });
             }
         },
