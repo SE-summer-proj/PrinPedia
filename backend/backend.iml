@@ -217,5 +217,6 @@
     <orderEntry type="library" name="Maven: io.micrometer:micrometer-registry-prometheus:1.5.3" level="project" />
     <orderEntry type="library" name="Maven: io.prometheus:simpleclient_common:0.8.1" level="project" />
     <orderEntry type="library" name="Maven: io.prometheus:simpleclient:0.8.1" level="project" />
+    <orderEntry type="library" name="Maven: com.spring4all:mongodb-plus-spring-boot-starter:1.0.0.RELEASE" level="project" />
   </component>
 </module>

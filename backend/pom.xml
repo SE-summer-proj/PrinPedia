@@ -101,6 +101,11 @@
             <artifactId>micrometer-registry-prometheus</artifactId>
             <version>1.5.3</version>
         </dependency>
+        <dependency>
+            <groupId>com.spring4all</groupId>
+            <artifactId>mongodb-plus-spring-boot-starter</artifactId>
+            <version>1.0.0.RELEASE</version>
+        </dependency>
     </dependencies>
 
     <build>
