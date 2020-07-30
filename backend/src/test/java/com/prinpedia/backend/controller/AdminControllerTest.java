@@ -61,8 +61,7 @@ class AdminControllerTest {
     @Test
     @WithMockUser(username = "admin")
     public void getAllUsersFail() throws Exception {
-        MvcResult result = mockMvc
-                .perform(MockMvcRequestBuilders
+        mockMvc.perform(MockMvcRequestBuilders
                         .get("/admin/allUser"))
                 .andExpect(MockMvcResultMatchers.status().is4xxClientError())
                 .andReturn();
