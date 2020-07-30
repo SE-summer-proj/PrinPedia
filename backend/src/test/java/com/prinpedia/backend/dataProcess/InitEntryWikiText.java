@@ -14,7 +14,7 @@ import org.springframework.test.context.ActiveProfiles;
 
 import java.io.*;
 
-@ActiveProfiles(profiles = {"test"})
+@ActiveProfiles(profiles = {"prod"})
 @SpringBootTest
 public class InitEntryWikiText {
     @Autowired
@@ -32,11 +32,7 @@ public class InitEntryWikiText {
     @Test
     @Disabled
     public void entryWikiText() throws IOException {
-        entryRepository.deleteAll();
-        elasticEntryRepository.deleteAll();
-        entryNodeRepository.deleteAll();
-
-        String path = "G:\\webWorkspace\\prinpedia\\selected_simplified.txt";
+        String path = "G:\\webWorkspace\\prinpedia\\Page_001_simplified.txt";
 
         File file = new File(path);
         FileReader fileReader = new FileReader(file);
@@ -45,10 +41,13 @@ public class InitEntryWikiText {
         String tmp;
         while((tmp = bufferedReader.readLine()) != null) {
             String []strings = tmp.split("\\t");
+            if(Integer.parseInt(strings[0]) <= 5565) continue;
             Entry entry = new Entry();
             entry.setIndex(Integer.parseInt(strings[0]));
-            entry.setTitle(strings[1]);
-            entry.setWikiText(strings[2]);
+            if(strings.length > 2)
+                entry.setTitle(strings[2]);
+            if(strings.length > 3)
+                entry.setWikiText(strings[3]);
             entryDao.create(entry);
         }
     }
