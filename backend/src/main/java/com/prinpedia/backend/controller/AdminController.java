@@ -63,7 +63,7 @@ public class AdminController {
         Boolean enabled = jsonObject.getBoolean("enabled");
         JSONObject response = new JSONObject();
         if(adminService.changeUserAbility(username, enabled)) {
-            response.put("status", 0);
+            response.put("status", !enabled);
             response.put("message", "Success");
         }
         else {
