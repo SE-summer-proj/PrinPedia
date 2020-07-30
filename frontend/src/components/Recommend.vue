@@ -22,9 +22,7 @@
         },
         methods: {
             getRecommend() {
-                return GET(Constants.recommendUrl, {
-                    username: this.$store.state.userData.username
-                }, (data) => {
+                return GET(Constants.recommendUrl, {}, (data) => {
                     this.entries = data.extraData;
                 });
             }

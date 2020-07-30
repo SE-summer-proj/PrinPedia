@@ -31,10 +31,7 @@
 <script>
     export default {
         name: "Entry",
-        props: {
-            index: Number,
-            entry: Object
-        }
+        props: ['index', 'entry']
     }
 </script>
 
