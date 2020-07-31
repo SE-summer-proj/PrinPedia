@@ -10,8 +10,10 @@
 </template>
 
 <script>
-    import {GET} from "@/ajax";
-    import {Constants} from "@/utils/constants";
+    // import {GET} from "@/ajax";
+    // import {Constants} from "@/utils/constants";
+    import axios from "axios";
+
 
     export default {
         name: "Recommend",
@@ -21,11 +23,35 @@
             };
         },
         methods: {
-            getRecommend() {
-                return GET(Constants.recommendUrl, {}, (data) => {
-                    this.entries = data.extraData;
-                });
-            }
+            // getRecommend() {
+            //     return GET(Constants.recommendUrl, {username:this.$store.state.userData.username}, (data) => {
+            //       console.log(data)
+            //       // this.entries = data.extraData;
+            //     });
+            // }
+          getRecommend() {
+            // var URL = Constants.recommendUrl + '?username=' + this.$store.state.userData.username
+            // return GET(URL, {}, (data) => {
+            //   console.log(data)
+            //   this.entries = data.extraData;
+            // });
+            var URL = '/recommend?username=' + this.$store.state.userData.username
+              return axios.get(URL)
+                      .then(response => {
+                        console.log(response);
+                        this.entries = response.data.extraData;
+                      });
+          }
+          // getRecommend() {
+          //   var params = new URLSearchParams();
+          //   params.append("username", this.$store.state.userData.username);
+          //   return axios.get("/recommend", params)
+          //           .then(response => {
+          //             console.log(response);
+          //             this.entries = response.extraData;
+          //           })
+          // }
+
         },
         mounted() {
             return this.getRecommend();

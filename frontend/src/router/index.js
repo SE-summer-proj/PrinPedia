@@ -6,6 +6,9 @@ import ResultPage from "@/pages/ResultPage";
 import UserPage from "@/pages/UserPage";
 import EditPage from "@/pages/EditPage";
 import LoginPage from "@/pages/LoginPage";
+import UserLogDetailPage from "@/pages/UserLogDetailPage";
+import AdminPage from "@/pages/AdminPage";
+import ComparePage from "@/pages/ComparePage";
 
 Vue.use(VueRouter);
 
@@ -27,7 +30,7 @@ const routes = [
         component: ResultPage
     },
     {
-        path: '/user/:userId',
+        path: '/user',
         component: UserPage
     },
     {
@@ -37,6 +40,18 @@ const routes = [
     {
         path: '/login',
         component: LoginPage
+    },
+    {
+        path: '/userLogDetail/:userLogId',
+        component: UserLogDetailPage
+    },
+    {
+        path: '/admin',
+        component: AdminPage
+    },
+    {
+        path: '/compare/:logId',
+        component: ComparePage
     }
 ];
 

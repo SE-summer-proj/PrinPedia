@@ -1,14 +1,9 @@
-import Vue from "vue";
-import Vuex from 'vuex';
-
-Vue.use(Vuex);
-
-export const store = new Vuex.Store({
+export default {
     state: {
         logged: false,
         userData: {
             username: '',
-            userType: 0,
+            userType: 0
         }
     },
     mutations: {
@@ -19,9 +14,9 @@ export const store = new Vuex.Store({
         logout(state) {
             state.userData = {
                 username: '',
-                userType: 0,
+                userType: 0
             }
             state.logged = false;
         }
     }
-});
+};
