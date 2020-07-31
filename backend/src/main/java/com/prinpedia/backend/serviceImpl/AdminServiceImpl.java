@@ -47,6 +47,7 @@ public class AdminServiceImpl implements AdminService {
         for(Role role : roleList) {
             if(role.getRoleName().equals("ROLE_ADMIN")) return false;
         }
+        if(enabled == null) return false;
         user.setEnabled(enabled);
         userDao.update(user);
         return true;
