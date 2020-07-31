@@ -29,29 +29,29 @@
 </template>
 
 <script>
-    export default {
-        name: "Entry",
-        props: ['index', 'entry']
-    }
+export default {
+    name: "Entry",
+    props: ['index', 'entry']
+}
 </script>
 
 <style scoped>
-  .hot {
+.hot {
     background-color: red;
     margin-left: 5px;
-  }
-  .recommend {
+}
+.recommend {
     background-color: aqua;
     margin-left: 5px;
-  }
-  .new {
+}
+.new {
     background-color: limegreen;
     margin-left: 5px;
-  }
-  .up {
+}
+.up {
     color: red;
-  }
-  .down {
+}
+.down {
     color: green;
-  }
+}
 </style>

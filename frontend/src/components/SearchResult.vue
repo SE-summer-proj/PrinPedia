@@ -6,26 +6,16 @@
 </template>
 
 <script>
-    export default {
-        name: "SearchResult",
-        props: ['result'],
-        // computed: {
-        //     summary: function () {
-        //         const maxLength = 100;
-        //         let summary = this.result.summary;
-        //         if (summary.length >= maxLength) {
-        //             summary.splice(maxLength);
-        //             return summary;
-        //         } else return summary;
-        //     }
-        // }
-    }
+export default {
+    name: "SearchResult",
+    props: ['result']
+}
 </script>
 
 <style scoped>
-  #search-result {
+#search-result {
     text-align: left;
     margin-top: 10px;
     margin-bottom: 10px;
-  }
+}
 </style>

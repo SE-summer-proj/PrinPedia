@@ -27,15 +27,15 @@
 </template>
 
 <script>
-    import SearchBar from "@/components/SearchBar";
-    import Recommend from "@/components/Recommend";
-    import Header from "@/components/Header";
-    import Footer from "@/components/Footer";
-    import Ranking from "@/components/Ranking";
-    export default {
-        name: "SearchPage",
-        components: {Ranking, Footer, Header, Recommend, SearchBar}
-    }
+import SearchBar from "@/components/SearchBar";
+import Recommend from "@/components/Recommend";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
+import Ranking from "@/components/Ranking";
+export default {
+    name: "SearchPage",
+    components: {Ranking, Footer, Header, Recommend, SearchBar}
+}
 </script>
 
 <style scoped>

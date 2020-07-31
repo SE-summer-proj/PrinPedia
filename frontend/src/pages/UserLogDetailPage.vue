@@ -21,32 +21,32 @@
 </template>
 
 <script>
-    import Header from "@/components/Header";
-    import Footer from "@/components/Footer";
-    import VueWikitext from "@/components/VueWikitext";
-    import {GET} from "@/ajax";
-    import {Constants} from "@/utils/constants";
-    export default {
-        name: "UserLogDetailPage",
-        components: {VueWikitext, Footer, Header},
-        data: function () {
-            return {
-                logDetail: ''
-            };
-        },
-        methods: {
-            getWikiText() {
-                return GET(Constants.editDetailUrl, {
-                    id: this.$route.params.userLogId
-                }, (data) => {
-                    this.logDetail = data.extraData;
-                });
-            }
-        },
-        mounted() {
-            return this.getWikiText();
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
+import VueWikitext from "@/components/VueWikitext";
+import {GET} from "@/ajax";
+import {Constants} from "@/utils/constants";
+export default {
+    name: "UserLogDetailPage",
+    components: {VueWikitext, Footer, Header},
+    data: function () {
+        return {
+            logDetail: ''
+        };
+    },
+    methods: {
+        getWikiText() {
+            return GET(Constants.editDetailUrl, {
+                id: this.$route.params.userLogId
+            }, (data) => {
+                this.logDetail = data.extraData;
+            });
         }
+    },
+    mounted() {
+        return this.getWikiText();
     }
+}
 </script>
 
 <style scoped>

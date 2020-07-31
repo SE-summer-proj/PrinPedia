@@ -32,35 +32,40 @@
 </template>
 
 <script>
-    import Entry from "@/components/Entry";
-    import {GET} from "@/ajax";
-    import {Constants} from "@/utils/constants";
+import Entry from "@/components/Entry";
+import {GET} from "@/ajax";
+import {Constants} from "@/utils/constants";
 
-    export default {
-        name: "Ranking",
-        components: {Entry},
-        data: function () {
-            return {
-                hotWords: []
-            };
-        },
-        props: ['columns'],
-        methods: {
-            getRanking() {
-                return GET(Constants.rankingUrl, {}, (data) => {
-                    this.hotWords = data.extraData
-                });
-            }
-        },
-        mounted() {
-            return this.getRanking();
+export default {
+    name: "Ranking",
+    components: {Entry},
+    data: function () {
+        return {
+            hotWords: []
+        };
+    },
+    props: {
+        columns: {
+            type: Number,
+            default: 1
         }
+    },
+    methods: {
+        getRanking() {
+            return GET(Constants.rankingUrl, {}, (data) => {
+                this.hotWords = data.extraData
+            });
+        }
+    },
+    mounted() {
+        return this.getRanking();
     }
+}
 </script>
 
 <style scoped>
-  .rk-col {
+.rk-col {
     border: 1px solid darkblue;
     border-radius: 4px;
-  }
+}
 </style>

@@ -53,99 +53,78 @@
 </template>
 
 <script>
-    import {POST} from "@/ajax";
-    import {Constants} from "@/utils/constants";
-    import axios from 'axios';
-    export default {
-        name: "LoginDialog",
-        data: function () {
-            return {
-                activeName: 'login',
-                loginForm: {
-                    username: '',
-                    password: ''
-                },
-                registerForm: {
-                    username: '',
-                    password: '',
-                    confirm: '',
-                    mailAddr: ''
-                }
-            };
-        },
-        methods: {
-            // login() {
-            //     return POST(Constants.loginUrl, {
-            //         username: this.loginForm.username,
-            //         password: this.loginForm.password
-            //     }, (data) => {
-            //         if (data.status === 0) {
-            //             this.$message.success(data.message);
-            //             this.$store.commit('setUserData', data.extraData);
-            //             this.$router.push('/index');
-            //         } else {
-            //             this.$message.error(data.message);
-            //         }
-            //     });
-            // },
-          login() {
-            var params = new URLSearchParams();
+import {POST} from "@/ajax";
+import {Constants} from "@/utils/constants";
+import axios from 'axios';
+export default {
+    name: "LoginDialog",
+    data: function () {
+        return {
+            activeName: 'login',
+            loginForm: {
+                username: '',
+                password: ''
+            },
+            registerForm: {
+                username: '',
+                password: '',
+                confirm: '',
+                mailAddr: ''
+            }
+        };
+    },
+    methods: {
+        login() {
+            let params = new URLSearchParams();
             params.append("username", this.loginForm.username);
             params.append("password", this.loginForm.password);
             return axios.post("/login", params)
-            .then(response => {
-              // console.log(response);
-              if (response.data.status === 0) {
-                console.log(response)
-                this.$message.success(response.data.message);
-                this.$store.commit('setUserData', response.data.extraData);
-                this.$router.push('/');
-              } else {
-                this.$message.error(response.data.message);
-              }
-            })
-          },
-            register() {
-                return POST(Constants.registerUrl, {
-                    username: this.registerForm.username,
-                    password: this.registerForm.password,
-                    mailAddr: this.registerForm.mailAddr
-                }, (data) => {
-                    if (data.status === 0) {
-                        this.activeName = 'login';
-                        this.$message.success(data.message);
+                .then(response => {
+                    // console.log(response);
+                    if (response.data.status === 0) {
+                        console.log(response)
+                        this.$message.success(response.data.message);
+                        this.$store.commit('setUserData', response.data.extraData);
+                        this.$router.push('/');
                     } else {
-                        this.$message.error(data.message);
+                        this.$message.error(response.data.message);
                     }
-                    this.$store.state.logged
-                });
-            }
-          // register(){
-          //   var params = new URLSearchParams();
-          //   params.append("username",this.registerForm.username);
-          //   params.append("password",this.registerForm.password);
-          //   params.append("mailAddr",this.registerForm.mailAddr);
-          //   return axios.post("/user/register",params);
-          // }
+                })
         },
-        computed: {
-            isPasswordConsistent: function () {
-                return (this.registerForm.confirm === this.registerForm.password);
-            },
-            isMailAddrValid: function () {
-                const mailAddressReg =
-                    /^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$/g;
-                return (mailAddressReg.test(this.registerForm.mailAddr));
-            },
-            isRegisterAvailable: function () {
-                return !this.isMailAddrValid || !this.isPasswordConsistent
-            }
+        register() {
+            return POST(Constants.registerUrl, {
+                username: this.registerForm.username,
+                password: this.registerForm.password,
+                mailAddr: this.registerForm.mailAddr
+            }, (data) => {
+                if (data.status === 0) {
+                    this.activeName = 'login';
+                    this.$message.success(data.message);
+                } else {
+                    this.$message.error(data.message);
+                }
+                // this.$store.state.logged
+            });
+        }
+    },
+    computed: {
+        isPasswordConsistent: function () {
+            return (this.registerForm.confirm === this.registerForm.password);
+        },
+        isMailAddrValid: function () {
+            const mailAddressReg =
+                /^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$/g;
+            return (mailAddressReg.test(this.registerForm.mailAddr));
+        },
+        isRegisterAvailable: function () {
+            return !this.isMailAddrValid || !this.isPasswordConsistent
         }
     }
+}
 </script>
 
 <style scoped>
-  #login-panel {
+#login-panel {
     margin-top: 0;
-  }
+}
 </style>

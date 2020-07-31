@@ -21,4 +21,3 @@ export const Constants = {
     usersUrl: apiUrl + '/admin/allUser',
     disableUrl: apiUrl + '/admin/ability',
 };
-

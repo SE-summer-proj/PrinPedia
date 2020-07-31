@@ -38,50 +38,50 @@
 </template>
 
 <script>
-    import Header from "@/components/Header";
-    import Footer from "@/components/Footer";
-    import VueWikitext from "@/components/VueWikitext";
-    import {GET, POST} from "@/ajax";
-    import {Constants} from "@/utils/constants";
-    export default {
-        name: "ComparePage",
-        components: {VueWikitext, Footer, Header},
-        data: function () {
-            return {
-                logDetail: null,
-                currentText: ''
-            };
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
+import VueWikitext from "@/components/VueWikitext";
+import {GET, POST} from "@/ajax";
+import {Constants} from "@/utils/constants";
+export default {
+    name: "ComparePage",
+    components: {VueWikitext, Footer, Header},
+    data: function () {
+        return {
+            logDetail: null,
+            currentText: ''
+        };
+    },
+    methods: {
+        getDetail() {
+            return GET(Constants.editDetailUrl, {
+                id: this.$route.params.logId
+            }, (data) => {
+                this.logDetail = data.extraData;
+            });
         },
-        methods: {
-            getDetail() {
-                return GET(Constants.editDetailUrl, {
-                    id: this.$route.params.logId
-                }, (data) => {
-                    this.logDetail = data.extraData;
-                });
-            },
-            getCurrent() {
-                return GET(Constants.entryUrl, {
-                    entryName: this.logDetail.title
-                }, (data) => {
-                    this.currentText = data.extraData;
-                })
-            },
-            submit(passed) {
-                return POST(Constants.examineUrl, {
-                    id: this.$route.params.logId,
-                    passed: passed
-                }, (data) => {
-                    this.$message.info(data.message);
-                    this.$router.push('/');
-                });
-            }
+        getCurrent() {
+            return GET(Constants.entryUrl, {
+                entryName: this.logDetail.title
+            }, (data) => {
+                this.currentText = data.extraData;
+            })
         },
-        async mounted() {
-            await this.getDetail();
-            return this.getCurrent();
+        submit(passed) {
+            return POST(Constants.examineUrl, {
+                id: this.$route.params.logId,
+                passed: passed
+            }, (data) => {
+                this.$message.info(data.message);
+                this.$router.push('/');
+            });
         }
+    },
+    async mounted() {
+        await this.getDetail();
+        return this.getCurrent();
     }
+}
 </script>
 
 <style scoped>

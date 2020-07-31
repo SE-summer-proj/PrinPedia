@@ -16,43 +16,43 @@
 </template>
 
 <script>
-    import {GET, POST} from "@/ajax";
-    import {Constants} from "@/utils/constants";
+import {GET, POST} from "@/ajax";
+import {Constants} from "@/utils/constants";
 
-    export default {
-        name: "UserAdmin",
-        data: function () {
-            return {
-                users: []
-            };
-        },
-        methods: {
-            getAllUsers() {
+export default {
+    name: "UserAdmin",
+    data: function () {
+        return {
+            users: []
+        };
+    },
+    methods: {
+        getAllUsers() {
             return GET(Constants.usersUrl, {}, (data) => {
-              console.log(data)
-              this.users = data.extraData;
+                console.log(data)
+                this.users = data.extraData;
             })
-          },
-          changeDisableState(row) {
-              console.log(row.enabled)
+        },
+        changeDisableState(row) {
+            console.log(row.enabled)
             var status
-              if(row.enabled==true) status = false
-              if(row.enabled==null) status = true
-              if(row.enabled==false) status = true
+            if(row.enabled==true) status = false
+            if(row.enabled==null) status = true
+            if(row.enabled==false) status = true
             console.log(status)
             return POST(Constants.disableUrl, {
-              username: row.username,
-              enabled: status
-              // enabled: !row.disabled
+                username: row.username,
+                enabled: status
+                // enabled: !row.disabled
             }, async () => {
-              await this.getAllUsers();
+                await this.getAllUsers();
             });
-          }
-        },
-        mounted() {
-            return this.getAllUsers();
         }
+    },
+    mounted() {
+        return this.getAllUsers();
     }
+}
 </script>
 
 <style scoped>

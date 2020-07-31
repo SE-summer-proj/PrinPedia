@@ -27,52 +27,52 @@
 </template>
 
 <script>
-    import Header from "@/components/Header";
-    import Ranking from "@/components/Ranking";
-    import SearchBar from "@/components/SearchBar";
-    import SearchResult from "@/components/SearchResult";
-    import {Constants} from "@/utils/constants";
-    import {GET,POST} from "@/ajax";
-    import KnowledgeGraph from "@/components/KnowledgeGraph";
-    export default {
-        name: "ResultPage",
-        components: {KnowledgeGraph, SearchResult, SearchBar, Ranking, Header},
-        data: function () {
-            return {
-                keyword: this.$route.params.keyword,
-                searchResults: [],
-                notFound: false,
-                dialogVisible: false
-            };
-        },
-        methods: {
-            search() {
-                return GET(Constants.searchUrl, {
-                    keyword: this.keyword
-                }, (data) => {
-                  console.log(data)
-                  this.searchResults = data.extraData;
-                    this.notFound = (data.status === -1);
-                });
-            },
-            createEntry() {
-              return POST(Constants.createUrl, {
+import Header from "@/components/Header";
+import Ranking from "@/components/Ranking";
+import SearchBar from "@/components/SearchBar";
+import SearchResult from "@/components/SearchResult";
+import {Constants} from "@/utils/constants";
+import {GET,POST} from "@/ajax";
+import KnowledgeGraph from "@/components/KnowledgeGraph";
+export default {
+    name: "ResultPage",
+    components: {KnowledgeGraph, SearchResult, SearchBar, Ranking, Header},
+    data: function () {
+        return {
+            keyword: this.$route.params.keyword,
+            searchResults: [],
+            notFound: false,
+            dialogVisible: false
+        };
+    },
+    methods: {
+        search() {
+            return GET(Constants.searchUrl, {
                 keyword: this.keyword
-              }, () => {
+            }, (data) => {
+                console.log(data)
+                this.searchResults = data.extraData;
+                this.notFound = (data.status === -1);
+            });
+        },
+        createEntry() {
+            return POST(Constants.createUrl, {
+                keyword: this.keyword
+            }, () => {
                 this.$router.push('/edit/' + this.keyword);
-              });
-            }
-        },
-        mounted() {
-            return this.search();
-        },
-        watch: {
-            '$route' () {
-                this.keyword = this.$route.params.keyword
-                this.search();
-            }
-        },
-    }
+            });
+        }
+    },
+    mounted() {
+        return this.search();
+    },
+    watch: {
+        '$route' () {
+            this.keyword = this.$route.params.keyword
+            this.search();
+        }
+    },
+}
 </script>
 
 <style scoped>

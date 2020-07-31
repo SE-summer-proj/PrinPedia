@@ -17,19 +17,19 @@
 </template>
 
 <script>
-  import UserAdmin from "@/components/UserAdmin";
-  import EditAdmin from "@/components/EditAdmin";
-  import Header from "@/components/Header";
-  import Footer from "@/components/Footer";
-  export default {
+import UserAdmin from "@/components/UserAdmin";
+import EditAdmin from "@/components/EditAdmin";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
+export default {
     name: "AdminPage",
     components: {Footer, Header, EditAdmin, UserAdmin},
     data: function () {
-      return {
-        activeName: 'user-admin'
-      };
+        return {
+            activeName: 'user-admin'
+        };
     }
-  }
+}
 </script>
 
 <style scoped>
