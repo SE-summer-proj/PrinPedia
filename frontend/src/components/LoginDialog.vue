@@ -5,44 +5,44 @@
         <el-tab-pane label="登录" name="login">
           <el-form :model="loginForm" label-width="80px">
             <el-form-item label="用户名">
-              <el-input id="login-input-username" v-model="loginForm.username" aria-placeholder="请输入用户名" />
+              <el-input v-model="loginForm.username" aria-placeholder="请输入用户名" />
             </el-form-item>
             <el-form-item label="密码">
-              <el-input id="login-input-password" v-model="loginForm.password" aria-placeholder="请输入密码" show-password />
+              <el-input v-model="loginForm.password" aria-placeholder="请输入密码" show-password />
             </el-form-item>
             <el-form-item>
               <el-button-group>
-                <el-button id="login-button1" type="primary" @click="login">登录</el-button>
-                <el-button id="cancel-button1" @click="$router.back()">取消</el-button>
+                <el-button id="login-btn" type="primary" @click="login">登录</el-button>
+                <el-button @click="$router.back()">取消</el-button>
               </el-button-group>
             </el-form-item>
           </el-form>
         </el-tab-pane>
         <el-tab-pane label="注册" name="register">
-<!--          <div v-if="!isMailAddrValid"><i class="el-icon-error" />邮箱格式不正确</div>-->
-<!--          <div v-if="!isPasswordConsistent"><i class="el-icon-error" />两次输入密码不一致</div>-->
+          <div v-if="!isMailAddrValid"><i class="el-icon-error" />邮箱格式不正确</div>
+          <div v-if="!isPasswordConsistent"><i class="el-icon-error" />两次输入密码不一致</div>
           <el-form :model="registerForm" label-width="80px">
             <el-form-item label="用户名">
-              <el-input id="register-input-username" v-model="registerForm.username" aria-placeholder="请输入用户名" />
+              <el-input v-model="registerForm.username" aria-placeholder="请输入用户名" />
             </el-form-item>
             <el-form-item label="密码">
-              <el-input id="register-input-password" v-model="registerForm.password" aria-placeholder="请输入密码" show-password />
+              <el-input v-model="registerForm.password" aria-placeholder="请输入密码" show-password />
             </el-form-item>
             <el-form-item label="确认密码">
-              <el-input id="register-input-password-confirm" v-model="registerForm.confirm" aria-placeholder="请再次输入密码" show-password />
-              <div v-if="!isPasswordConsistent"><i class="el-icon-error" />两次输入密码不一致</div>
+              <el-input v-model="registerForm.confirm" aria-placeholder="请再次输入密码" show-password />
+<!--              <div v-if="!isPasswordConsistent"><i class="el-icon-error" />两次输入密码不一致</div>-->
             </el-form-item>
             <el-form-item label="邮箱">
-              <el-input id="register-input-email" v-model="registerForm.mailAddr" aria-placeholder="请输入邮箱"/>
-              <div v-if="!isMailAddrValid"><i class="el-icon-error" />邮箱格式不正确</div>
+              <el-input v-model="registerForm.mailAddr" aria-placeholder="请输入邮箱"/>
+<!--              <div v-if="!isMailAddrValid"><i class="el-icon-error" />邮箱格式不正确</div>-->
             </el-form-item>
             <el-form-item>
               <el-button-group>
-                <el-button id="register-button" type="primary" @click="register"
+                <el-button id="regi-btn" type="primary" @click="register"
                            :disabled="isRegisterAvailable">
                   注册
                 </el-button>
-                <el-button id="cancel-button2" @click="$router.back()">取消</el-button>
+                <el-button @click="$router.back()">取消</el-button>
               </el-button-group>
             </el-form-item>
           </el-form>
