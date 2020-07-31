@@ -37,7 +37,7 @@
             <el-form-item>
               <el-button-group>
                 <el-button type="primary" @click="register"
-                           :disabled="isRegisterAvailable">
+                           :disabled="isRegisterAvailable" id="regi-btn">
                   注册
                 </el-button>
                 <el-button @click="$router.back()">取消</el-button>
@@ -51,8 +51,9 @@
 </template>
 
 <script>
-    import {POST} from "@/ajax";
-    import {Constants} from "@/utils/constants";
+    // import {POST} from "@/ajax";
+    // import {Constants} from "@/utils/constants";
+    import axios from "axios";
     export default {
         name: "LoginDialog",
         data() {
@@ -73,33 +74,36 @@
         },
         methods: {
             login() {
-                return POST(Constants.loginUrl, {
-                    username: this.loginForm.username,
-                    password: this.loginForm.password
-                }, (data) => {
-                    if (data.status === 0) {
-                        this.$message.success(data.message);
-                        this.$store.commit('setUserData', data.extraData);
-                        this.$router.push('/index');
-                        this.isLogged = true;
-                    } else {
-                        this.$message.error(data.message);
-                    }
-                });
+              var params = new URLSearchParams();
+              params.append("username", this.loginForm.username);
+              params.append("password", this.loginForm.password);
+              return axios.post("/login", params)
+              .then(response => {
+                if (response.status === 0) {
+                  this.isLogged = true;
+                  this.$message.success(response.message);
+                  this.$store.commit('setUserData', response.extraData);
+                  this.$router.push('/index');
+                } else {
+                  this.$message.error(response.message);
+                }
+              })
             },
             register() {
-                return POST(Constants.registerUrl, {
-                    username: this.registerForm.username,
-                    password: this.registerForm.password,
-                    mailAddr: this.registerForm.mailAddr
-                }, (data) => {
-                    if (data.status === 0) {
-                        this.activeName = 'login';
-                        this.$message.success(data.message);
-                    } else {
-                        this.$message.error(data.message);
-                    }
-                });
+              var params = new URLSearchParams();
+              params.append("username", this.registerForm.username);
+              params.append("password", this.registerForm.password);
+              params.append("mailAddr", this.registerForm.mailAddr);
+              return axios.post("/user/register", params)
+              .then(response => {
+                  if (response.status === 0) {
+                    this.activeName = 'login';
+                    this.$message.success(response.message);
+                  } else {
+                    this.$message.error(response.message);
+                  }
+                  this.$store.state.logged;
+              });
             }
         },
         computed: {
