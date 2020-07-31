@@ -51,8 +51,8 @@
 </template>
 
 <script>
-    // import {POST} from "@/ajax";
-    // import {Constants} from "@/utils/constants";
+    import {POST} from "@/ajax";
+    import {Constants} from "@/utils/constants";
     import axios from "axios";
     export default {
         name: "LoginDialog",
@@ -90,19 +90,18 @@
               })
             },
             register() {
-              var params = new URLSearchParams();
-              params.append("username", this.registerForm.username);
-              params.append("password", this.registerForm.password);
-              params.append("mailAddr", this.registerForm.mailAddr);
-              return axios.post("/user/register", params)
-              .then(response => {
-                  if (response.status === 0) {
-                    this.activeName = 'login';
-                    this.$message.success(response.message);
-                  } else {
-                    this.$message.error(response.message);
-                  }
-                  this.$store.state.logged;
+              return POST(Constants.registerUrl, {
+                username: this.registerForm.username,
+                password: this.registerForm.password,
+                mailAddr: this.registerForm.mailAddr
+              }, (data) => {
+                if (data.status === 0) {
+                  this.activeName = 'login';
+                  this.$message.success(data.message);
+                } else {
+                  this.$message.error(data.message);
+                }
+                // this.$store.state.logged
               });
             }
         },
