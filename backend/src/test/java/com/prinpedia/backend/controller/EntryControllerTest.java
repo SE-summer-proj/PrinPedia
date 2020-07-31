@@ -201,5 +201,6 @@ class EntryControllerTest {
         current = jsonArray.getString(0);
         assertEquals("法国", current,
                 "Current title not match");
+        System.out.println(current);
     }
 }
