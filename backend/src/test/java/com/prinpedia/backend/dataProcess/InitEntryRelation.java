@@ -11,12 +11,12 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 
+@Disabled
 @SpringBootTest
 public class InitEntryRelation {
     @Autowired
     private EntryRelationRepository entryRelationRepository;
 
-    @Disabled
     @Test
     public void entryRelation() throws IOException {
         String path = "G:\\webWorkspace\\prinpedia\\selected_inlinks.txt";

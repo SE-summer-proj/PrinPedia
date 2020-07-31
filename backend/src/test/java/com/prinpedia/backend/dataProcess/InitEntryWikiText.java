@@ -17,6 +17,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Disabled
 @ActiveProfiles(profiles = {"prod"})
 @SpringBootTest
 public class InitEntryWikiText {
@@ -33,7 +34,6 @@ public class InitEntryWikiText {
     private EntryNodeRepository entryNodeRepository;
 
     @Test
-    //@Disabled
     public void entryWikiText() throws IOException {
         String path = "G:\\webWorkspace\\prinpedia\\Page_001_simplified.txt";
 
