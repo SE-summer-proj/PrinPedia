@@ -28,6 +28,7 @@ public class AdminController {
             JSONObject userInfo = new JSONObject();
             userInfo.put("username", user.getUsername());
             userInfo.put("email", user.getEmail());
+            userInfo.put("enabled", user.getEnabled());
             extraData.add(userInfo);
         }
         JSONObject response = new JSONObject();
