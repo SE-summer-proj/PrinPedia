@@ -82,3 +82,14 @@
 ### 2020-07-28
 
 * Implemented pages for users and administrators to view edit requests and user lists.
+
+### 2020-07-29
+
+* Implemented pages to check users' request to edit entries.
+
+### 2020-07-30
+
+* Improved some tests.
+* Improved UI and user experience.
+
+
