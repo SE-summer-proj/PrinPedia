@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/admin")
+@RequestMapping(value = "/admin", produces = "text/plain;charset=UTF-8")
 public class AdminController {
     @Autowired
     private AdminService adminService;

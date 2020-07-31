@@ -1,5 +1,6 @@
 package com.prinpedia.backend.serviceImpl;
 
+import com.prinpedia.backend.entity.ElasticEntry;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,8 +36,7 @@ class EntryServiceImplTest {
         };
 
         for(String keyword : strings) {
-            List<String> result = entryService.searchTitleAndSummary(keyword);
-            System.out.println("Search with keyword (" + keyword + "): " + result);
+            List<ElasticEntry> result = entryService.searchTitleAndSummary(keyword);
         }
     }
 }

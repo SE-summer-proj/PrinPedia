@@ -19,7 +19,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @RestController
-@RequestMapping
+@RequestMapping(produces = "text/plain;charset=UTF-8")
 public class EntryController {
     @Autowired
     EntryService entryService;

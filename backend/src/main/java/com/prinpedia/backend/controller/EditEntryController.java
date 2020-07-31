@@ -13,7 +13,7 @@ import java.security.Principal;
 import java.util.List;
 
 @RestController
-@RequestMapping("/entry/edit")
+@RequestMapping(value = "/entry/edit", produces = "text/plain;charset=UTF-8")
 public class EditEntryController {
     @Autowired
     EntryService entryService;

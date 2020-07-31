@@ -40,7 +40,7 @@ public class UserController {
 
     @CrossOrigin
     @ResponseBody
-    @GetMapping(value = "/detail")
+    @GetMapping(value = "/detail", produces = "text/plain;charset=UTF-8")
     @PreAuthorize("principal.username.equals(#username)")
     public String getUserDetail(@RequestParam("username") String username) {
         User user = userService.findUserByName(username);

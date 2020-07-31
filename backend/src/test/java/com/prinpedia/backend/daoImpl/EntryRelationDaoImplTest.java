@@ -29,7 +29,7 @@ class EntryRelationDaoImplTest {
     @Transactional
     @Rollback
     public void createNode() {
-        int index = 123456;
+        int index = 10000000;
         String title = "hahaha";
         Boolean createResult = entryRelationDao.createNode(index, title);
         assertTrue(createResult, "Create failed");
@@ -44,13 +44,13 @@ class EntryRelationDaoImplTest {
     @Test
     @Transactional
     public void relationTest() {
-        int index1 = 1000;
+        int index1 = 10000000;
         String title1 = "title1";
 
-        int index2 = 2000;
+        int index2 = 20000000;
         String title2 = "title2";
 
-        int index3 = 3000;
+        int index3 = 30000000;
         String title3 = "title3";
 
         entryRelationDao.createNode(index1, title1);

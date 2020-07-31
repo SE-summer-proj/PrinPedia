@@ -3,15 +3,17 @@ package com.prinpedia.backend.controller;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.hankcs.hanlp.HanLP;
+import com.prinpedia.backend.entity.ElasticEntry;
 import com.prinpedia.backend.entity.Entry;
 import com.prinpedia.backend.service.EntryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/search")
+@RequestMapping(value = "/search", produces = "text/plain;charset=UTF-8")
 public class SearchController {
     @Autowired
     EntryService entryService;
@@ -30,14 +32,13 @@ public class SearchController {
             response.put("extraData", jsonArray);
             return response.toJSONString();
         }
-        List<String> stringList = entryService.searchTitleAndSummary(keyword);
-
-        if(stringList != null) {
-            for(String sugTitle: stringList) {
+        List<ElasticEntry> suggestionList = entryService.searchTitleAndSummary(keyword);
+        if(suggestionList != null) {
+            for(ElasticEntry elasticEntry: suggestionList) {
                 JSONObject suggestion = new JSONObject();
-                suggestion.put("title", sugTitle);
+                suggestion.put("title", elasticEntry.getEntryTitle());
                 suggestion.put("summary",
-                        entryService.findByTitle(sugTitle).getSummary());
+                        elasticEntry.getEntrySummary());
                 jsonArray.add(suggestion);
             }
             response.put("status", 1);

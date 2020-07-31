@@ -6,7 +6,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping(value = "/recommend")
+@RequestMapping(value = "/recommend", produces = "text/plain;charset=UTF-8")
 public class RecommendController {
     @CrossOrigin
     @ResponseBody

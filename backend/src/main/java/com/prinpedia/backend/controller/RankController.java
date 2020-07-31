@@ -5,7 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping(value = "/rank")
+@RequestMapping(value = "/rank", produces = "text/plain;charset=UTF-8")
 public class RankController {
 
     @CrossOrigin
