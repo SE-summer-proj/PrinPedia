@@ -13,4 +13,6 @@ public interface EntryEditRequestRepository extends
     List<EntryEditRequest> findByStatusGreaterThan(Integer status);
 
     List<EntryEditRequest> findByStatus(int status);
+
+    void deleteByTitle(String created_title);
 }
