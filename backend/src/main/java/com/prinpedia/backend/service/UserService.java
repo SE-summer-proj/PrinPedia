@@ -10,4 +10,5 @@ public interface UserService {
     Boolean validate(String username, String password);
     User findUserByName(String username);
     Boolean editUserDetail(User user);
+    void updateUser(User user);
 }
