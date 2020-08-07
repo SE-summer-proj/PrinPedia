@@ -95,6 +95,15 @@ public class EntryServiceImpl implements EntryService {
     }
 
     @Override
+    public Boolean lockEntry(String title, Boolean lock) {
+        Entry entry = findByTitle(title);
+        if(entry == null) return false;
+        entry.setLocked(lock);
+        entryDao.update(entry);
+        return true;
+    }
+
+    @Override
     public Boolean editEntry(String title, String wikiText) {
         Entry entry = findByTitle(title);
         if(entry == null) {

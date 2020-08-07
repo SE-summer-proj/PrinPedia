@@ -18,6 +18,7 @@ public class Entry {
     String title;
     List<Section> sectionList;
     String wikiText;
+    Boolean locked;
 
     public ObjectId getEntryId() {
         return entryId;
@@ -64,5 +65,12 @@ public class Entry {
     }
     public void setWikiText(String wikiText) {
         this.wikiText = wikiText;
+    }
+
+    public Boolean getLocked() {
+        return locked;
+    }
+    public void setLocked(Boolean locked) {
+        this.locked = locked;
     }
 }

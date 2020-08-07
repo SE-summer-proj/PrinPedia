@@ -7,6 +7,7 @@ import com.prinpedia.backend.entity.Entry;
 import com.prinpedia.backend.entity.EntryEditRequest;
 import com.prinpedia.backend.entity.Section;
 import com.prinpedia.backend.service.EntryService;
+import com.prinpedia.backend.service.StaticService;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -24,6 +25,9 @@ public class EntryController {
     @Autowired
     EntryService entryService;
 
+    @Autowired
+    StaticService staticService;
+
     @CrossOrigin
     @ResponseBody
     @GetMapping(value = "/entry")
@@ -31,12 +35,16 @@ public class EntryController {
         Entry entry = entryService.findByTitle(title);
         JSONObject response = new JSONObject();
         if(entry != null) {
+            staticService.entryRecord(title);
             JSONObject extraData = new JSONObject();
             extraData.put("title", entry.getTitle());
             String wikiText = entry.getWikiText();
             JSONArray content = parseWikiMarkupIntoContent(wikiText);
             extraData.put("content", content);
             extraData.put("wikiText", wikiText);
+            if(entry.getLocked() != null) {
+                extraData.put("locked", entry.getLocked());
+            }
             response.put("status", 0);
             response.put("message", "fetch detail success");
             response.put("extraData", extraData);
@@ -295,5 +303,24 @@ public class EntryController {
         jsonObject.put("current", jsonCurrent);
 
         return jsonObject.toJSONString();
+    }
+
+    @CrossOrigin
+    @ResponseBody
+    @PostMapping("/lock")
+    @PreAuthorize("hasRole('ADMIN')")
+    public String lockEntry(@RequestBody JSONObject request) {
+        String title = request.getString("title");
+        Boolean lock = request.getBoolean("lock");
+        JSONObject response = new JSONObject();
+        if(entryService.lockEntry(title, lock)) {
+            response.put("status", 0);
+            response.put("message", "Success");
+        }
+        else {
+            response.put("status", -1);
+            response.put("message", "Something wrong happened");
+        }
+        return response.toJSONString();
     }
 }

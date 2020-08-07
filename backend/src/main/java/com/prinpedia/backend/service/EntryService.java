@@ -3,6 +3,7 @@ package com.prinpedia.backend.service;
 import com.prinpedia.backend.entity.*;
 import org.bson.types.ObjectId;
 
+import java.text.ParseException;
 import java.util.List;
 
 public interface EntryService {
@@ -10,6 +11,7 @@ public interface EntryService {
     String searchTitle(String keyword);
     List<ElasticEntry> searchTitleAndSummary(String keyword);
     Boolean createEntry(String title);
+    Boolean lockEntry(String title, Boolean lock);
     /*Boolean editEntryOld(String title, String summary, List<Content> contentList,
                       List<Section> sectionList);*/
     Boolean editEntry(String title, String wikiText);
