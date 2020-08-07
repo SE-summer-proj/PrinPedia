@@ -3,6 +3,7 @@ package com.prinpedia.backend.security;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.prinpedia.backend.entity.User;
+import com.prinpedia.backend.service.StaticService;
 import com.prinpedia.backend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -23,6 +24,9 @@ import java.util.List;
 public class AuthSuccessHandler implements AuthenticationSuccessHandler {
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private StaticService staticService;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request,
@@ -48,5 +52,6 @@ public class AuthSuccessHandler implements AuthenticationSuccessHandler {
         jsonObject.put("status", 0);
         response.setContentType("text/json;charset=utf-8");
         response.getWriter().write(jsonObject.toJSONString());
+        staticService.userRecord();
     }
 }
