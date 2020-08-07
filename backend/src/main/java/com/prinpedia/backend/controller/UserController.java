@@ -6,11 +6,14 @@ import com.prinpedia.backend.service.UserService;
 import com.sun.istack.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
+
 @RestController
-@RequestMapping(value = "/user")
+@RequestMapping(value = "/user", produces = "text/plain;charset=UTF-8")
 public class UserController {
     @Autowired
     UserService userService;
@@ -40,7 +43,7 @@ public class UserController {
 
     @CrossOrigin
     @ResponseBody
-    @GetMapping(value = "/detail", produces = "text/plain;charset=UTF-8")
+    @GetMapping(value = "/detail")
     @PreAuthorize("principal.username.equals(#username)")
     public String getUserDetail(@RequestParam("username") String username) {
         User user = userService.findUserByName(username);
@@ -74,6 +77,33 @@ public class UserController {
         else {
             response.put("status", -1);
             response.put("message", "Failure");
+        }
+        return response.toJSONString();
+    }
+
+    @CrossOrigin
+    @ResponseBody
+    @PostMapping(value = "/password")
+    @PreAuthorize("hasRole('USER')")
+    public String alterPassword(@RequestBody JSONObject request,
+                                Principal principal) {
+        String oldPassword = request.getString("oldPassword");
+        String newPassword = request.getString("newPassword");
+        String username = principal.getName();
+        User user = userService.findUserByName(username);
+        String password = user.getPassword();
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        boolean isMatched = passwordEncoder.matches(oldPassword, password);
+        JSONObject response = new JSONObject();
+        if(isMatched) {
+            user.setPassword(passwordEncoder.encode(newPassword));
+            userService.updateUser(user);
+            response.put("status", 0);
+            response.put("message", "Alter password success");
+        }
+        else {
+            response.put("status", -1);
+            response.put("message", "Wrong old password");
         }
         return response.toJSONString();
     }
