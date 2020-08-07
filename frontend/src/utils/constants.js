@@ -14,10 +14,14 @@ export const Constants = {
     editDetailUrl: apiUrl + '/entry/edit/detail',
     adminLogUrl: apiUrl + '/entry/edit/adminLog',
     examineUrl: apiUrl + '/entry/edit/examine',
-
     entryEditUrl: apiUrl + '/entry/edit',
     requestUrl: apiUrl + '/entry/edit/request',
     adminUrl: apiUrl + '/admin',
     usersUrl: apiUrl + '/admin/allUser',
     disableUrl: apiUrl + '/admin/ability',
+    collectionUrl: apiUrl + '/collection',
+    checkCollectionUrl: apiUrl + '/collection/query',
+    addCollectionUrl: apiUrl + '/collection/add',
+    removeCollectionUrl: apiUrl + '/collection/remove',
+    userCollectionUrl: apiUrl + '/collection/user'
 };

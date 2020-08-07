@@ -8,7 +8,9 @@ export const store = new Vuex.Store({
         logged: false,
         userData: {
             username: '',
-            userType: 0,
+            userType: [],
+            birthday: '',
+            mailAddr: ''
         }
     },
     mutations: {
@@ -19,7 +21,9 @@ export const store = new Vuex.Store({
         logout(state) {
             state.userData = {
                 username: '',
-                userType: 0,
+                userType: [],
+                birthday: '',
+                mailAddr: ''
             }
             state.logged = false;
         }

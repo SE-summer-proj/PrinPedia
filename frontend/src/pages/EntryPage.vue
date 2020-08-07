@@ -6,8 +6,18 @@
       </el-header>
       <el-container>
         <el-aside>
-          <el-button @click="$router.back()">返回</el-button>
-          <el-button @click="$router.push('/edit/' + entryName)">编辑词条</el-button>
+          <el-button-group>
+            <el-button @click="$router.back()">返回</el-button>
+            <el-button @click="$router.push('/edit/' + entryName)">
+              <i class="el-icon-edit" />
+              <span>编辑</span>
+            </el-button>
+            <el-button @click="switchCollection">
+              <i class="el-icon-star-on" v-if="isInCollection" />
+              <i class="el-icon-star-off" v-else />
+              <span>{{isInCollection ? '取消' : '收藏'}}</span>
+            </el-button>
+          </el-button-group>
           <Catalog :catalog="wikiData.content" />
         </el-aside>
         <el-main>
@@ -26,7 +36,7 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Catalog from "@/components/Catalog";
-import {GET} from "@/ajax";
+import {GET, POST} from "@/ajax";
 import {Constants} from "@/utils/constants";
 import VueWikitext from "@/components/VueWikitext";
 export default {
@@ -35,7 +45,8 @@ export default {
     data: function () {
         return {
             wikiData: null,
-            entryName: this.$route.params.entryName
+            entryName: this.$route.params.entryName,
+            isInCollection: false
         }
     },
     methods: {
@@ -60,10 +71,32 @@ export default {
                 }
             }
             return text;
+        },
+        getCollectionStat() {
+            return GET(Constants.checkCollectionUrl, {
+                username: this.$store.state.userData.username,
+                title: this.wikiData.title
+            }, (data) => {
+                this.isInCollection = data.extraData;
+            });
+        },
+        switchCollection() {
+            if (this.$store.state.userData.username === '') {
+                this.$message.info('您未登录');
+                this.$router.push('/login');
+            }
+            const url = this.isInCollection ? Constants.removeCollectionUrl : Constants.addCollectionUrl;
+            return POST(url, {
+                username: this.$store.state.userData.username,
+                title: this.wikiData.title
+            }, () => {
+                this.isInCollection = !(this.isInCollection);
+            });
         }
     },
-    mounted() {
-        return this.getContents();
+    async mounted() {
+        await this.getContents();
+        return this.getCollectionStat();
     }
 }
 </script>

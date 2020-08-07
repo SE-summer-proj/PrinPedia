@@ -80,16 +80,15 @@ export default {
             params.append("password", this.loginForm.password);
             return axios.post("/login", params)
                 .then(response => {
-                    // console.log(response);
                     if (response.data.status === 0) {
                         console.log(response)
                         this.$message.success(response.data.message);
                         this.$store.commit('setUserData', response.data.extraData);
-                        this.$router.push('/');
+                        this.$router.back();
                     } else {
                         this.$message.error(response.data.message);
                     }
-                })
+                });
         },
         register() {
             return POST(Constants.registerUrl, {

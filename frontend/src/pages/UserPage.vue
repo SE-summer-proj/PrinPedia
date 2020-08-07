@@ -3,20 +3,51 @@
     <el-header><Header /></el-header>
     <el-main>
       <div id="personal">
-        <div>
+        <el-row>
           <i class="el-icon-s-custom" />
           <span>个人信息</span>
-        </div>
-        <div>用户名：{{$store.state.userData.username}}</div>
+          <el-button type="text" style="margin-left: 10px" @click="">
+            <i class="el-icon-edit" />
+            <span>编辑</span>
+          </el-button>
+        </el-row>
+        <el-dialog :visible.sync="dialogVisible">
+          <el-form :model="$store.state.userData">
+            <el-form-item label="邮箱">
+              <el-input v-model="$store.state.userData.mailAddr" />
+            </el-form-item>
+            <el-form-item label="生日">
+              <el-date-picker v-model="$store.state.userData.birthday" type="date" />
+            </el-form-item>
+          </el-form>
+          <span slot="footer">
+            <el-button-group>
+              <el-button disabled type="primary">确定</el-button>
+              <el-button @click="dialogVisible = false">取消</el-button>
+            </el-button-group>
+          </span>
+        </el-dialog>
+        <el-row>
+          <el-col :span="4">用户名</el-col>
+          <el-col :span="20">{{$store.state.userData.username}}</el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="4">邮箱</el-col>
+          <el-col :span="20">{{$store.state.userData.mailAddr}}</el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="4">生日</el-col>
+          <el-col :span="20">{{$store.state.userData.birthday}}</el-col>
+        </el-row>
         <div v-if="$store.state.userData.userType.indexOf('ROLE_ADMIN') >= 0">
           <el-button type="text" @click="$router.push('/admin')">后台管理</el-button>
         </div>
       </div>
       <div id="requests">
-        <div>
+        <el-row>
           <i class="el-icon-upload" />
           <span>我的贡献</span>
-        </div>
+        </el-row>
         <el-table :data="userLog" :row-class-name="getRowClassName">
           <el-table-column prop="id" label="申请编号" />
           <el-table-column prop="date" label="申请时间" />
@@ -43,6 +74,25 @@
           </el-table-column>
         </el-table>
       </div>
+      <div id="collection">
+        <el-row>
+          <i class="el-icon-collection" />
+          <span>我的收藏</span>
+        </el-row>
+        <el-table :data="collection">
+          <el-table-column title="词条名称">
+            <template slot-scope="scope">
+              <router-link :to="'/entry/' + scope.row.title">{{scope.row.title}}</router-link>
+            </template>
+          </el-table-column>
+          <el-table-column prop="time" title="收藏时间" />
+          <el-table-column title="操作">
+            <template slot-scope="scope">
+              <el-button @click="switchCollectionStat(scope.row.title)">取消收藏</el-button>
+            </template>
+          </el-table-column>
+        </el-table>
+      </div>
     </el-main>
     <el-footer><Footer /></el-footer>
   </el-container>
@@ -52,12 +102,16 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import axios from "axios";
+import {GET, POST} from "@/ajax";
+import {Constants} from "@/utils/constants";
 export default {
     name: "UserPage",
     components: {Footer, Header},
     data: function () {
         return {
-            userLog: []
+            userLog: [],
+            collection: [],
+            dialogVisible: false
         };
     },
     methods: {
@@ -83,9 +137,26 @@ export default {
         },
         getRowClassName({row}) {
             return this.getClassName(row);
+        },
+        getCollection() {
+            return GET(Constants.userCollectionUrl, {
+                username: this.$store.state.userData.username
+            }, (data) => {
+                this.collection = data.extraData;
+            });
+        },
+        switchCollectionStat(title) {
+            const url = this.isInCollection ? Constants.removeCollectionUrl : Constants.addCollectionUrl;
+            return POST(url, {
+                title: title,
+                username: this.$store.state.userData.username
+            }, async () => {
+                await this.getCollection();
+            });
         }
     },
-    mounted() {
+    async mounted() {
+        await this.getCollection();
         return this.getUserLog();
     }
 }
