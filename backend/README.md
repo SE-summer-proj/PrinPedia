@@ -15,7 +15,7 @@ have not been covered in Postman document yet would be stated here.
 
 Postman document URL: https://documenter.getpostman.com/view/11974581/T1DiHg68
 
-The above API document was updated on 7.27. If you have any questions, please contact
+The above API document was updated on 8.7. If you have any questions, please contact
 SHR for more details.
 
 ## Test and Run
