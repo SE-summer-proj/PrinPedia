@@ -46,7 +46,7 @@ public class InitEntryWikiText {
         List<Entry> entryList = new ArrayList<>();
         while((tmp = bufferedReader.readLine()) != null) {
             String []strings = tmp.split("\\t");
-            if(Integer.parseInt(strings[0]) <= 25723) continue;
+            if(Integer.parseInt(strings[0]) <= 50651) continue;
             Entry entry = new Entry();
             entry.setIndex(Integer.parseInt(strings[0]));
             if(strings.length > 2)
@@ -55,7 +55,7 @@ public class InitEntryWikiText {
                 entry.setWikiText(strings[3]);
             entryList.add(entry);
             count++;
-            if(count >= 1000) break;
+            if(count >= 2000) break;
         }
         System.out.println("Construction finished");
         entryRepository.insert(entryList);
