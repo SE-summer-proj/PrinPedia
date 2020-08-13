@@ -2,6 +2,7 @@ package com.prinpedia.backend.controller;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.prinpedia.backend.entity.Entry;
 import com.prinpedia.backend.entity.EntryEditRequest;
 import com.prinpedia.backend.service.EntryService;
 import org.bson.types.ObjectId;
@@ -13,7 +14,7 @@ import java.security.Principal;
 import java.util.List;
 
 @RestController
-@RequestMapping("/entry/edit")
+@RequestMapping(value = "/entry/edit", produces = "text/plain;charset=UTF-8")
 public class EditEntryController {
     @Autowired
     EntryService entryService;
@@ -29,9 +30,16 @@ public class EditEntryController {
         String wikiText = jsonObject.getString("wikiText");
         JSONObject response = new JSONObject();
         if(title != null && wikiText != null && username != null) {
-            entryService.editEntryRequest(title, wikiText, username);
-            response.put("status", 0);
-            response.put("message", "Successfully edited");
+            Entry entry = entryService.findByTitle(title);
+            if(entry.getLocked()) {
+                response.put("status", -1);
+                response.put("message", "Entry is locked");
+            }
+            else {
+                entryService.editEntryRequest(title, wikiText, username);
+                response.put("status", 0);
+                response.put("message", "Successfully edited");
+            }
         }
         else {
             response.put("status", -1);

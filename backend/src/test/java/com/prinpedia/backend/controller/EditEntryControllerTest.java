@@ -7,6 +7,8 @@ import com.prinpedia.backend.repository.EntryEditRequestRepository;
 import com.prinpedia.backend.repository.EntryNodeRepository;
 import com.prinpedia.backend.repository.EntryRepository;
 import org.bson.types.ObjectId;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -14,6 +16,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.annotation.Rollback;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -24,6 +27,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@ActiveProfiles(profiles = {"test"})
 @SpringBootTest
 @AutoConfigureMockMvc
 class EditEntryControllerTest {
@@ -41,6 +45,22 @@ class EditEntryControllerTest {
 
     @Autowired
     private EntryNodeRepository entryNodeRepository;
+
+    @BeforeEach
+    public void setUp() {
+        entryRepository.deleteByTitle("Created Title");
+        elasticEntryRepository.deleteByEntryTitle("Created Title");
+        entryNodeRepository.deleteByTitle("Created Title");
+        entryEditRequestRepository.deleteByTitle("Created Title");
+    }
+
+    @AfterEach
+    public void after() {
+        entryRepository.deleteByTitle("Created Title");
+        elasticEntryRepository.deleteByEntryTitle("Created Title");
+        entryNodeRepository.deleteByTitle("Created Title");
+        entryEditRequestRepository.deleteByTitle("Created Title");
+    }
 
     @Test
     @Transactional
@@ -152,11 +172,6 @@ class EditEntryControllerTest {
         jsonObject = JSONObject.parseObject(responseString);
         assertEquals(-1, jsonObject.getInteger("status"),
                 "Status don't match");
-
-        entryRepository.deleteByTitle("Created Title");
-        elasticEntryRepository.deleteByEntryTitle("Created Title");
-        entryNodeRepository.deleteByTitle("Created Title");
-        entryEditRequestRepository.deleteById(id);
     }
 
 }

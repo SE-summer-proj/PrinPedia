@@ -3,7 +3,9 @@ package com.prinpedia.backend;
 import org.junit.platform.runner.JUnitPlatform;
 import org.junit.platform.suite.api.SelectPackages;
 import org.junit.runner.RunWith;
+import org.springframework.test.context.ActiveProfiles;
 
+@ActiveProfiles(profiles = {"test"})
 @RunWith(JUnitPlatform.class)
 @SelectPackages({
     "com.prinpedia.backend.daoImpl",

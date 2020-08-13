@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/admin")
+@RequestMapping(value = "/admin", produces = "text/plain;charset=UTF-8")
 public class AdminController {
     @Autowired
     private AdminService adminService;
@@ -28,6 +28,7 @@ public class AdminController {
             JSONObject userInfo = new JSONObject();
             userInfo.put("username", user.getUsername());
             userInfo.put("email", user.getEmail());
+            userInfo.put("enabled", user.getEnabled());
             extraData.add(userInfo);
         }
         JSONObject response = new JSONObject();
@@ -63,7 +64,7 @@ public class AdminController {
         Boolean enabled = jsonObject.getBoolean("enabled");
         JSONObject response = new JSONObject();
         if(adminService.changeUserAbility(username, enabled)) {
-            response.put("status", 0);
+            response.put("status", enabled);
             response.put("message", "Success");
         }
         else {

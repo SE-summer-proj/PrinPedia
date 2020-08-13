@@ -59,7 +59,7 @@ public class EntryServiceImpl implements EntryService {
     }
 
     @Override
-    public List<String> searchTitleAndSummary(String keyword) {
+    public List<ElasticEntry> searchTitleAndSummary(String keyword) {
         List<Term> termList = IndexTokenizer.segment(keyword);
         BoolQueryBuilder boolBuilder = new BoolQueryBuilder();
         for(Term term : termList) {
@@ -76,9 +76,9 @@ public class EntryServiceImpl implements EntryService {
         SearchHits<ElasticEntry> searchHits =
                 elasticsearchRestTemplate.search(searchQuery, ElasticEntry.class);
         if(searchHits.hasSearchHits()) {
-            List<String> result = new ArrayList<>();
+            List<ElasticEntry> result = new ArrayList<>();
             for(SearchHit<ElasticEntry> searchHit : searchHits) {
-                result.add(searchHit.getContent().getEntryTitle());
+                result.add(searchHit.getContent());
             }
             return result;
         }
@@ -92,6 +92,15 @@ public class EntryServiceImpl implements EntryService {
         Entry entry = new Entry();
         entry.setTitle(title);
         return entryDao.create(entry);
+    }
+
+    @Override
+    public Boolean lockEntry(String title, Boolean lock) {
+        Entry entry = findByTitle(title);
+        if(entry == null) return false;
+        entry.setLocked(lock);
+        entryDao.update(entry);
+        return true;
     }
 
     @Override

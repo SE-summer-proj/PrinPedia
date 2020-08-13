@@ -1,18 +1,17 @@
 package com.prinpedia.backend.service;
 
-import com.prinpedia.backend.entity.Content;
-import com.prinpedia.backend.entity.Entry;
-import com.prinpedia.backend.entity.EntryEditRequest;
-import com.prinpedia.backend.entity.Section;
+import com.prinpedia.backend.entity.*;
 import org.bson.types.ObjectId;
 
+import java.text.ParseException;
 import java.util.List;
 
 public interface EntryService {
     Entry findByTitle(String title);
     String searchTitle(String keyword);
-    List<String> searchTitleAndSummary(String keyword);
+    List<ElasticEntry> searchTitleAndSummary(String keyword);
     Boolean createEntry(String title);
+    Boolean lockEntry(String title, Boolean lock);
     /*Boolean editEntryOld(String title, String summary, List<Content> contentList,
                       List<Section> sectionList);*/
     Boolean editEntry(String title, String wikiText);

@@ -14,6 +14,8 @@ public class EntryRelation {
     @EndNode
     private EntryNode end;
 
+    private Long weight;
+
     public Long getId() {
         return id;
     }
@@ -33,5 +35,12 @@ public class EntryRelation {
     }
     public void setEnd(EntryNode end) {
         this.end = end;
+    }
+
+    public Long getWeight() {
+        return weight;
+    }
+    public void setWeight(Long weight) {
+        this.weight = weight;
     }
 }
