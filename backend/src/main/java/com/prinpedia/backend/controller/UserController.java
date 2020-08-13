@@ -54,6 +54,7 @@ public class UserController {
             JSONObject extraData = new JSONObject();
             extraData.put("username", user.getUsername());
             extraData.put("email", user.getEmail());
+            extraData.put("birthday", user.getBirthday());
             extraData.put("avatarBase64", user.getAvatarBase64());
             response.put("extraData", extraData);
         }

@@ -3,9 +3,11 @@ package com.prinpedia.backend.entity;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 
+import java.util.Date;
 import java.util.List;
 
 import static javax.persistence.GenerationType.IDENTITY;
@@ -21,6 +23,7 @@ public class User {
     private String username;
     private String password;
     private String email;
+    private Date birthday;
     private Boolean enabled;
     private String avatarBase64;
     private List<Role> roleList;
@@ -53,6 +56,15 @@ public class User {
     }
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    @Temporal(TemporalType.DATE)
+    @DateTimeFormat(pattern="yyyy-MM-dd")
+    public Date getBirthday() {
+        return birthday;
+    }
+    public void setBirthday(Date birthday) {
+        this.birthday = birthday;
     }
 
     public Boolean getEnabled() { return enabled; }

@@ -1,5 +1,8 @@
 package com.prinpedia.backend.dataProcess;
 
+import com.prinpedia.backend.entity.EntryNode;
+import com.prinpedia.backend.entity.EntryRelation;
+import com.prinpedia.backend.repository.EntryNodeRepository;
 import com.prinpedia.backend.repository.EntryRelationRepository;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -11,6 +14,8 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 @Disabled
 @ActiveProfiles(profiles = {"prod"})
@@ -18,6 +23,9 @@ import java.io.IOException;
 public class InitEntryRelation {
     @Autowired
     private EntryRelationRepository entryRelationRepository;
+
+    @Autowired
+    private EntryNodeRepository entryNodeRepository;
 
     @Test
     public void entryRelation() throws IOException {
@@ -30,10 +38,12 @@ public class InitEntryRelation {
         String tmp;
         int oldCount = 0;
         int count = 0;
+        List<EntryRelation> entryRelationList = new ArrayList<>();
         while((tmp = bufferedReader.readLine()) != null) {
             String []strings = (tmp.split("\\s+"));
             int parent = Integer.parseInt(strings[0]);
             int child = Integer.parseInt(strings[1]);
+            long weight = Long.parseLong(strings[2]);
             if(parent > 55158 || child > 55158) {
                 continue;
             }
@@ -41,10 +51,18 @@ public class InitEntryRelation {
                 oldCount++;
                 continue;
             }
-            entryRelationRepository.createEntryRelation(parent, child);
+            EntryNode start = entryNodeRepository.findByIndex(parent);
+            EntryNode end = entryNodeRepository.findByIndex(child);
+            if(start == null || end == null) continue;
+            EntryRelation entryRelation = new EntryRelation();
+            entryRelation.setStart(start);
+            entryRelation.setEnd(end);
+            entryRelation.setWeight(weight);
+            entryRelationList.add(entryRelation);
             count++;
-            if(count >= 10000) break;
+            if(count >= 5000) break;
         }
+        entryRelationRepository.saveAll(entryRelationList);
         System.out.println(count);
     }
 }

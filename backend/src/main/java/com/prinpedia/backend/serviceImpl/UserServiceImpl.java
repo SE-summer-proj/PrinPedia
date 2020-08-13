@@ -66,6 +66,7 @@ public class UserServiceImpl implements UserService {
         User oldUser = userDao.findByName(user.getUsername());
         if(oldUser == null) return false;
         oldUser.setEmail(user.getEmail());
+        oldUser.setBirthday(user.getBirthday());
         oldUser.setAvatarBase64(user.getAvatarBase64());
         userDao.update(oldUser);
         return true;

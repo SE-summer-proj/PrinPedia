@@ -45,7 +45,7 @@ public class AuthSuccessHandler implements AuthenticationSuccessHandler {
         for(GrantedAuthority authority : grantedAuthorityList) {
             authArray.add(authority.getAuthority());
         }
-        extraData.put("authority", authArray);
+        extraData.put("userType", authArray);
         extraData.put("username", user.getUsername());
         jsonObject.put("extraData", extraData);
         jsonObject.put("message", "Login success");
