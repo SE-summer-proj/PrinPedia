@@ -6,6 +6,8 @@ import com.prinpedia.backend.entity.Entry;
 import com.prinpedia.backend.entity.EntryEditRequest;
 import com.prinpedia.backend.service.EntryService;
 import org.bson.types.ObjectId;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -19,15 +21,23 @@ public class EditEntryController {
     @Autowired
     EntryService entryService;
 
+    private Logger logger = LoggerFactory.getLogger(EditEntryController.class);
+
     @CrossOrigin
     @ResponseBody
     @PostMapping(value = "/request")
     @PreAuthorize("hasRole('USER')")
     public String editEntryRequest(@RequestBody JSONObject jsonObject,
                                    Principal principal) {
+        logger.info("Receive POST request on '/entry/edit/request'");
+        logger.debug("POST request on '/entry/edit/request' with request body: " +
+                jsonObject.toJSONString());
         String username = principal.getName();
         String title = jsonObject.getString("title");
         String wikiText = jsonObject.getString("wikiText");
+        logger.debug("POST request on '/entry/edit/request' with params: " +
+                "'username'=" + username + ", 'title'=" + title +
+                "'wikiText'=" + wikiText);
         JSONObject response = new JSONObject();
         if(title != null && wikiText != null && username != null) {
             Entry entry = entryService.findByTitle(title);
@@ -45,6 +55,9 @@ public class EditEntryController {
             response.put("status", -1);
             response.put("message", "Edition failure");
         }
+        logger.debug("Response to POST request on '/entry/edit/request' is: " +
+                response.toJSONString());
+        logger.info("Response to POST request on '/entry/edit/request' finished");
         return response.toJSONString();
     }
 
@@ -53,6 +66,9 @@ public class EditEntryController {
     @GetMapping(value = "/userLog")
     @PreAuthorize("principal.username.equals(#username) || hasRole('ADMIN')")
     public String getEditLog(@RequestParam("username") String username) {
+        logger.info("Receive GET request on '/entry/edit/userLog'");
+        logger.debug("GET request on '/entry/edit/userLog' with params: " +
+                "'username'=" + username);
         List<EntryEditRequest> entryEditRequestList =
                 entryService.getEditLogByUser(username);
         JSONObject response = new JSONObject();
@@ -68,6 +84,9 @@ public class EditEntryController {
         response.put("status", 0);
         response.put("message", "Success");
         response.put("extraData", extraData);
+        logger.debug("Response to GET request on '/entry/edit/userLog' is: " +
+                response.toJSONString());
+        logger.info("Response to GET request on '/entry/edit/userLog' finished");
         return response.toJSONString();
     }
 
@@ -75,6 +94,9 @@ public class EditEntryController {
     @ResponseBody
     @GetMapping(value = "/detail")
     public String getEditLogDetail(@RequestParam("id") ObjectId id) {
+        logger.info("Receive GET request on '/entry/edit/detail'");
+        logger.debug("GET request on '/entry/edit/detail' with params: " +
+                "'id'=" + id.toString());
         EntryEditRequest entryEditRequest = entryService.getEditLogById(id);
         JSONObject response = new JSONObject();
         if(entryEditRequest != null) {
@@ -92,6 +114,9 @@ public class EditEntryController {
             response.put("status", -1);
             response.put("message", "Can't find edit log");
         }
+        logger.debug("Response to GET request on '/entry/edit/detail' is: " +
+                response.toJSONString());
+        logger.info("Response to GET request on '/entry/edit/detail' finished");
         return response.toJSONString();
     }
 
@@ -100,6 +125,9 @@ public class EditEntryController {
     @GetMapping(value = "/adminLog")
     @PreAuthorize("hasRole('ADMIN')")
     public String getEditLogAdmin(@RequestParam("examined") Boolean examined) {
+        logger.info("Receive GET request on '/entry/edit/adminLog'");
+        logger.debug("GET request on '/entry/edit/adminLog' with params: " +
+                "'examined'=" + examined.toString());
         List<EntryEditRequest> entryEditRequestList =
                 entryService.getEditLogAdmin(examined);
         JSONObject response = new JSONObject();
@@ -115,6 +143,9 @@ public class EditEntryController {
         response.put("status", 0);
         response.put("message", "Success");
         response.put("extraData", extraData);
+        logger.debug("Response to GET request on '/entry/edit/adminLog' is: " +
+                response.toJSONString());
+        logger.info("Response to GET request on '/entry/edit/adminLog' finished");
         return response.toJSONString();
     }
 
@@ -123,8 +154,13 @@ public class EditEntryController {
     @PostMapping(value = "/examine")
     @PreAuthorize("hasRole('ADMIN')")
     public String examineEditLog(@RequestBody JSONObject jsonObject) {
+        logger.info("Receive POST request on '/entry/edit/examine'");
+        logger.debug("POST request on '/entry/edit/examine' with request body: " +
+                jsonObject.toJSONString());
         Boolean passed = jsonObject.getBoolean("passed");
         String idString = jsonObject.getString("id");
+        logger.debug("POST request on '/entry/edit/examine' with params: " +
+                "'id'=" + idString + ", 'passed'=" + passed.toString());
         ObjectId id = new ObjectId(idString);
         JSONObject response = new JSONObject();
         if(entryService.examineEditLog(id, passed)) {
@@ -135,6 +171,9 @@ public class EditEntryController {
             response.put("status", -1);
             response.put("message", "Failure");
         }
+        logger.debug("Response to POST request on '/entry/edit/examine' is: " +
+                response.toJSONString());
+        logger.info("Response to POST request on '/entry/edit/examine' finished");
         return response.toJSONString();
     }
 }

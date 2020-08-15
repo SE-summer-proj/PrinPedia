@@ -7,6 +7,8 @@ import com.prinpedia.backend.entity.ElasticEntry;
 import com.prinpedia.backend.entity.Entry;
 import com.prinpedia.backend.service.EntryService;
 import com.prinpedia.backend.service.StaticService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,24 +19,26 @@ import java.util.List;
 @RequestMapping(value = "/search", produces = "text/plain;charset=UTF-8")
 public class SearchController {
     @Autowired
-    EntryService entryService;
+    private EntryService entryService;
 
     @Autowired
-    StaticService staticService;
+    private StaticService staticService;
+
+    private Logger logger = LoggerFactory.getLogger(SearchController.class);
 
     @CrossOrigin
     @ResponseBody
     @GetMapping
     public String search(@RequestParam(value = "keyword") String keyword) {
-        System.out.println("Start " + new Date());
+        logger.info("Receive GET request on '/search'");
+        logger.debug("GET request on '/search' with params: " +
+                "'keyword'=" + keyword);
         staticService.searchRecord();
         String title = entryService.searchTitle(keyword);
         JSONArray jsonArray = new JSONArray();
         JSONObject response = new JSONObject();
         if(title != null) return null;
-        System.out.println("Match finished " + new Date());
         List<ElasticEntry> suggestionList = entryService.searchTitleAndSummary(keyword);
-        System.out.println("Search finished " + new Date());
         if(suggestionList != null) {
             for(ElasticEntry elasticEntry: suggestionList) {
                 JSONObject suggestion = new JSONObject();
@@ -51,7 +55,9 @@ public class SearchController {
             response.put("status", -1);
             response.put("message", "cannot find matched entry");
         }
-        System.out.println("Finished " + new Date());
+        logger.debug("Response to GET request on '/search' is: "
+                + response.toJSONString());
+        logger.info("Response to GET request on '/search' finished");
         return response.toJSONString();
     }
 }
