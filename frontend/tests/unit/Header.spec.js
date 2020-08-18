@@ -71,11 +71,9 @@ describe("header2", () => {
         /**
          * 通过css选择器找到按钮，并检查是否找到
          */
-        const btn1 = wrapper.find("#user-button");
-        expect(btn1.exists()).toBeTruthy();
-        const btn2 = wrapper.find("#logout-button");
-        expect(btn2.exists()).toBeTruthy();
-        await btn2.trigger('click');
+        const btn = wrapper.find("#logout-button");
+        expect(btn.exists()).toBeTruthy();
+        await btn.trigger('click');
         await wrapper.vm.$nextTick();
         expect(wrapper.vm.$store.state.logged).toBe(false);
     });

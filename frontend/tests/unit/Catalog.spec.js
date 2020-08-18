@@ -1,5 +1,5 @@
 import {createLocalVue, mount} from "@vue/test-utils";
-import Catalog from "@/components/Catalog.vue"
+import Catalog from "@/components/Catalog.vue";
 import ElementUI from "element-ui";
 import Vuex from "vuex"
 import {contents} from "../test_data"

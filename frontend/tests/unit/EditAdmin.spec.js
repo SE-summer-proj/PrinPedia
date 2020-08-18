@@ -1,5 +1,5 @@
 import {createLocalVue, mount} from "@vue/test-utils";
-import EditAdmin from "@/components/EditAdmin.vue"
+import EditAdmin from "@/components/EditAdmin.vue";
 import ElementUI from "element-ui";
 
 const localVue = createLocalVue();
