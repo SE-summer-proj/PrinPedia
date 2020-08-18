@@ -3,25 +3,41 @@ export const Constants = {
     loginUrl: apiUrl + '/login',
     logoutUrl: apiUrl + '/logout',
     registerUrl: apiUrl + '/user/register',
+
     recommendUrl: apiUrl + '/recommend',
-    searchUrl: apiUrl + '/search',
-    createUrl: apiUrl + '/create',
-    editUrl: apiUrl + '/entry/edit/request',
     rankingUrl: apiUrl + '/rank',
-    entryUrl: apiUrl + '/entry',
+    searchUrl: apiUrl + '/search',
     graphUrl: apiUrl + '/relation',
+    createUrl: apiUrl + '/create',
+
+    entryUrl: apiUrl + '/entry',
+    entryEditUrl: apiUrl + '/entry/edit',
+    editUrl: apiUrl + '/entry/edit/request',
     userLogUrl: apiUrl + '/entry/edit/userLog',
     editDetailUrl: apiUrl + '/entry/edit/detail',
     adminLogUrl: apiUrl + '/entry/edit/adminLog',
     examineUrl: apiUrl + '/entry/edit/examine',
-    entryEditUrl: apiUrl + '/entry/edit',
     requestUrl: apiUrl + '/entry/edit/request',
+
     adminUrl: apiUrl + '/admin',
     usersUrl: apiUrl + '/admin/allUser',
     disableUrl: apiUrl + '/admin/ability',
+
     collectionUrl: apiUrl + '/collection',
     checkCollectionUrl: apiUrl + '/collection/query',
     addCollectionUrl: apiUrl + '/collection/add',
     removeCollectionUrl: apiUrl + '/collection/remove',
-    userCollectionUrl: apiUrl + '/collection/user'
+    userCollectionUrl: apiUrl + '/collection/user',
+
+    msgUrl: apiUrl + '/message',
+    adminGetMsgUrl: apiUrl + '/message/admin',
+    userGetMsgUrl: apiUrl + '/message/user',
+    replyMsgUrl: apiUrl + '/message/reply',
+    createMsgUrl: apiUrl + '/message/create',
+
+    statUrl: apiUrl + '/statics',
+    entryStatUrl: apiUrl + '/statics/entry',
+    dailyStatUrl: apiUrl + '/statics/entryTitle',
+    searchStatUrl: apiUrl + '/statics/search',
+    userStatUrl: apiUrl + '/statics/user'
 };
