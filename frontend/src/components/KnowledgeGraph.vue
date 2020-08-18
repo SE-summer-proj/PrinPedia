@@ -98,11 +98,11 @@ export default {
             // this.pointList2 = ["孩子", "关联5", "关联6", "关联7", "关联8"];
             // this.pointList3 = [this.keyword];
 
-            console.log(this.centralWord);
+            // console.log(this.centralWord);
             return GET(Constants.graphUrl, {
                 title: this.centralWord
             }, (data) => {
-                console.log(data)
+                // console.log(data)
                 this.pointList1 = data.parents;
                 this.pointList2 = data.children;
                 this.pointList3 = [this.centralWord];
@@ -125,7 +125,7 @@ export default {
         this.options.series[0].categories = this.categoryData;
         // this.options.legend.data = this.categoryData;
         this.$nextTick(() => {
-            window.console.log(this.options);
+            // window.console.log(this.options);
             this.graph.setOption(this.options);
         });
     }

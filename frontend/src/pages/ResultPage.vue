@@ -40,7 +40,7 @@ export default {
     data: function () {
         return {
             keyword: this.$route.params.keyword,
-            searchResults: [],
+            searchResults: [{}],
             notFound: false,
             dialogVisible: false
         };

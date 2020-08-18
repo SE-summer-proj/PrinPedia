@@ -6,7 +6,7 @@
         <el-row>
           <i class="el-icon-s-custom" />
           <span>个人信息</span>
-          <el-button type="text" style="margin-left: 10px" @click="">
+          <el-button type="text" style="margin-left: 10px" @click="dialogVisible=true">
             <i class="el-icon-edit" />
             <span>编辑</span>
           </el-button>
@@ -146,8 +146,8 @@ export default {
             });
         },
         switchCollectionStat(title) {
-            const url = this.isInCollection ? Constants.removeCollectionUrl : Constants.addCollectionUrl;
-            return POST(url, {
+            // const url = this.isInCollection ? Constants.removeCollectionUrl : Constants.addCollectionUrl;
+            return POST(Constants.removeCollectionUrl, {
                 title: title,
                 username: this.$store.state.userData.username
             }, async () => {

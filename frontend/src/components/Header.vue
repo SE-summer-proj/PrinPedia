@@ -10,6 +10,7 @@
       <el-col :span="4">
         <span>
           <el-button-group>
+            <el-button type="text" @click="$router.push('/index')">首页</el-button>
             <el-button type="text" @click="$router.push('/user')">
               {{$store.state.userData.username}}
             </el-button>

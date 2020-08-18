@@ -44,7 +44,11 @@ export default {
     components: {VueWikitext, Catalog, Footer, Header},
     data: function () {
         return {
-            wikiData: null,
+            wikiData: {
+              content: '',
+              title: '',
+              wikiText: '',
+            },
             entryName: this.$route.params.entryName,
             isInCollection: false
         }

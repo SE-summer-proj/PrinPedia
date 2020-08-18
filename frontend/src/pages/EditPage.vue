@@ -27,7 +27,7 @@ export default {
     data: function () {
         return {
             activeName: 'preview',
-            wikiData: null
+            wikiData: {}
         }
     },
     methods: {
