@@ -37,23 +37,30 @@ public class SearchController {
         String title = entryService.searchTitle(keyword);
         JSONArray jsonArray = new JSONArray();
         JSONObject response = new JSONObject();
-        if(title != null) return null;
-        List<ElasticEntry> suggestionList = entryService.searchTitleAndSummary(keyword);
-        if(suggestionList != null) {
-            for(ElasticEntry elasticEntry: suggestionList) {
-                JSONObject suggestion = new JSONObject();
-                suggestion.put("title", elasticEntry.getEntryTitle());
-                suggestion.put("summary",
-                        elasticEntry.getEntrySummary());
-                jsonArray.add(suggestion);
-            }
-            response.put("status", 1);
-            response.put("message", "no exactly matched entry, find suggestions");
-            response.put("extraData", jsonArray);
+        if(title != null) {
+            response.put("status", 0);
+            response.put("message", "Find an exactly matched entry");
+            response.put("extraData", title);
         }
+
         else {
-            response.put("status", -1);
-            response.put("message", "cannot find matched entry");
+            List<ElasticEntry> suggestionList =
+                    entryService.searchTitleAndSummary(keyword);
+            if (suggestionList != null) {
+                for (ElasticEntry elasticEntry : suggestionList) {
+                    JSONObject suggestion = new JSONObject();
+                    suggestion.put("title", elasticEntry.getEntryTitle());
+                    suggestion.put("summary",
+                            elasticEntry.getEntrySummary());
+                    jsonArray.add(suggestion);
+                }
+                response.put("status", 1);
+                response.put("message", "no exactly matched entry, find suggestions");
+                response.put("extraData", jsonArray);
+            } else {
+                response.put("status", -1);
+                response.put("message", "cannot find matched entry");
+            }
         }
         logger.debug("Response to GET request on '/search' is: "
                 + response.toJSONString());
