@@ -6,6 +6,8 @@ import com.prinpedia.backend.repository.EntryNodeRepository;
 import com.prinpedia.backend.repository.EntryRelationRepository;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
@@ -27,9 +29,13 @@ public class InitEntryRelation {
     @Autowired
     private EntryNodeRepository entryNodeRepository;
 
+    private Logger logger = LoggerFactory.getLogger(InitEntryRelation.class);
+
     @Test
     public void entryRelation() throws IOException {
-        String path = "G:\\webWorkspace\\prinpedia\\page_inlinks.txt";
+        entryRelationRepository.deleteAll();
+        logger.info("Delete all relations finished");
+        String path = "G:\\webWorkspace\\prinpedia\\test_inlink_final.txt";
 
         File file = new File(path);
         FileReader fileReader = new FileReader(file);
@@ -62,7 +68,8 @@ public class InitEntryRelation {
             count++;
             if(count >= 5000) break;
         }
+        logger.info("Construction finished, count: " + count);
         entryRelationRepository.saveAll(entryRelationList);
-        System.out.println(count);
+        logger.info("Insertion finished, count: " + count);
     }
 }
