@@ -10,7 +10,11 @@ import com.prinpedia.backend.service.EntryService;
 import org.bson.types.ObjectId;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.elasticsearch.core.ElasticsearchRestTemplate;
 import org.springframework.data.elasticsearch.core.SearchHit;
 import org.springframework.data.elasticsearch.core.SearchHits;
@@ -37,6 +41,8 @@ public class EntryServiceImpl implements EntryService {
     @Autowired
     private EntryEditRequestRepository entryEditRequestRepository;
 
+    private Logger logger = LoggerFactory.getLogger(EntryServiceImpl.class);
+
     @Override
     public Entry findByTitle(String title) {
         Optional<Entry> entryOptional = entryDao.findByTitle(title);
@@ -45,11 +51,17 @@ public class EntryServiceImpl implements EntryService {
 
     @Override
     public String searchTitle(String keyword) {
+        logger.info("Start search title with keyword: " + keyword);
+
         NativeSearchQuery searchQuery = new NativeSearchQueryBuilder()
-                .withQuery(QueryBuilders.termQuery("entryTitle", keyword))
+                .withQuery(QueryBuilders.termQuery("entryTitle.keyword",
+                        keyword))
                 .build();
         SearchHit<ElasticEntry> searchHit =
-                elasticsearchRestTemplate.searchOne(searchQuery, ElasticEntry.class);
+                elasticsearchRestTemplate
+                        .searchOne(searchQuery, ElasticEntry.class);
+        logger.info("Search finished with keyword: " + keyword);
+
         if(searchHit != null) {
             return searchHit.getContent().getEntryTitle();
         }
@@ -60,7 +72,11 @@ public class EntryServiceImpl implements EntryService {
 
     @Override
     public List<ElasticEntry> searchTitleAndSummary(String keyword) {
+        logger.info("Start search title and summary with keyword: " + keyword);
+
         List<Term> termList = IndexTokenizer.segment(keyword);
+        logger.info("Keyword(" + keyword + ") segmentation finished");
+
         BoolQueryBuilder boolBuilder = new BoolQueryBuilder();
         for(Term term : termList) {
             boolBuilder
@@ -69,17 +85,22 @@ public class EntryServiceImpl implements EntryService {
                     .should(QueryBuilders
                             .matchQuery("entrySummary", term.word));
         }
-
         NativeSearchQuery searchQuery = new NativeSearchQueryBuilder()
                 .withQuery(boolBuilder)
                 .build();
+        Pageable pageable = PageRequest.of(0, 20);
+        searchQuery.setPageable(pageable);
         SearchHits<ElasticEntry> searchHits =
                 elasticsearchRestTemplate.search(searchQuery, ElasticEntry.class);
+        logger.info("Search title and summary finished with keyword: " + keyword
+                + ".Total hits: " + searchHits.getTotalHits());
+
         if(searchHits.hasSearchHits()) {
             List<ElasticEntry> result = new ArrayList<>();
             for(SearchHit<ElasticEntry> searchHit : searchHits) {
                 result.add(searchHit.getContent());
             }
+            logger.info("Search result size: "+ result.size());
             return result;
         }
         else
