@@ -7,7 +7,7 @@ import javax.persistence.Id;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
-@Document(indexName = "entry")
+@Document(indexName = "entry-cn")
 public class ElasticEntry {
     private String id;
     private String entryTitle;
