@@ -64,11 +64,11 @@ public class InitElasticJson {
     }
 
     @Test
-    public void InitMongoJsonFile() throws IOException {
-        String path = "G:\\webWorkspace\\prinpedia\\";
-        int num = 1;
+    public void InitMongoCsvFile() throws IOException {
+        String path = "G:\\webWorkspace\\prinpedia\\dataImport\\page\\";
+        int num = 2;
 
-        while(num <= 1) {
+        while(num <= 2) {
             String src = path + "Page_00" + num + "_simplified.txt";
             String dest = path + "Page_00" + num + "_simplified_csv.csv";
 
@@ -110,6 +110,60 @@ public class InitElasticJson {
             }
 
             bw.write("\n");
+            bw.close();
+            osw.close();
+            fos.close();
+            bufferedReader.close();
+            fileReader.close();
+            System.out.println("Writing to file " + dest +
+                    " finished, count: " + count);
+
+            num++;
+        }
+    }
+
+    @Test
+    public void InitNeo4jCsvFile() throws IOException {
+        String path = "G:\\webWorkspace\\prinpedia\\page_summary\\";
+        int num = 4;
+
+        while(num <= 9) {
+            String src = path + "Page_00" + num + "_summary.txt";
+            String dest = path + "Page_00" + num + "_node_csv.csv";
+
+            File srcFile = new File(src);
+            FileReader fileReader = new FileReader(srcFile);
+            BufferedReader bufferedReader = new BufferedReader(fileReader);
+
+            File destFile = new File(dest);
+            if (!destFile.exists()) {
+                if (!destFile.createNewFile()) {
+                    System.out.println("Create file error");
+                    return;
+                }
+                destFile = destFile.getAbsoluteFile();
+            }
+            FileOutputStream fos = new FileOutputStream(destFile);
+            OutputStreamWriter osw =
+                    new OutputStreamWriter(fos, StandardCharsets.UTF_8);
+            BufferedWriter bw = new BufferedWriter(osw);
+            System.out.println("Opening file " + src +
+                    " succeeded, starting writing");
+
+            String tmp, content;
+            int count = 0;
+            bw.write("id,index,title,LABEL\n");
+            while ((tmp = bufferedReader.readLine()) != null) {
+                content = "";
+                String[] strings = tmp.split("\\t");
+                if (strings.length > 1) {
+                    content = strings[0] + "," + strings[0] + "," +
+                            strings[1] + ",Entry\n";
+                }
+                bw.write(content);
+                count++;
+            }
+
             bw.close();
             osw.close();
             fos.close();
