@@ -38,7 +38,8 @@ class EntryServiceImplTest {
         };
 
         for(String keyword : strings) {
-            List<ElasticEntry> result = entryService.searchTitleAndSummary(keyword);
+            List<ElasticEntry> result =
+                    entryService.searchTitleAndSummary(keyword, 0);
         }
     }
 }
