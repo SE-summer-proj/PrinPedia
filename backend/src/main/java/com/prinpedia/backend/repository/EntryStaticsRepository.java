@@ -19,4 +19,6 @@ public interface EntryStaticsRepository extends JpaRepository<EntryStatics, Inte
     List<EntryStatics> findAllByDateBetween(Date start, Date end);
 
     List<EntryStatics> findAllByDateBetweenAndTitle(Date start, Date end, String title);
+
+    void deleteByTitle(String test_entry);
 }

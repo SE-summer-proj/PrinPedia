@@ -10,4 +10,6 @@ public interface SearchStaticsRepository extends JpaRepository<SearchStatics, In
     SearchStatics findByDate(Date date);
 
     List<SearchStatics> findAllByDateBetween(Date start, Date end);
+
+    void deleteByDate(Date date);
 }

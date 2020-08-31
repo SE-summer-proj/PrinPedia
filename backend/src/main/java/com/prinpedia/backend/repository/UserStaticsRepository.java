@@ -10,4 +10,6 @@ public interface UserStaticsRepository extends JpaRepository<UserStatics, Intege
     UserStatics findByDate(Date date);
 
     List<UserStatics> findAllByDateBetween(Date start, Date end);
+
+    void deleteByDate(Date date);
 }

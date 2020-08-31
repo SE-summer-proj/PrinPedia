@@ -10,4 +10,6 @@ public interface MessageBoxRepository extends MongoRepository<MessageBox, Object
     List<MessageBox> findByUsername(String username);
 
     List<MessageBox> findByReplied(Boolean isReplied);
+
+    void deleteByUsername(String test);
 }
