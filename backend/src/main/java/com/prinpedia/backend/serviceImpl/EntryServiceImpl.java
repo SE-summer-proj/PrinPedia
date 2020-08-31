@@ -71,7 +71,7 @@ public class EntryServiceImpl implements EntryService {
     }
 
     @Override
-    public List<ElasticEntry> searchTitleAndSummary(String keyword) {
+    public List<ElasticEntry> searchTitleAndSummary(String keyword, Integer page) {
         logger.info("Start search title and summary with keyword: " + keyword);
 
         List<Term> termList = IndexTokenizer.segment(keyword);
@@ -88,12 +88,88 @@ public class EntryServiceImpl implements EntryService {
         NativeSearchQuery searchQuery = new NativeSearchQueryBuilder()
                 .withQuery(boolBuilder)
                 .build();
-        Pageable pageable = PageRequest.of(0, 20);
+        Pageable pageable = PageRequest.of(page, 20);
         searchQuery.setPageable(pageable);
         SearchHits<ElasticEntry> searchHits =
                 elasticsearchRestTemplate.search(searchQuery, ElasticEntry.class);
         logger.info("Search title and summary finished with keyword: " + keyword
                 + ".Total hits: " + searchHits.getTotalHits());
+
+        if(searchHits.hasSearchHits()) {
+            List<ElasticEntry> result = new ArrayList<>();
+            for(SearchHit<ElasticEntry> searchHit : searchHits) {
+                result.add(searchHit.getContent());
+            }
+            logger.info("Search result size: "+ result.size());
+            return result;
+        }
+        else
+            return null;
+    }
+
+    @Override
+    public List<ElasticEntry> advancedSearch(String must, String should,
+                                             String mustNot, String mustTotal,
+                                             String mustTitle, Integer page) {
+        logger.info("Start advanced search");
+        BoolQueryBuilder boolBuilder = new BoolQueryBuilder();
+        List<Term> termList;
+        if(must != null) {
+            termList = IndexTokenizer.segment(must);
+            for (Term term : termList) {
+                boolBuilder
+                        .must(QueryBuilders
+                                .matchQuery("entrySummary", term.word));
+            }
+        }
+
+        if(should != null) {
+            termList = IndexTokenizer.segment(should);
+            for (Term term : termList) {
+                boolBuilder
+                        .should(QueryBuilders
+                                .matchQuery("entryTitle", term.word)
+                                .boost(2))
+                        .should(QueryBuilders
+                                .matchQuery("entrySummary", term.word));
+            }
+        }
+
+        if(mustNot != null) {
+            termList = IndexTokenizer.segment(mustNot);
+            for (Term term : termList) {
+                boolBuilder
+                        .mustNot(QueryBuilders
+                                .matchQuery("entryTitle", term.word))
+                        .mustNot(QueryBuilders
+                                .matchQuery("entrySummary", term.word));
+            }
+        }
+
+        if(mustTitle != null) {
+            termList = IndexTokenizer.segment(mustTitle);
+            for (Term term : termList) {
+                boolBuilder
+                        .must(QueryBuilders
+                                .matchQuery("entryTitle", term.word));
+            }
+        }
+
+        if(mustTotal != null) {
+            boolBuilder
+                    .must(QueryBuilders
+                            .matchQuery("entrySummary", mustTotal));
+        }
+
+        NativeSearchQuery searchQuery = new NativeSearchQueryBuilder()
+                .withQuery(boolBuilder)
+                .build();
+        Pageable pageable = PageRequest.of(page, 20);
+        searchQuery.setPageable(pageable);
+        SearchHits<ElasticEntry> searchHits =
+                elasticsearchRestTemplate.search(searchQuery, ElasticEntry.class);
+        logger.info("Advanced search finished. Total hits: " +
+                searchHits.getTotalHits());
 
         if(searchHits.hasSearchHits()) {
             List<ElasticEntry> result = new ArrayList<>();
