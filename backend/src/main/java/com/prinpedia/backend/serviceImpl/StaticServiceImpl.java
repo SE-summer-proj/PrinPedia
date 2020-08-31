@@ -34,9 +34,7 @@ public class StaticServiceImpl implements StaticService {
                     new SimpleDateFormat("yyyy-MM-dd");
             String s = sdf.format(new Date());
             date = sdf.parse(s);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+        } catch (ParseException e) { e.printStackTrace(); }
         EntryStatics entryStatics =
                 entryStaticsRepository
                         .findByTitleAndDate(title, date);
@@ -60,9 +58,7 @@ public class StaticServiceImpl implements StaticService {
                     new SimpleDateFormat("yyyy-MM-dd");
             String s = sdf.format(new Date());
             date = sdf.parse(s);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+        } catch (ParseException e) { e.printStackTrace(); }
         SearchStatics searchStatics = searchStaticsRepository.findByDate(date);
         if(searchStatics == null) {
             searchStatics = new SearchStatics();
@@ -83,9 +79,7 @@ public class StaticServiceImpl implements StaticService {
                     new SimpleDateFormat("yyyy-MM-dd");
             String s = sdf.format(new Date());
             date = sdf.parse(s);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+        } catch (ParseException e) { e.printStackTrace(); }
         UserStatics userStatics = userStaticsRepository.findByDate(date);
         if(userStatics == null) {
             userStatics = new UserStatics();

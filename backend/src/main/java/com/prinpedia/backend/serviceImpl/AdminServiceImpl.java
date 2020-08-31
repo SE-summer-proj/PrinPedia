@@ -8,6 +8,7 @@ import com.prinpedia.backend.service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -49,6 +50,29 @@ public class AdminServiceImpl implements AdminService {
         }
         if(enabled == null) return false;
         user.setEnabled(enabled);
+        userDao.update(user);
+        return true;
+    }
+
+    @Override
+    public Boolean createSuperUser(String username, String password) {
+        if(userDao.findByName(username) != null) return false;
+        User user = new User();
+        user.setUsername(username);
+        user.setPassword(password);
+        user.setEnabled(true);
+        Role role = roleDao.findByRoleName("ROLE_USER");
+        if(role == null) { role = new Role(); role.setRoleName("ROLE_USER"); }
+        List<Role> roleList = new ArrayList<>();
+        roleList.add(role);
+        role = roleDao.findByRoleName("ROLE_ADMIN");
+        if(role == null) { role = new Role(); role.setRoleName("ROLE_ADMIN"); }
+        roleList.add(role);
+        role = roleDao.findByRoleName("ROLE_SUPER");
+        if(role == null) { role = new Role(); role.setRoleName("ROLE_SUPER"); }
+        roleList.add(role);
+        user.setRoleList(roleList);
+        user.setUserId(-1);
         userDao.update(user);
         return true;
     }

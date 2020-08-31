@@ -8,4 +8,5 @@ public interface AdminService {
     List<User> findAllUsers();
     Boolean grantAdmin(String username);
     Boolean changeUserAbility(String username, Boolean enabled);
+    Boolean createSuperUser(String username, String password);
 }
