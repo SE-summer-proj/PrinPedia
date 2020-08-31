@@ -5,8 +5,11 @@
     </el-header>
     <el-main>
       <el-row type="flex" justify="center">
-        <el-col :span="10">
+        <el-col :span="8">
           <SearchBar id="searchbar-main" style="text-align: center" keyword="" />
+        </el-col>
+        <el-col :span="2">
+          <el-button @click="$router.push('/advanced')">高级搜索</el-button>
         </el-col>
       </el-row>
       <el-row type="flex" justify="center">

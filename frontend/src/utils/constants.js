@@ -7,6 +7,7 @@ export const Constants = {
     recommendUrl: apiUrl + '/recommend',
     rankingUrl: apiUrl + '/rank',
     searchUrl: apiUrl + '/search',
+    advancedSearchUrl: apiUrl + '/search/advanced',
     graphUrl: apiUrl + '/relation',
     createUrl: apiUrl + '/create',
 
