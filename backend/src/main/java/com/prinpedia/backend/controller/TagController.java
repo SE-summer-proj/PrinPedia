@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -30,6 +31,7 @@ public class TagController {
         List<Tag> tagList = tagService.findTagByEntry(title);
         JSONObject response = new JSONObject();
         JSONArray tagArray = new JSONArray();
+        if(tagList == null) tagList = new ArrayList<>();
         for(Tag tag : tagList) {
             tagArray.add(tag.getTagName());
         }
@@ -52,6 +54,7 @@ public class TagController {
         List<EntryInfo> entryInfoList = tagService.findEntryByTag(tagName);
         JSONObject response = new JSONObject();
         JSONArray entryArray = new JSONArray();
+        if(entryInfoList == null) entryInfoList = new ArrayList<>();
         for(EntryInfo entryInfo : entryInfoList) {
             entryArray.add(entryInfo.getTitle());
         }

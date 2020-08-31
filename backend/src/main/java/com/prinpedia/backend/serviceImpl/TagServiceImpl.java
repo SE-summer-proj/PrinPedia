@@ -22,14 +22,14 @@ public class TagServiceImpl implements TagService {
     @Override
     public List<Tag> findTagByEntry(String title) {
         EntryInfo entryInfo = entryInfoRepository.findByTitle(title);
-        if(entryInfo == null) return null;
+        if(entryInfo == null) return new ArrayList<>();
         return entryInfo.getTagList();
     }
 
     @Override
     public List<EntryInfo> findEntryByTag(String tagName) {
         Tag tag = tagRepository.findByTagName(tagName);
-        if(tag == null) return null;
+        if(tag == null) return new ArrayList<>();
         return tag.getEntryInfoList();
     }
 
