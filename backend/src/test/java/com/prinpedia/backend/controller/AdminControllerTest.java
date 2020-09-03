@@ -72,7 +72,7 @@ class AdminControllerTest {
     @Test
     @Transactional
     @Rollback
-    @WithMockUser(username = "admin", roles = {"ADMIN"})
+    @WithMockUser(username = "admin", roles = {"ADMIN", "SUPER"})
     public void grantAdmin() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders
                         .post("/user/register")
@@ -147,4 +147,33 @@ class AdminControllerTest {
                 "Status don't match");
     }
 
+
+    @Test
+    @Transactional
+    @Rollback
+    public void createSuperUser() throws Exception {
+        MvcResult result = mockMvc
+                .perform(MockMvcRequestBuilders
+                        .post("/admin/super/password")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"password\": \"wrong\"}"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andReturn();
+        String resultString = result.getResponse().getContentAsString();
+        JSONObject resultJSON = JSON.parseObject(resultString);
+        assertEquals(-1, resultJSON.getInteger("status"),
+                "Status don't match");
+
+        result = mockMvc
+                .perform(MockMvcRequestBuilders
+                        .post("/admin/super/password")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"password\": \"#super_user_password#\"}"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andReturn();
+        resultString = result.getResponse().getContentAsString();
+        resultJSON = JSON.parseObject(resultString);
+        assertEquals(0, resultJSON.getInteger("status"),
+                "Status don't match");
+    }
 }

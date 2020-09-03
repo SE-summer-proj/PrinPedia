@@ -6,6 +6,7 @@ import com.prinpedia.backend.repository.ElasticEntryRepository;
 import com.prinpedia.backend.repository.EntryNodeRepository;
 import com.prinpedia.backend.repository.EntryRepository;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -17,6 +18,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import org.springframework.transaction.annotation.Transactional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -38,11 +40,18 @@ class EntryControllerTest {
 
     @DisplayName("Get entry details")
     @Test
+    @Transactional
     @WithMockUser(username = "test")
     public void getEntryDetail() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.post("/create")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"keyword\": \"Created Title\"}"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andReturn();
+
         MvcResult result = mockMvc
                 .perform(MockMvcRequestBuilders.get("/entry")
-                        .param("entryName", "数学"))
+                        .param("entryName", "Created Title"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andReturn();
         String responseString = result.getResponse().getContentAsString();
@@ -61,10 +70,15 @@ class EntryControllerTest {
         jsonObject = JSONObject.parseObject(responseString);
         assertEquals(-1, jsonObject.getInteger("status"),
                 "Status don't match");
+
+        entryRepository.deleteByTitle("Created Title");
+        elasticEntryRepository.deleteByEntryTitle("Created Title");
+        entryNodeRepository.deleteByTitle("Created Title");
     }
 
     @DisplayName("Create new entry")
     @Test
+    @Order(0)
     public void createEntry() throws Exception {
         MvcResult result = mockMvc
                 .perform(MockMvcRequestBuilders.post("/create")
@@ -204,5 +218,43 @@ class EntryControllerTest {
         assertEquals("法国", current,
                 "Current title not match");
         System.out.println(current);
+    }
+
+    @DisplayName("Lock entry")
+    @Test
+    @Transactional
+    @WithMockUser(username = "test", roles = {"ADMIN"})
+    public void lockEntry() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.post("/create")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"keyword\": \"Created Title\"}"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andReturn();
+
+        MvcResult result = mockMvc
+                .perform(MockMvcRequestBuilders.post("/lock")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"title\": \"Created Title\", " +
+                                "\"lock\": \"true\"}"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andReturn();
+        String resultString = result.getResponse().getContentAsString();
+        JSONObject jsonObject = JSONObject.parseObject(resultString);
+        assertEquals(0, jsonObject.getInteger("status"));
+
+        result = mockMvc
+                .perform(MockMvcRequestBuilders.post("/lock")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"title\": \"Not exist entry\", " +
+                                "\"lock\": \"true\"}"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andReturn();
+        resultString = result.getResponse().getContentAsString();
+        jsonObject = JSONObject.parseObject(resultString);
+        assertEquals(-1, jsonObject.getInteger("status"));
+
+        entryRepository.deleteByTitle("Created Title");
+        elasticEntryRepository.deleteByEntryTitle("Created Title");
+        entryNodeRepository.deleteByTitle("Created Title");
     }
 }

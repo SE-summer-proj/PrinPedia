@@ -98,6 +98,18 @@ class EditEntryControllerTest {
                 "Status don't match");
 
         result = mockMvc.perform(MockMvcRequestBuilders
+                .post("/entry/edit/request")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"title\": \"No exist\", " +
+                        "\"wikiText\": \"wiki\"}"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andReturn();
+        responseString = result.getResponse().getContentAsString();
+        jsonObject = JSONObject.parseObject(responseString);
+        assertEquals(-1, jsonObject.getInteger("status"),
+                "Status don't match");
+
+        result = mockMvc.perform(MockMvcRequestBuilders
                                 .get("/entry/edit/userLog")
                                 .param("username", "test"))
                         .andExpect(MockMvcResultMatchers.status().isOk())
@@ -109,7 +121,7 @@ class EditEntryControllerTest {
 
         result = mockMvc.perform(MockMvcRequestBuilders
                 .get("/entry/edit/adminLog")
-                .param("examined", "true"))
+                .param("examined", "false"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andReturn();
         responseString = result.getResponse().getContentAsString();
