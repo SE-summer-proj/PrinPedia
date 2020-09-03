@@ -12,7 +12,7 @@
     <artifactId>backend</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>backend</name>
-    <description>Demo project for Spring Boot</description>
+    <description>Prinpedia backend application</description>
 
     <properties>
         <java.version>11</java.version>
@@ -62,7 +62,7 @@
             <artifactId>hanlp</artifactId>
             <version>1.7.8</version>
             <scope>system</scope>
-            <systemPath>${project.basedir}/src/main/resources/lib/hanlp-1.7.8.jar</systemPath>
+            <systemPath>${pom.basedir}/src/main/resources/lib/hanlp-1.7.8.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -84,12 +84,6 @@
             <artifactId>junit-platform-runner</artifactId>
             <version>1.7.0-M1</version>
             <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.jetbrains</groupId>
-            <artifactId>annotations</artifactId>
-            <version>RELEASE</version>
-            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
