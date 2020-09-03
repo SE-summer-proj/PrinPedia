@@ -179,8 +179,7 @@ public class EntryServiceImpl implements EntryService {
             logger.info("Search result size: "+ result.size());
             return result;
         }
-        else
-            return null;
+        else return null;
     }
 
     @Override

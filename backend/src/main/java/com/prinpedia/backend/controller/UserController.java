@@ -123,7 +123,7 @@ public class UserController {
         JSONObject response = new JSONObject();
         if(isMatched) {
             user.setPassword(passwordEncoder.encode(newPassword));
-            userService.updateUser(user);
+            userService.editUserDetail(user);
             response.put("status", 0);
             response.put("message", "Alter password success");
         }

@@ -98,12 +98,12 @@ public class SearchController {
                         elasticEntry.getEntrySummary());
                 jsonArray.add(suggestion);
             }
-            response.put("status", 1);
-            response.put("message", "no exactly matched entry, find suggestions");
+            response.put("status", 0);
+            response.put("message", "Advanced search success");
             response.put("extraData", jsonArray);
         } else {
             response.put("status", -1);
-            response.put("message", "cannot find matched entry");
+            response.put("message", "Cannot find matched entry");
         }
 
         logger.debug("Response to POST request on '/search/advanced' is: "

@@ -33,9 +33,13 @@ public class EntryDaoImpl implements EntryDao {
         if(entry == null) return false;
         if(entry.getTitle() == null) return false;
         if(entry.getIndex() == null) {
-            int maxIndex = entryRepository.findTopByOrderByIndexDesc().getIndex();
+            int maxIndex;
+            Entry maxIndexEntry = entryRepository.findTopByOrderByIndexDesc();
+            if(maxIndexEntry == null) maxIndex = 0;
+            else maxIndex = entryRepository.findTopByOrderByIndexDesc().getIndex();
             entry.setIndex(maxIndex + 1);
         }
+        entry.setLocked(false);
         entryRepository.save(entry);
 
         EntryNode entryNode = new EntryNode();
@@ -53,7 +57,10 @@ public class EntryDaoImpl implements EntryDao {
     @Override
     public Boolean update(Entry entry) {
         if(entry.getIndex() == null) {
-            int maxIndex = entryRepository.findTopByOrderByIndexDesc().getIndex();
+            int maxIndex;
+            Entry maxIndexEntry = entryRepository.findTopByOrderByIndexDesc();
+            if(maxIndexEntry == null) maxIndex = 0;
+            else maxIndex = entryRepository.findTopByOrderByIndexDesc().getIndex();
             entry.setIndex(maxIndex + 1);
         }
         entryRepository.save(entry);

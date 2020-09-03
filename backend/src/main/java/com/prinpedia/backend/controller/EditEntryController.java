@@ -41,9 +41,9 @@ public class EditEntryController {
         JSONObject response = new JSONObject();
         if(title != null && wikiText != null && username != null) {
             Entry entry = entryService.findByTitle(title);
-            if(entry.getLocked()) {
+            if(entry == null || entry.getLocked() == null || entry.getLocked()) {
                 response.put("status", -1);
-                response.put("message", "Entry is locked");
+                response.put("message", "Cannot edit this entry");
             }
             else {
                 entryService.editEntryRequest(title, wikiText, username);
