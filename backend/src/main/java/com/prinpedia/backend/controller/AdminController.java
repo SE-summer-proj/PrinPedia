@@ -117,6 +117,7 @@ public class AdminController {
             response.put("status", 0);
             response.put("message", "Created new password");
             superPassword = RandomStringUtils.randomAlphanumeric(20);
+            response.put("password", superPassword);
             logger.info("Super password is: " + superPassword);
         }
         else {
