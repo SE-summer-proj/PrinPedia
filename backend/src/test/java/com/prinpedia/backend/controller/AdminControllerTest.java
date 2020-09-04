@@ -20,7 +20,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.transaction.annotation.Transactional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 @ActiveProfiles(profiles = {"test"})
 @SpringBootTest
@@ -174,6 +174,64 @@ class AdminControllerTest {
         resultString = result.getResponse().getContentAsString();
         resultJSON = JSON.parseObject(resultString);
         assertEquals(0, resultJSON.getInteger("status"),
+                "Status don't match");
+        String superPassword = resultJSON.getString("password");
+        assertNotNull(superPassword, "Cannot get super password");
+
+        result = mockMvc
+                .perform(MockMvcRequestBuilders
+                        .post("/admin/super/create")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"username\": \"test\"," +
+                                "\"password\": \"test\"," +
+                                "\"key\": \"" + superPassword + "\"}"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andReturn();
+        resultString = result.getResponse().getContentAsString();
+        resultJSON = JSON.parseObject(resultString);
+        assertEquals(0, resultJSON.getInteger("status"),
+                "Status don't match" + resultJSON.getString("message"));
+
+        result = mockMvc
+                .perform(MockMvcRequestBuilders
+                        .post("/admin/super/create")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"username\": \"another\"," +
+                                "\"password\": \"another\"," +
+                                "\"key\": \"" + superPassword + "\"}"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andReturn();
+        resultString = result.getResponse().getContentAsString();
+        resultJSON = JSON.parseObject(resultString);
+        assertEquals(-1, resultJSON.getInteger("status"),
+                "Status don't match");
+
+        result = mockMvc
+                .perform(MockMvcRequestBuilders
+                        .post("/admin/super/password")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"password\": \"#super_user_password#\"}"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andReturn();
+        resultString = result.getResponse().getContentAsString();
+        resultJSON = JSON.parseObject(resultString);
+        assertEquals(0, resultJSON.getInteger("status"),
+                "Status don't match");
+        superPassword = resultJSON.getString("password");
+        assertNotNull(superPassword, "Cannot get super password");
+
+        result = mockMvc
+                .perform(MockMvcRequestBuilders
+                        .post("/admin/super/create")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"username\": \"test\"," +
+                                "\"password\": \"test\"," +
+                                "\"key\": \"" + superPassword + "\"}"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andReturn();
+        resultString = result.getResponse().getContentAsString();
+        resultJSON = JSON.parseObject(resultString);
+        assertEquals(-1, resultJSON.getInteger("status"),
                 "Status don't match");
     }
 }

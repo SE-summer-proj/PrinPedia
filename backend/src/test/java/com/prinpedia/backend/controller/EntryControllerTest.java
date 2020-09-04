@@ -71,6 +71,17 @@ class EntryControllerTest {
         assertEquals(-1, jsonObject.getInteger("status"),
                 "Status don't match");
 
+        result = mockMvc
+                .perform(MockMvcRequestBuilders.get("/entry")
+                        .param("entryName", "数学"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andReturn();
+        responseString = result.getResponse().getContentAsString();
+        System.out.println("Not found response is:" + responseString);
+        jsonObject = JSONObject.parseObject(responseString);
+        assertEquals(0, jsonObject.getInteger("status"),
+                "Status don't match");
+
         entryRepository.deleteByTitle("Created Title");
         elasticEntryRepository.deleteByEntryTitle("Created Title");
         entryNodeRepository.deleteByTitle("Created Title");
