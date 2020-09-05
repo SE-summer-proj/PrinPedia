@@ -22,6 +22,9 @@
         </el-aside>
         <el-main>
           <div class="entry-title">{{wikiData.title}}</div>
+          <div class="entry-tags">
+            <TagSheet :tags="tags" :col="4" :editing="false" />
+          </div>
           <VueWikitext :source="wikiData.wikiText" />
         </el-main>
       </el-container>
@@ -39,14 +42,16 @@ import Catalog from "@/components/Catalog";
 import {GET, POST} from "@/ajax";
 import {Constants} from "@/utils/constants";
 import VueWikitext from "@/components/VueWikitext";
+import TagSheet from "@/components/TagSheet";
 export default {
     name: "EntryPage",
-    components: {VueWikitext, Catalog, Footer, Header},
+    components: {TagSheet, VueWikitext, Catalog, Footer, Header},
     data: function () {
         return {
             wikiData: null,
             entryName: this.$route.params.entryName,
-            isInCollection: false
+            isInCollection: false,
+            tags: []
         }
     },
     methods: {
@@ -92,10 +97,18 @@ export default {
             }, () => {
                 this.isInCollection = !(this.isInCollection);
             });
+        },
+        getTags() {
+            return GET(Constants.tagOfEntryUrl, {
+                title: this.entryName
+            }, (data) => {
+                this.tags = data.extraData;
+            });
         }
     },
     async mounted() {
         await this.getContents();
+        await this.getTags();
         return this.getCollectionStat();
     }
 }

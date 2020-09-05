@@ -40,5 +40,12 @@ export const Constants = {
     entryStatUrl: apiUrl + '/statics/entry',
     dailyStatUrl: apiUrl + '/statics/entryTitle',
     searchStatUrl: apiUrl + '/statics/search',
-    userStatUrl: apiUrl + '/statics/user'
+    userStatUrl: apiUrl + '/statics/user',
+
+    tagUrl: apiUrl + '/tag',
+    tagOfEntryUrl: apiUrl + '/tag/title',
+    entryOfTagUrl: apiUrl + '/tag/tagName',
+    allTagUrl: apiUrl + '/tag/allTag',
+    createTagUrl: apiUrl + '/tag/create',
+    editTagUrl: apiUrl + '/tag/edit'
 };

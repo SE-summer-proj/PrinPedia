@@ -2,6 +2,14 @@
   <el-container>
     <el-header><Header /></el-header>
     <el-main>
+      <div id="edit-tags">
+        <div>编辑标签</div>
+        <TagSheet :editing="true" :col="4" :tags="tags" />
+        <el-button-group>
+          <el-button type="primary" @click="editTags">提交更改</el-button>
+          <el-button @click="tags = oldTags">取消更改</el-button>
+        </el-button-group>
+      </div>
       <el-tabs v-model="activeName">
         <el-tab-pane label="预览" name="preview">
           <VueWikitext :source="wikiData.wikiText" />
@@ -17,20 +25,31 @@
 
 <script>
 import Header from "@/components/Header";
-import {GET} from "@/ajax";
+import {GET, POST} from "@/ajax";
 import {Constants} from "@/utils/constants";
 import VueWikitext from "@/components/VueWikitext";
 import axios from "axios";
+import TagSheet from "@/components/TagSheet";
 export default {
     name: "EditPage",
-    components: {VueWikitext, Header},
+    components: {TagSheet, VueWikitext, Header},
     data: function () {
         return {
             activeName: 'preview',
-            wikiData: null
+            wikiData: {},
+            tags: [],
+            oldTags: []
         }
     },
     methods: {
+        getTags() {
+            return GET(Constants.tagOfEntryUrl, {
+                title: this.this.$route.params.entryName
+            }, (data) => {
+                this.tags = data.extraData;
+                this.oldTags = data.extraData;
+            });
+        },
         getContents() {
             return GET(Constants.entryUrl, {
                 entryName: this.$route.params.entryName
@@ -44,10 +63,12 @@ export default {
                 .post(Constants.editUrl,{
                         title: this.wikiData.title,
                         wikiText: this.wikiData.wikiText},
-                    {headers: {
+                    {
+                        headers: {
                             // 'X-CSRFToken':this.getCookie('csrftoken'),
                             'Content-type':"application/json",
-                            'Cookie':'JSESSIONID=9B2A0A4CE4D5B4F4FBA5F38C950F3BB0'}
+                            'Cookie':'JSESSIONID=9B2A0A4CE4D5B4F4FBA5F38C950F3BB0'
+                        }
                     },
                 )
                 .then((res) => {
@@ -60,10 +81,17 @@ export default {
                 .catch((error) => {
                     console.log(error);
                 });
+        },
+        editTags() {
+            return POST(Constants.editTagUrl, {
+                title: this.this.$route.params.entryName,
+                tagList: this.tags
+            }, () => {});
         }
     },
-    mounted() {
-        this.getContents()
+    async mounted() {
+        await this.getContents();
+        return this.getTags();
     }
 }
 </script>
