@@ -21,6 +21,13 @@ public class SearchStatics {
     private Date date;
     private long count;
 
+    public SearchStatics(Date date, Long count) {
+        this.date = date;
+        this.count = count;
+    }
+
+    public SearchStatics() {}
+
     @Id
     @GeneratedValue(strategy = IDENTITY)
     public int getSearchStaticsId() {

@@ -28,6 +28,12 @@ public class EntryStatics {
         this.count = count;
     }
 
+    public EntryStatics(String title, Date date, Long count) {
+        this.title = title;
+        this.date = date;
+        this.count = count;
+    }
+
     public EntryStatics() {}
 
     @Id

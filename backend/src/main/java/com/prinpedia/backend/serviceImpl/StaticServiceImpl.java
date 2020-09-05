@@ -35,16 +35,18 @@ public class StaticServiceImpl implements StaticService {
             String s = sdf.format(new Date());
             date = sdf.parse(s);
         } catch (ParseException e) { e.printStackTrace(); }
-        EntryStatics entryStatics =
+        List<EntryStatics> entryStaticsList =
                 entryStaticsRepository
                         .findByTitleAndDate(title, date);
-        if(entryStatics == null) {
+        EntryStatics entryStatics;
+        if(entryStaticsList == null || entryStaticsList.isEmpty()) {
             entryStatics = new EntryStatics();
             entryStatics.setDate(date);
             entryStatics.setCount((long) 1);
             entryStatics.setTitle(title);
         }
         else {
+            entryStatics = entryStaticsList.get(0);
             entryStatics.setCount(entryStatics.getCount() + 1);
         }
         entryStaticsRepository.save(entryStatics);
@@ -59,13 +61,16 @@ public class StaticServiceImpl implements StaticService {
             String s = sdf.format(new Date());
             date = sdf.parse(s);
         } catch (ParseException e) { e.printStackTrace(); }
-        SearchStatics searchStatics = searchStaticsRepository.findByDate(date);
-        if(searchStatics == null) {
+        List<SearchStatics> searchStaticsList =
+                searchStaticsRepository.findByDate(date);
+        SearchStatics searchStatics;
+        if(searchStaticsList == null || searchStaticsList.isEmpty()) {
             searchStatics = new SearchStatics();
             searchStatics.setDate(date);
             searchStatics.setCount(1);
         }
         else {
+            searchStatics = searchStaticsList.get(0);
             searchStatics.setCount(searchStatics.getCount() + 1);
         }
         searchStaticsRepository.save(searchStatics);
@@ -80,13 +85,15 @@ public class StaticServiceImpl implements StaticService {
             String s = sdf.format(new Date());
             date = sdf.parse(s);
         } catch (ParseException e) { e.printStackTrace(); }
-        UserStatics userStatics = userStaticsRepository.findByDate(date);
-        if(userStatics == null) {
+        List<UserStatics> userStaticsList = userStaticsRepository.findByDate(date);
+        UserStatics userStatics;
+        if(userStaticsList == null || userStaticsList.isEmpty()) {
             userStatics = new UserStatics();
             userStatics.setDate(date);
             userStatics.setCount(1);
         }
         else {
+            userStatics = userStaticsList.get(0);
             userStatics.setCount(userStatics.getCount() + 1);
         }
         userStaticsRepository.save(userStatics);
