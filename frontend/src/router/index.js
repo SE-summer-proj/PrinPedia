@@ -14,6 +14,7 @@ import FeedbackAdminPage from "@/pages/FeedbackAdminPage";
 import FeedbackPage from "@/pages/FeedbackPage";
 import AdvancedSearchPage from "../pages/AdvancedSearchPage";
 import Graph from "../components/Graph";
+import TagPage from "@/pages/TagPage";
 
 Vue.use(VueRouter);
 
@@ -77,6 +78,10 @@ const routes = [
     {
         path: '/admin/feedback',
         component: FeedbackAdminPage
+    },
+    {
+        path: '/tags',
+        component: TagPage
     }
 ];
 
