@@ -22,7 +22,7 @@
           </el-form>
           <span slot="footer">
             <el-button-group>
-              <el-button disabled type="primary">确定</el-button>
+              <el-button disabled type="primary" @click="editUserInfo">确定</el-button>
               <el-button @click="dialogVisible = false">取消</el-button>
             </el-button-group>
           </span>
@@ -117,12 +117,20 @@ export default {
     methods: {
         getUserLog() {
             console.log(this.$store.state.userData.userType)
-            var URL = '/entry/edit/userLog?username=' + this.$store.state.userData.username
+            const URL = '/entry/edit/userLog?username=' + this.$store.state.userData.username;
             return axios.get(URL)
                 .then(response => {
                     console.log(response);
                     this.userLog = response.data.extraData
                 });
+        },
+        editUserInfo() {
+            return POST(Constants.editUserInfoUrl, {
+                username: this.$store.state.userData.username,
+                email: this.$store.state.userData.mailAddr,
+                birthday: this.$store.state.userData.birthday,
+                avatarBase64: ''
+            }, () => {});
         },
         getClassName(status) {
             if (status === 0) {
