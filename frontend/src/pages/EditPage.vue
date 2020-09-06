@@ -84,7 +84,11 @@ export default {
             return POST(Constants.editTagUrl, {
                 title: this.$route.params.entryName,
                 tagList: this.tags
-            }, () => {});
+            }, (data) => {
+                if (data.status === 0) {
+                    this.$message.success(data.message);
+                }
+            });
         },
         cancelEdit() {
             return this.getTags();
