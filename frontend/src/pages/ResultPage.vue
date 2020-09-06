@@ -9,7 +9,7 @@
         <div class="found" v-if="!notFound">
           <el-button-group>
             <el-button @click="dialogVisible = true">显示推荐</el-button>
-            <el-button @click="$router.push('/tags')">全部标签</el-button>
+<!--            <el-button @click="$router.push('/tags')">全部标签</el-button>-->
           </el-button-group>
           <el-dialog title="推荐词条" :visible.sync="dialogVisible">
             <el-row>
