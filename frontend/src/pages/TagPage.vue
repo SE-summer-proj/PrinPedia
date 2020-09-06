@@ -29,6 +29,9 @@ export default {
                 this.allTags = data.extraData;
             });
         }
+    },
+    mounted() {
+        return this.getAllTags();
     }
 }
 </script>

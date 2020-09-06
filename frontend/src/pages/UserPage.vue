@@ -6,7 +6,7 @@
         <el-row>
           <i class="el-icon-s-custom" />
           <span>个人信息</span>
-          <el-button type="text" style="margin-left: 10px" @click="dialogVisible=true">
+          <el-button type="text" style="margin-left: 10px" @click="showEditDialog">
             <i class="el-icon-edit" />
             <span>编辑</span>
           </el-button>
@@ -111,9 +111,10 @@ export default {
     data: function () {
         return {
             userInfo: {
-                birthday: this.$store.state.userData.birthday,
-                email: this.$store.state.userData.email,
-                avatarBase64: this.$store.state.userData.avatarBase64
+                username: '',
+                birthday: '',
+                email: '',
+                avatarBase64: ''
             },
             userLog: [],
             collection: [],
@@ -137,14 +138,30 @@ export default {
                     this.userLog = response.data.extraData;
                 });
         },
+        showEditDialog() {
+            this.userInfo = {
+                username: this.$store.state.userData.username,
+                birthday: this.$store.state.userData.birthday,
+                email: this.$store.state.userData.email,
+                avatarBase64: this.$store.state.userData.avatarBase64
+            };
+            this.dialogVisible = true;
+        },
         editUserInfo() {
             return POST(Constants.editUserInfoUrl, this.userInfo, (data) => {
+                this.$store.state.userData.email = this.userInfo.email;
+                this.$store.state.userData.birthday = this.userInfo.birthday;
                 this.$message.success(data.message);
                 this.dialogVisible = false;
             });
         },
         cancelEdit() {
-            this.userInfo = this.$store.state.userData;
+            this.userInfo = {
+                username: this.$store.state.userData.username,
+                birthday: this.$store.state.userData.birthday,
+                email: this.$store.state.userData.email,
+                avatarBase64: this.$store.state.userData.avatarBase64
+            };
             this.dialogVisible = false;
         },
         getClassName(status) {

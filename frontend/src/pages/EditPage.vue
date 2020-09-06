@@ -7,7 +7,7 @@
         <TagSheet :editing="true" :col="4" :tags="tags" />
         <el-button-group>
           <el-button type="primary" @click="editTags">提交更改</el-button>
-          <el-button @click="tags = oldTags">取消更改</el-button>
+          <el-button @click="cancelEdit">取消更改</el-button>
         </el-button-group>
       </div>
       <el-tabs v-model="activeName">
@@ -37,8 +37,7 @@ export default {
         return {
             activeName: 'preview',
             wikiData: {},
-            tags: [],
-            oldTags: []
+            tags: []
         }
     },
     methods: {
@@ -47,7 +46,6 @@ export default {
                 title: this.$route.params.entryName
             }, (data) => {
                 this.tags = data.extraData;
-                this.oldTags = data.extraData;
             });
         },
         getContents() {
@@ -87,6 +85,9 @@ export default {
                 title: this.$route.params.entryName,
                 tagList: this.tags
             }, () => {});
+        },
+        cancelEdit() {
+            return this.getTags();
         }
     },
     async mounted() {
