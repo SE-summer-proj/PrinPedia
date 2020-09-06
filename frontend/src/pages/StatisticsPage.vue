@@ -14,8 +14,8 @@
           <el-button type="primary" @click="getEntry"
               :disabled="entryTable.period === ''">统计</el-button>
           <el-table :data="entryTable.tableData">
-            <el-table-column prop="title" title="词条名" />
-            <el-table-column prop="count" title="访问量" />
+            <el-table-column prop="title" label="词条名" />
+            <el-table-column prop="count" label="访问量" />
           </el-table>
         </el-tab-pane>
         <el-tab-pane label="每日访问量" name="daily">
@@ -32,9 +32,9 @@
               :disabled="dailyTable.title === '' || dailyTable.period === ''">
             统计</el-button>
           <el-table :data="dailyTable.tableData">
-            <el-table-column prop="date" title="日期" />
-            <el-table-column prop="title" title="词条名" />
-            <el-table-column prop="count" title="访问量" />
+            <el-table-column prop="date" label="日期" />
+            <el-table-column prop="title" label="词条名" />
+            <el-table-column prop="count" label="访问量" />
           </el-table>
         </el-tab-pane>
         <el-tab-pane label="搜索量" name="search">
@@ -47,8 +47,8 @@
           <el-button type="primary" @click="getSearch"
                      :disabled="searchTable.period === ''">统计</el-button>
           <el-table :data="searchTable.tableData">
-            <el-table-column prop="title" title="词条名" />
-            <el-table-column prop="count" title="搜索量" />
+            <el-table-column prop="date" label="词条名" />
+            <el-table-column prop="count" label="搜索量" />
           </el-table>
         </el-tab-pane>
         <el-tab-pane label="用户访问量" name="user">
@@ -61,8 +61,8 @@
           <el-button type="primary" @click="getUser"
                      :disabled="userTable.period === ''">统计</el-button>
           <el-table :data="userTable.tableData">
-            <el-table-column prop="date" title="日期" />
-            <el-table-column prop="count" title="访问量" />
+            <el-table-column prop="date" label="日期" />
+            <el-table-column prop="count" label="访问量" />
           </el-table>
         </el-tab-pane>
       </el-tabs>

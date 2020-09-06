@@ -78,10 +78,6 @@ const routes = [
     {
         path: '/admin/feedback',
         component: FeedbackAdminPage
-    },
-    {
-        path: '/tags',
-        component: TagPage
     }
 ];
 
