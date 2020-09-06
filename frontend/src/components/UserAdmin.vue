@@ -36,9 +36,9 @@ export default {
         changeDisableState(row) {
             console.log(row.enabled)
             var status
-            if(row.enabled==true) status = false
-            if(row.enabled==null) status = true
-            if(row.enabled==false) status = true
+            if(row.enabled === true) status = false
+            if(row.enabled === null) status = true
+            if(row.enabled === false) status = true
             console.log(status)
             return POST(Constants.disableUrl, {
                 username: row.username,

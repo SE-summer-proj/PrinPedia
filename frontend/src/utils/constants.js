@@ -4,6 +4,7 @@ export const Constants = {
     logoutUrl: apiUrl + '/logout',
     registerUrl: apiUrl + '/user/register',
     editUserInfoUrl: '/user/edit',
+    userDetailUrl: 'user/detail',
 
     recommendUrl: apiUrl + '/recommend',
     rankingUrl: apiUrl + '/rank',

@@ -53,7 +53,7 @@
 </template>
 
 <script>
-import {POST} from "@/ajax";
+import {GET, POST} from "@/ajax";
 import {Constants} from "@/utils/constants";
 import axios from 'axios';
 export default {
@@ -74,21 +74,26 @@ export default {
         };
     },
     methods: {
-        login() {
+        async login() {
             let params = new URLSearchParams();
             params.append("username", this.loginForm.username);
             params.append("password", this.loginForm.password);
-            return axios.post("/login", params)
+            await axios.post("/login", params)
                 .then(response => {
                     if (response.data.status === 0) {
                         console.log(response)
                         this.$message.success(response.data.message);
-                        this.$store.commit('setUserData', response.data.extraData);
+                        this.$store.commit('login', response.data.extraData.userType);
                         this.$router.back();
                     } else {
                         this.$message.error(response.data.message);
                     }
                 });
+            return GET(Constants.userDetailUrl, {
+                username: this.loginForm.username
+            }, (data) => {
+                this.$store.commit('setUserData', data.extraData);
+            });
         },
         register() {
             return POST(Constants.registerUrl, {

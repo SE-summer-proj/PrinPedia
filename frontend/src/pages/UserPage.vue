@@ -33,7 +33,7 @@
         </el-row>
         <el-row>
           <el-col :span="4">邮箱</el-col>
-          <el-col :span="20">{{$store.state.userData.mailAddr}}</el-col>
+          <el-col :span="20">{{$store.state.userData.email}}</el-col>
         </el-row>
         <el-row>
           <el-col :span="4">生日</el-col>
@@ -117,7 +117,7 @@ export default {
     },
     methods: {
         getUserLog() {
-            console.log(this.$store.state.userData.userType)
+            console.log(this.$store.state.userType);
             const URL = '/entry/edit/userLog?username=' + this.$store.state.userData.username;
             return axios.get(URL)
                 .then(response => {
@@ -126,12 +126,7 @@ export default {
                 });
         },
         editUserInfo() {
-            return POST(Constants.editUserInfoUrl, {
-                username: this.$store.state.userData.username,
-                email: this.$store.state.userData.mailAddr,
-                birthday: this.$store.state.userData.birthday,
-                avatarBase64: ''
-            }, (data) => {
+            return POST(Constants.editUserInfoUrl, this.$store.state.userData, (data) => {
                 this.$message.success(data.message);
                 this.dialogVisible = false;
             });
