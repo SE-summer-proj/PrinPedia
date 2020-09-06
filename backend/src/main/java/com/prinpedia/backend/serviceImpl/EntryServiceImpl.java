@@ -114,7 +114,7 @@ public class EntryServiceImpl implements EntryService {
         logger.info("Start advanced search");
         BoolQueryBuilder boolBuilder = new BoolQueryBuilder();
         List<Term> termList;
-        if(must != null) {
+        if(must != null && !must.equals("")) {
             termList = IndexTokenizer.segment(must);
             for (Term term : termList) {
                 boolBuilder
@@ -123,7 +123,7 @@ public class EntryServiceImpl implements EntryService {
             }
         }
 
-        if(should != null) {
+        if(should != null && !should.equals("")) {
             termList = IndexTokenizer.segment(should);
             for (Term term : termList) {
                 boolBuilder
@@ -135,7 +135,7 @@ public class EntryServiceImpl implements EntryService {
             }
         }
 
-        if(mustNot != null) {
+        if(mustNot != null && !mustNot.equals("")) {
             termList = IndexTokenizer.segment(mustNot);
             for (Term term : termList) {
                 boolBuilder
@@ -146,7 +146,7 @@ public class EntryServiceImpl implements EntryService {
             }
         }
 
-        if(mustTitle != null) {
+        if(mustTitle != null && !mustTitle.equals("")) {
             termList = IndexTokenizer.segment(mustTitle);
             for (Term term : termList) {
                 boolBuilder
@@ -155,7 +155,7 @@ public class EntryServiceImpl implements EntryService {
             }
         }
 
-        if(mustTotal != null) {
+        if(mustTotal != null && !mustTotal.equals("")) {
             boolBuilder
                     .must(QueryBuilders
                             .matchQuery("entrySummary", mustTotal));
