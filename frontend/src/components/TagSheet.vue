@@ -72,7 +72,7 @@ export default {
             const index = this.getIndex(i, j);
             this.tags.splice(index, 1);
         },
-        handleClick() {
+        handleClick(i, j) {
             const index = this.getIndex(i, j);
             return GET(Constants.entryOfTagUrl, {
                 tagName: this.tags[index]
