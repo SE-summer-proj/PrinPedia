@@ -3,14 +3,12 @@ export const Constants = {
     loginUrl: apiUrl + '/login',
     logoutUrl: apiUrl + '/logout',
     registerUrl: apiUrl + '/user/register',
-    editUserInfoUrl: '/user/edit',
 
     recommendUrl: apiUrl + '/recommend',
     rankingUrl: apiUrl + '/rank',
     searchUrl: apiUrl + '/search',
     advancedSearchUrl: apiUrl + '/search/advanced',
     graphUrl: apiUrl + '/relation',
-    relationUrl: apiUrl + '/relation',
     createUrl: apiUrl + '/create',
 
     entryUrl: apiUrl + '/entry',

@@ -4,7 +4,7 @@
     <el-main>
       <el-button @click="$router.back()">返回</el-button>
       <el-tabs :active-name="activeName">
-        <el-tab-pane label="时段访问量" name="entry">
+        <el-tab-pane title="时段访问量" name="entry">
           <el-date-picker
               v-model="entryTable.period"
               type="daterange"
@@ -18,7 +18,7 @@
             <el-table-column prop="count" title="访问量" />
           </el-table>
         </el-tab-pane>
-        <el-tab-pane label="每日访问量" name="daily">
+        <el-tab-pane title="每日访问量" name="daily">
           <el-row>
             <el-input v-model="dailyTable.title" aria-placeholder="请输入标题" />
           </el-row>
@@ -37,7 +37,7 @@
             <el-table-column prop="count" title="访问量" />
           </el-table>
         </el-tab-pane>
-        <el-tab-pane label="搜索量" name="search">
+        <el-tab-pane title="搜索量" name="search">
           <el-date-picker
               v-model="searchTable.period"
               type="daterange"
@@ -51,7 +51,7 @@
             <el-table-column prop="count" title="搜索量" />
           </el-table>
         </el-tab-pane>
-        <el-tab-pane label="用户访问量" name="user">
+        <el-tab-pane title="用户访问量" name="user">
           <el-date-picker
               v-model="userTable.period"
               type="daterange"
@@ -76,7 +76,6 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import {GET} from "@/ajax";
 import {Constants} from "@/utils/constants";
-import moment from 'moment';
 export default {
     name: "StatisticsPage",
     components: {Footer, Header},
@@ -97,49 +96,40 @@ export default {
                 period: ''
             },
             userTable: {
-                tableData: [],
-                period: ''
+                tableData: []
             }
         };
     },
     methods: {
         getEntry() {
-            const start = moment(this.entryTable.period[0]).format('yyyy-MM-dd');
-            const end = moment(this.entryTable.period[1]).format('yyyy-MM-dd');
             return GET(Constants.entryStatUrl, {
-                start,
-                end
+                start: this.entryTable.period[0],
+                end: this.entryTable.period[1]
             }, (data) => {
                 this.entryTable.tableData = data.extraData;
             });
         },
         getDaily() {
-            const start = moment(this.dailyTable.period[0]).format('yyyy-MM-dd');
-            const end = moment(this.dailyTable.period[1]).format('yyyy-MM-dd');
             return GET(Constants.dailyStatUrl, {
-                start,
-                end,
+                start: this.dailyTable.period[0],
+                end: this.dailyTable.period[1],
                 title: this.dailyTable.title
             }, (data) => {
                 this.dailyTable.tableData = data.extraData;
             });
         },
         getUser() {
-            const start = moment(this.userTable.period[0]).format('yyyy-MM-dd');
-            const end = moment(this.userTable.period[1]).format('yyyy-MM-dd');
             return GET(Constants.userStatUrl, {
-                start,
-                end,
+                start: this.userTable.period[0],
+                end: this.userTable.period[1]
             }, (data) => {
                 this.userTable.tableData = data.extraData;
             });
         },
         getSearch() {
-            const start = moment(this.searchTable.period[0]).format('yyyy-MM-dd');
-            const end = moment(this.searchTable.period[1]).format('yyyy-MM-dd');
             return GET(Constants.searchStatUrl, {
-                start,
-                end
+                start: this.searchTable.period[0],
+                end: this.searchTable.period[1]
             }, (data) => {
                 this.searchTable.tableData = data.extraData;
             });

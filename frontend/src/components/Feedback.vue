@@ -17,7 +17,7 @@
     </el-table-column>
     <el-table-column label="操作" v-if="!replied">
       <template slot-scope="scope">
-        <el-button @click = "dialogVisible = true">回复</el-button>
+        <el-button>回复</el-button>
         <el-dialog title="回复" :visible.sync="dialogVisible">
           <el-input v-model="textInput" aria-placeholder="请输入回复内容" type="textarea" />
           <div slot="footer">

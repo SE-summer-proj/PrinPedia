@@ -48,7 +48,7 @@ export default {
     components: {VueWikitext, Footer, Header},
     data: function () {
         return {
-            logDetail: null,
+            logDetail: '',
             currentText: ''
         };
     },

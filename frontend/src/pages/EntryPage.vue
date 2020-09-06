@@ -48,7 +48,7 @@ export default {
     components: {TagSheet, VueWikitext, Catalog, Footer, Header},
     data: function () {
         return {
-            wikiData: null,
+            wikiData: {},
             entryName: this.$route.params.entryName,
             isInCollection: false,
             tags: []

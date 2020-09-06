@@ -22,7 +22,7 @@
           </el-form>
           <span slot="footer">
             <el-button-group>
-              <el-button type="primary" @click="editUserInfo">确定</el-button>
+              <el-button disabled type="primary">确定</el-button>
               <el-button @click="dialogVisible = false">取消</el-button>
             </el-button-group>
           </span>
@@ -37,7 +37,7 @@
         </el-row>
         <el-row>
           <el-col :span="4">生日</el-col>
-          <el-col :span="20">{{birthday}}</el-col>
+          <el-col :span="20">{{$store.state.userData.birthday}}</el-col>
         </el-row>
         <div v-if="$store.state.userData.userType.indexOf('ROLE_ADMIN') >= 0">
           <el-button type="text" @click="$router.push('/admin')">后台管理</el-button>
@@ -104,7 +104,6 @@ import Footer from "@/components/Footer";
 import axios from "axios";
 import {GET, POST} from "@/ajax";
 import {Constants} from "@/utils/constants";
-import moment from 'moment';
 export default {
     name: "UserPage",
     components: {Footer, Header},
@@ -118,20 +117,12 @@ export default {
     methods: {
         getUserLog() {
             console.log(this.$store.state.userData.userType)
-            const URL = '/entry/edit/userLog?username=' + this.$store.state.userData.username;
+            var URL = '/entry/edit/userLog?username=' + this.$store.state.userData.username
             return axios.get(URL)
                 .then(response => {
                     console.log(response);
                     this.userLog = response.data.extraData
                 });
-        },
-        editUserInfo() {
-            return POST(Constants.editUserInfoUrl, {
-                username: this.$store.state.userData.username,
-                email: this.$store.state.userData.mailAddr,
-                birthday: this.$store.state.userData.birthday,
-                avatarBase64: ''
-            }, () => {});
         },
         getClassName(status) {
             if (status === 0) {
@@ -162,11 +153,6 @@ export default {
             }, async () => {
                 await this.getCollection();
             });
-        }
-    },
-    computed: {
-        birthday() {
-            return moment(this.$store.state.userData.birthday).format('yyyy-MM-dd');
         }
     },
     async mounted() {
