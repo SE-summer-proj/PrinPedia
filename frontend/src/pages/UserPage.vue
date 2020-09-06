@@ -116,13 +116,20 @@ export default {
         };
     },
     methods: {
+        getUserInfo() {
+            return GET(Constants.userDetailUrl, {
+                username: this.$store.state.username
+            }, (data) => {
+                this.$store.commit('setUserData', data.extraData);
+            });
+        },
         getUserLog() {
             console.log(this.$store.state.userType);
-            const URL = '/entry/edit/userLog?username=' + this.$store.state.userData.username;
+            const URL = '/entry/edit/userLog?username=' + this.$store.state.username;
             return axios.get(URL)
                 .then(response => {
                     console.log(response);
-                    this.userLog = response.data.extraData
+                    this.userLog = response.data.extraData;
                 });
         },
         editUserInfo() {
@@ -147,7 +154,7 @@ export default {
         },
         getCollection() {
             return GET(Constants.userCollectionUrl, {
-                username: this.$store.state.userData.username
+                username: this.$store.state.username
             }, (data) => {
                 this.collection = data.extraData;
             });
@@ -156,7 +163,7 @@ export default {
             // const url = this.isInCollection ? Constants.removeCollectionUrl : Constants.addCollectionUrl;
             return POST(Constants.removeCollectionUrl, {
                 title: title,
-                username: this.$store.state.userData.username
+                username: this.$store.state.username
             }, async () => {
                 await this.getCollection();
             });
@@ -168,6 +175,7 @@ export default {
         }
     },
     async mounted() {
+        await this.getUserInfo();
         await this.getCollection();
         return this.getUserLog();
     }

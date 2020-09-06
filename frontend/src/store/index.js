@@ -7,6 +7,7 @@ export const store = new Vuex.Store({
     state: {
         logged: false,
         userType: [],
+        username: '',
         userData: {
             username: '',
             birthday: '',
@@ -15,9 +16,10 @@ export const store = new Vuex.Store({
         }
     },
     mutations: {
-        login(state, userType) {
+        login(state, loginInfo) {
             state.logged = true;
-            state.userType = userType;
+            state.userType = loginInfo.userType;
+            state.username = loginInfo.username;
         },
         setUserData(state, userData) {
             state.userData = userData;
