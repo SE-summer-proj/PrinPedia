@@ -14,16 +14,16 @@
         <el-dialog :visible.sync="dialogVisible">
           <el-form :model="$store.state.userData">
             <el-form-item label="邮箱">
-              <el-input v-model="$store.state.userData.mailAddr" />
+              <el-input v-model="userInfo.email" />
             </el-form-item>
             <el-form-item label="生日">
-              <el-date-picker v-model="$store.state.userData.birthday" type="date" />
+              <el-date-picker v-model="userInfo.birthday" type="date" />
             </el-form-item>
           </el-form>
           <span slot="footer">
             <el-button-group>
               <el-button type="primary" @click="editUserInfo">确定</el-button>
-              <el-button @click="dialogVisible = false">取消</el-button>
+              <el-button @click="cancelEdit">取消</el-button>
             </el-button-group>
           </span>
         </el-dialog>
@@ -39,7 +39,7 @@
           <el-col :span="4">生日</el-col>
           <el-col :span="20">{{birthday}}</el-col>
         </el-row>
-        <div v-if="$store.state.userData.userType.indexOf('ROLE_ADMIN') >= 0">
+        <div v-if="$store.state.userType.indexOf('ROLE_ADMIN') >= 0">
           <el-button type="text" @click="$router.push('/admin')">后台管理</el-button>
         </div>
       </div>
@@ -110,6 +110,11 @@ export default {
     components: {Footer, Header},
     data: function () {
         return {
+            userInfo: {
+                birthday: this.$store.state.userData.birthday,
+                email: this.$store.state.userData.email,
+                avatarBase64: this.$store.state.userData.avatarBase64
+            },
             userLog: [],
             collection: [],
             dialogVisible: false
@@ -133,10 +138,14 @@ export default {
                 });
         },
         editUserInfo() {
-            return POST(Constants.editUserInfoUrl, this.$store.state.userData, (data) => {
+            return POST(Constants.editUserInfoUrl, this.userInfo, (data) => {
                 this.$message.success(data.message);
                 this.dialogVisible = false;
             });
+        },
+        cancelEdit() {
+            this.userInfo = this.$store.state.userData;
+            this.dialogVisible = false;
         },
         getClassName(status) {
             if (status === 0) {
