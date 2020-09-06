@@ -17,9 +17,9 @@
             </el-col>
             <el-col :span="4">
               <div>子词条</div>
-              <div v-for="child in relation.children">{{child}}</div>
+              <div v-for="(child, c) in relation.children" :key="c">{{child}}</div>
               <div>父词条</div>
-              <div v-for="parent in relation.parents">{{parent}}</div>
+              <div v-for="(parent, p) in relation.parents" :key="p">{{parent}}</div>
             </el-col>
           </el-row>
         </el-dialog>
