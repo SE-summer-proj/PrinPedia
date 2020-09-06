@@ -36,35 +36,35 @@ public class SearchController {
         logger.debug("GET request on '/search' with params: " +
                 "'keyword'=" + keyword + ", 'page'=" + page);
         staticService.searchRecord();
-        String title = entryService.searchTitle(keyword);
+        //String title = entryService.searchTitle(keyword);
         JSONArray jsonArray = new JSONArray();
         JSONObject response = new JSONObject();
-        if(title != null) {
-            response.put("status", 0);
-            response.put("message", "Find an exactly matched entry");
-            response.put("extraData", title);
-        }
+//        if(title != null) {
+//            response.put("status", 0);
+//            response.put("message", "Find an exactly matched entry");
+//            response.put("extraData", title);
+        //}
 
-        else {
-            if(page == null) page = 0;
-            List<ElasticEntry> suggestionList =
-                    entryService.searchTitleAndSummary(keyword, page);
-            if (suggestionList != null) {
-                for (ElasticEntry elasticEntry : suggestionList) {
-                    JSONObject suggestion = new JSONObject();
-                    suggestion.put("title", elasticEntry.getEntryTitle());
-                    suggestion.put("summary",
-                            elasticEntry.getEntrySummary());
-                    jsonArray.add(suggestion);
-                }
-                response.put("status", 1);
-                response.put("message", "no exactly matched entry, find suggestions");
-                response.put("extraData", jsonArray);
-            } else {
-                response.put("status", -1);
-                response.put("message", "cannot find matched entry");
+        //else {
+        if(page == null) page = 0;
+        List<ElasticEntry> suggestionList =
+                entryService.searchTitleAndSummary(keyword, page);
+        if (suggestionList != null) {
+            for (ElasticEntry elasticEntry : suggestionList) {
+                JSONObject suggestion = new JSONObject();
+                suggestion.put("title", elasticEntry.getEntryTitle());
+                suggestion.put("summary",
+                        elasticEntry.getEntrySummary());
+                jsonArray.add(suggestion);
             }
+            response.put("status", 1);
+            response.put("message", "no exactly matched entry, find suggestions");
+            response.put("extraData", jsonArray);
+        } else {
+            response.put("status", -1);
+            response.put("message", "cannot find matched entry");
         }
+        //}
         logger.debug("Response to GET request on '/search' is: "
                 + response.toJSONString());
         logger.info("Response to GET request on '/search' finished");
