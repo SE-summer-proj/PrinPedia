@@ -44,7 +44,7 @@ export default {
     methods: {
         getTags() {
             return GET(Constants.tagOfEntryUrl, {
-                title: this.this.$route.params.entryName
+                title: this.$route.params.entryName
             }, (data) => {
                 this.tags = data.extraData;
                 this.oldTags = data.extraData;
@@ -84,7 +84,7 @@ export default {
         },
         editTags() {
             return POST(Constants.editTagUrl, {
-                title: this.this.$route.params.entryName,
+                title: this.$route.params.entryName,
                 tagList: this.tags
             }, () => {});
         }

@@ -8,6 +8,16 @@
           </el-tag>
         </el-col>
       </el-row>
+      <el-row>
+        <el-col :span="24 / col" v-for="k in (tags.length % col)" :key="k">
+          <el-tag
+              :closable="editing"
+              @close="handleClose(numOfRows + 1, k)"
+              @click="handleClick(numOfRows + 1, k)">
+            {{tags[getIndex(numOfRows + 1, k)]}}
+          </el-tag>
+        </el-col>
+      </el-row>
     </div>
     <div v-if="editing">
       <el-input
