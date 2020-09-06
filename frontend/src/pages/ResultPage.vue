@@ -6,7 +6,10 @@
     <el-container>
       <el-main>
         <SearchBar :keyword="keyword" />
-        <el-button type="main" @click="dialogVisible = true">显示推荐</el-button>
+        <el-button-group>
+          <el-button @click="dialogVisible = true">显示推荐</el-button>
+          <el-button @click="$router.push('/tags')">全部标签</el-button>
+        </el-button-group>
         <el-dialog title="推荐词条" :visible.sync="dialogVisible">
           <KnowledgeGraph :central-word="searchResults[0].title" />
         </el-dialog>
