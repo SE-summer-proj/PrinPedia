@@ -13,13 +13,18 @@
           </el-button-group>
           <el-dialog title="推荐词条" :visible.sync="dialogVisible">
             <el-row>
-              <el-col :span="20">
+              <el-col :span="18">
                 <KnowledgeGraph :central-word="searchResults[0].title" />
               </el-col>
-              <el-col :span="4">
-                <div>子词条</div>
+              <el-col :span="6">
+                <div>
+                  <i class="el-icon-sort-down" />
+                  <span>按联系降序排序</span>
+                </div>
+                <div v-if="relation.children.length !== 0">子词条</div>
                 <div v-for="(child, c) in relation.children" :key="c">{{child}}</div>
-                <div>父词条</div>
+                <br />
+                <div v-if="relation.parents.length !== 0">父词条</div>
                 <div v-for="(parent, p) in relation.parents" :key="p">{{parent}}</div>
               </el-col>
             </el-row>
@@ -87,7 +92,7 @@ export default {
             return GET(Constants.relationUrl, {
                 title: this.keyword
             }, (data) => {
-                this.relation = data.extraData;
+                this.relation = data;
             });
         }
     },
