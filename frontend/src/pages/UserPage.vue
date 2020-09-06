@@ -131,7 +131,10 @@ export default {
                 email: this.$store.state.userData.mailAddr,
                 birthday: this.$store.state.userData.birthday,
                 avatarBase64: ''
-            }, () => {});
+            }, (data) => {
+                this.$message.success(data.message);
+                this.dialogVisible = false;
+            });
         },
         getClassName(status) {
             if (status === 0) {
@@ -166,7 +169,7 @@ export default {
     },
     computed: {
         birthday() {
-            return moment(this.$store.state.userData.birthday).format('yyyy-MM-dd');
+            return moment(this.$store.state.userData.birthday).format('yyyy-MM-DD');
         }
     },
     async mounted() {
