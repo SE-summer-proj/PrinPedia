@@ -10,6 +10,7 @@ export const Constants = {
     searchUrl: apiUrl + '/search',
     advancedSearchUrl: apiUrl + '/search/advanced',
     graphUrl: apiUrl + '/relation',
+    relationUrl: apiUrl + '/relation',
     createUrl: apiUrl + '/create',
 
     entryUrl: apiUrl + '/entry',
