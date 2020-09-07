@@ -24,7 +24,7 @@ PrinPedia is capable to perform advanced search accurately according to conditio
 
 ### Display & Edit
 
-PrinPedia is able to display and edit wiki text with the format of WikiText.
+PrinPedia is able to display and edit wiki text with the format of WikiText. After users' submitting editions, administrators can view them and decide whether the edition should be applied to the current entry. Also, administrators can lock or unlock entries to protect them from being illegally manipulated.
 
 ### User System
 
