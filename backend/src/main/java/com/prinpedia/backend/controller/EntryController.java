@@ -42,8 +42,10 @@ public class EntryController {
             extraData.put("title", entry.getTitle());
             String wikiText = entry.getWikiText();
             JSONArray content = parseWikiMarkupIntoContent(wikiText);
+            String modifiedWiki = wikiText.replace("\\n", "\n");
+            modifiedWiki = modifiedWiki.replace("\\'", "\'");
             extraData.put("content", content);
-            extraData.put("wikiText", wikiText);
+            extraData.put("wikiText", modifiedWiki);
             if(entry.getLocked() != null) {
                 extraData.put("locked", entry.getLocked());
             }
