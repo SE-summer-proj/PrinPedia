@@ -123,7 +123,10 @@ export default {
                 title: this.wikiData.title,
                 lock: !this.wikiData.locked
             }, (data) => {
-                this.$message.success(data.message);
+                if (data.status === 0) {
+                    this.$message.success(data.message);
+                    this.wikiData.locked = !this.wikiData.locked;
+                }
             });
         }
     },
