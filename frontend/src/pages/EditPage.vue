@@ -2,23 +2,35 @@
   <el-container>
     <el-header><Header /></el-header>
     <el-main>
-      <div id="edit-tags">
-        <div>编辑标签</div>
-        <TagSheet :editing="true" :col="4" :tags="tags" />
+      <div id="locked" v-if="wikiData.locked">
+        <span>本词条已被锁定，无法编辑。详情请咨询管理员。</span>
         <el-button-group>
-          <el-button type="primary" @click="editTags">提交更改</el-button>
-          <el-button @click="cancelEdit">取消更改</el-button>
+          <el-button type="text" @click="$router.push('/feedback')">意见箱</el-button>
+          <el-button type="text" @click="$router.back()">返回</el-button>
         </el-button-group>
       </div>
-      <el-tabs v-model="activeName">
-        <el-tab-pane label="预览" name="preview">
-          <VueWikitext :source="wikiData.wikiText" />
-        </el-tab-pane>
-        <el-tab-pane label="编辑" name="editing">
-          <el-input type="textarea" v-model="wikiData.wikiText" :rows="25" />
-        </el-tab-pane>
-      </el-tabs>
-      <el-button @click="submit">提交修改</el-button>
+      <div id="editable" v-else>
+        <div id="edit-tags">
+          <div>编辑标签</div>
+          <TagSheet :editing="true" :col="4" :tags="tags" />
+          <el-button-group>
+            <el-button type="primary" @click="editTags">提交更改</el-button>
+            <el-button @click="cancelEdit">取消更改</el-button>
+          </el-button-group>
+        </div>
+        <el-tabs v-model="activeName">
+          <el-tab-pane label="预览" name="preview">
+            <VueWikitext :source="wikiData.wikiText" />
+          </el-tab-pane>
+          <el-tab-pane label="编辑" name="editing">
+            <el-input type="textarea" v-model="wikiData.wikiText" :rows="25" />
+          </el-tab-pane>
+        </el-tabs>
+        <el-button-group>
+          <el-button @click="submit">提交修改</el-button>
+          <el-button @click="$router.back()">取消并返回</el-button>
+        </el-button-group>
+      </div>
     </el-main>
   </el-container>
 </template>

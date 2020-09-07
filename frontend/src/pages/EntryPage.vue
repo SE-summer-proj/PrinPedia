@@ -8,14 +8,27 @@
         <el-aside>
           <el-button-group>
             <el-button @click="$router.back()">返回</el-button>
-            <el-button @click="$router.push('/edit/' + entryName)">
-              <i class="el-icon-edit" />
-              <span>编辑</span>
-            </el-button>
             <el-button @click="switchCollection">
               <i class="el-icon-star-on" v-if="isInCollection" />
               <i class="el-icon-star-off" v-else />
               <span>{{isInCollection ? '取消' : '收藏'}}</span>
+            </el-button>
+            <el-button @click="$router.push('/edit/' + entryName)" v-if="!wikiData.locked">
+              <i class="el-icon-edit" />
+              <span>编辑</span>
+            </el-button>
+            <el-popover v-else placement="right" width="200" trigger="hover">
+              <div>
+                <span>该词条已被锁定，无法编辑。详情请咨询管理员。去</span>
+                <el-button type="text" @click="$router.push('/feedback')">意见箱</el-button>
+              </div>
+              <el-button slot="reference" disabled>
+                <i class="el-icon-edit" />
+                <span>编辑</span>
+              </el-button>
+            </el-popover>
+            <el-button v-if="$store.state.userType.indexOf('ROLE_ADMIN') !== -1" @click="lockEntry">
+              {{wikiData.locked ? '解锁' : '锁定'}}
             </el-button>
           </el-button-group>
           <Catalog :catalog="wikiData.content" />
@@ -48,7 +61,7 @@ export default {
     components: {TagSheet, VueWikitext, Catalog, Footer, Header},
     data: function () {
         return {
-            wikiData: null,
+            wikiData: {},
             entryName: this.$route.params.entryName,
             isInCollection: false,
             tags: []
@@ -103,6 +116,14 @@ export default {
                 title: this.entryName
             }, (data) => {
                 this.tags = data.extraData;
+            });
+        },
+        lockEntry() {
+            return POST(Constants.lockUrl, {
+                title: this.wikiData.title,
+                lock: !this.wikiData.locked
+            }, (data) => {
+                this.$message.success(data.message);
             });
         }
     },

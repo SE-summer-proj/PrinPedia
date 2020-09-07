@@ -50,5 +50,7 @@ export const Constants = {
     entryOfTagUrl: apiUrl + '/tag/tagName',
     allTagUrl: apiUrl + '/tag/allTag',
     createTagUrl: apiUrl + '/tag/create',
-    editTagUrl: apiUrl + '/tag/edit'
+    editTagUrl: apiUrl + '/tag/edit',
+
+    lockUrl: apiUrl + '/lock'
 };
