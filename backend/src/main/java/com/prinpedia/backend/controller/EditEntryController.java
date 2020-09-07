@@ -41,7 +41,7 @@ public class EditEntryController {
         JSONObject response = new JSONObject();
         if(title != null && wikiText != null && username != null) {
             Entry entry = entryService.findByTitle(title);
-            if(entry == null || entry.getLocked() == null || entry.getLocked()) {
+            if(entry == null || (entry.getLocked() != null && entry.getLocked())) {
                 response.put("status", -1);
                 response.put("message", "Cannot edit this entry");
             }
@@ -64,7 +64,7 @@ public class EditEntryController {
     @CrossOrigin
     @ResponseBody
     @GetMapping(value = "/userLog")
-    @PreAuthorize("principal.username.equals(#username) || hasRole('ADMIN')")
+    @PreAuthorize("principal.username.equals(#username) && hasRole('ADMIN')")
     public String getEditLog(@RequestParam("username") String username) {
         logger.info("Receive GET request on '/entry/edit/userLog'");
         logger.debug("GET request on '/entry/edit/userLog' with params: " +
