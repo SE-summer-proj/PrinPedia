@@ -14,7 +14,7 @@
           <el-dialog title="推荐词条" :visible.sync="dialogVisible">
             <el-row>
               <el-col :span="18">
-                <KnowledgeGraph :central-word="searchResults[0].title" />
+                <KnowledgeGraph :source-data="relation" />
               </el-col>
               <el-col :span="6">
                 <div>

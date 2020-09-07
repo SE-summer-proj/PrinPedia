@@ -59,9 +59,7 @@ export default {
             }
         };
     },
-    props: {
-        centralWord: String
-    },
+    props: ['sourceData'],
     methods: {
         setPointData(list, category) {
             list.forEach((name, index) => {
@@ -92,21 +90,21 @@ export default {
                 this.categoryData.push({ name });
             });
         },
-        getSourceData: function () {
+        getSourceData() {
             // this.keyword = "当前词条";
             // this.pointList1 = ["父亲", "关联1", "关联2", "关联3", "关联4"];
             // this.pointList2 = ["孩子", "关联5", "关联6", "关联7", "关联8"];
             // this.pointList3 = [this.keyword];
 
-            console.log(this.centralWord);
-            return GET(Constants.graphUrl, {
-                title: this.centralWord
-            }, (data) => {
-                console.log(data)
-                this.pointList1 = data.parents;
-                this.pointList2 = data.children;
-                this.pointList3 = [this.centralWord];
-            });
+            // console.log(this.centralWord);
+            // return GET(Constants.graphUrl, {
+            //     title: this.centralWord
+            // }, (data) => {
+            //     console.log(data)
+                this.pointList1 = this.sourceData.parents;
+                this.pointList2 = this.sourceData.children;
+                this.pointList3 = [this.sourceData.current];
+            // });
         }
     },
     async mounted() {
