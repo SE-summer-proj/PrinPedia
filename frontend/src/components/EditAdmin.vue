@@ -3,7 +3,11 @@
     <el-tab-pane name="unchecked" label="未读">
       <el-table :data="unchecked">
         <el-table-column prop="id" label="申请编号" />
-        <el-table-column prop="date" label="申请时间" />
+        <el-table-column label="申请时间">
+          <template slot-scope="scope">
+            {{ timestamp2time(scope.row.date) }}
+          </template>
+        </el-table-column>
         <el-table-column label="词条详情">
           <template slot-scope="scope">
             <router-link :to="'/compare/' + scope.row.id">{{scope.row.title}}</router-link>
@@ -14,7 +18,11 @@
     <el-tab-pane name="checked" label="已读">
       <el-table :data="checked">
         <el-table-column prop="id" label="申请编号" />
-        <el-table-column prop="date" label="申请时间" />
+        <el-table-column label="申请时间">
+          <template slot-scope="scope">
+            {{ timestamp2time(scope.row.date) }}
+          </template>
+        </el-table-column>
         <el-table-column label="词条详情">
           <template slot-scope="scope">
             <router-link :to="'/userLogDetail/' + scope.row.id">{{scope.row.title}}</router-link>
@@ -31,6 +39,7 @@
 <script>
 import {GET} from "@/ajax";
 import {Constants} from "@/utils/constants";
+import moment from "moment";
 
 export default {
     name: "EditAdmin",
@@ -42,6 +51,9 @@ export default {
         };
     },
     methods: {
+        timestamp2time(timestamp) {
+            return moment(timestamp).format('YYYY-MM-DD hh:mm:ss');
+        },
         getChecked() {
             return GET(Constants.adminLogUrl, {
                 examined: true

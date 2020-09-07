@@ -92,20 +92,20 @@ export default {
         },
         getCollectionStat() {
             return GET(Constants.checkCollectionUrl, {
-                username: this.$store.state.userData.username,
+                username: this.$store.state.username,
                 title: this.wikiData.title
             }, (data) => {
                 this.isInCollection = data.extraData;
             });
         },
         switchCollection() {
-            if (this.$store.state.userData.username === '') {
+            if (this.$store.state.username === '') {
                 this.$message.info('您未登录');
                 this.$router.push('/login');
             }
             const url = this.isInCollection ? Constants.removeCollectionUrl : Constants.addCollectionUrl;
             return POST(url, {
-                username: this.$store.state.userData.username,
+                username: this.$store.state.username,
                 title: this.wikiData.title
             }, () => {
                 this.isInCollection = !(this.isInCollection);

@@ -16,7 +16,7 @@
       <el-row>
         <el-col :span="12">
           <div>当前：</div>
-          <VueWikitext :source="currentText" />
+          <VueWikitext :source="current.wikiText" />
         </el-col>
         <el-col :span="12">
           <div>修改：</div>
@@ -43,13 +43,14 @@ import Footer from "@/components/Footer";
 import VueWikitext from "@/components/VueWikitext";
 import {GET, POST} from "@/ajax";
 import {Constants} from "@/utils/constants";
+import moment from 'moment';
 export default {
     name: "ComparePage",
     components: {VueWikitext, Footer, Header},
     data: function () {
         return {
-            logDetail: null,
-            currentText: ''
+            logDetail: {},
+            current: ''
         };
     },
     methods: {
@@ -58,13 +59,14 @@ export default {
                 id: this.$route.params.logId
             }, (data) => {
                 this.logDetail = data.extraData;
+                this.logDetail.date = moment(this.logDetail.date).format('YYYY-MM-DD hh:mm:ss');
             });
         },
         getCurrent() {
             return GET(Constants.entryUrl, {
                 entryName: this.logDetail.title
             }, (data) => {
-                this.currentText = data.extraData;
+                this.current = data.extraData;
             })
         },
         submit(passed) {

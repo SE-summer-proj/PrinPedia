@@ -90,20 +90,23 @@ export default {
         },
         getRelation() {
             return GET(Constants.relationUrl, {
-                title: this.keyword
+                title: this.searchResults[0].title
             }, (data) => {
                 this.relation = data;
             });
+        },
+        async searchAndGetRelation() {
+            await this.search();
+            return this.getRelation();
         }
     },
-    async mounted() {
-        await this.search();
-        return this.getRelation();
+    mounted() {
+        return this.searchAndGetRelation();
     },
     watch: {
         '$route' () {
             this.keyword = this.$route.params.keyword
-            this.search();
+            this.searchAndGetRelation();
         }
     },
 }

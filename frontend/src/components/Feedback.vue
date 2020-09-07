@@ -1,7 +1,11 @@
 <template>
   <el-table :data="tableData">
     <el-table-column prop="id" label="反馈编号" />
-    <el-table-column prop="time" label="提交时间" />
+    <el-table-column label="提交时间">
+      <template slot-scope="scope">
+        {{ timestamp2time(scope.row.time) }}
+      </template>
+    </el-table-column>
     <el-table-column label="反馈内容">
       <template slot-scope="scope">
         <el-popover placement="bottom" title="详情" trigger="hover" :content="scope.row.content">
@@ -35,6 +39,7 @@
 <script>
 import {POST} from "@/ajax";
 import {Constants} from "@/utils/constants";
+import moment from "moment";
 
 export default {
     name: "Feedback",
@@ -49,6 +54,9 @@ export default {
         };
     },
     methods: {
+        timestamp2time(timestamp) {
+            return moment(timestamp).format('YYYY-MM-DD hh:mm:ss');
+        },
         thumb(scope) {
             return scope.row.content.substring(0,
                 (scope.row.content.length > 100) ? 100 : scope.row.content.length);

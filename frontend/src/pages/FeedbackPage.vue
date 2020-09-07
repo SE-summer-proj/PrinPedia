@@ -12,7 +12,11 @@
         <el-tab-pane name="message" label="查看反馈">
           <el-table :data="tableData">
             <el-table-column prop="id" title="反馈编号" />
-            <el-table-column prop="time" title="反馈时间" />
+            <el-table-column label="反馈时间">
+              <template slot-scope="scope">
+                {{ timestamp2time(scope.row.time) }}
+              </template>
+            </el-table-column>
             <el-table-column title="反馈内容">
               <template slot-scope="scope">
                 <el-popover placement="bottom" title="详情" trigger="hover" :content="scope.row.content">
@@ -45,6 +49,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import {GET, POST} from "@/ajax";
 import {Constants} from "@/utils/constants";
+import moment from "moment";
 export default {
     name: "FeedbackPage",
     components: {Footer, Header},
@@ -56,6 +61,9 @@ export default {
         };
     },
     methods: {
+        timestamp2time(timestamp) {
+            return moment(timestamp).format('YYYY-MM-DD hh:mm:ss');
+        },
         submit() {
             return POST(Constants.createMsgUrl, {
                 username: this.$store.state.userData.username,

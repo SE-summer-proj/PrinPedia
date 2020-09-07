@@ -14,7 +14,7 @@
       </el-row>
       <el-row type="flex" justify="center">
         <el-col :span="10">
-          <Recommend id="recommend" />
+          <Recommend id="recommend" v-if="$store.state.logged" />
         </el-col>
       </el-row>
       <el-row type="flex" justify="center">

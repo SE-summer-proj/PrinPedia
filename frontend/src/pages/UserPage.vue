@@ -50,7 +50,11 @@
         </el-row>
         <el-table :data="userLog" :row-class-name="getRowClassName">
           <el-table-column prop="id" label="申请编号" />
-          <el-table-column prop="date" label="申请时间" />
+          <el-table-column label="申请时间">
+            <template slot-scope="scope">
+              {{ timestamp2time(scope.row.date) }}
+            </template>
+          </el-table-column>
           <el-table-column label="词条详情">
             <template slot-scope="scope">
               <router-link :to="'/userLogDetail/' + scope.row.id">{{scope.row.title}}</router-link>
@@ -85,7 +89,11 @@
               <router-link :to="'/entry/' + scope.row.title">{{scope.row.title}}</router-link>
             </template>
           </el-table-column>
-          <el-table-column prop="time" title="收藏时间" />
+          <el-table-column label="收藏时间">
+            <template slot-scope="scope">
+              {{ timestamp2time(scope.row.time) }}
+            </template>
+          </el-table-column>
           <el-table-column title="操作">
             <template slot-scope="scope">
               <el-button @click="switchCollectionStat(scope.row.title)">取消收藏</el-button>
@@ -122,6 +130,9 @@ export default {
         };
     },
     methods: {
+        timestamp2time(timestamp) {
+            return moment(timestamp).format('YYYY-MM-DD hh:mm:ss');
+        },
         getUserInfo() {
             return GET(Constants.userDetailUrl, {
                 username: this.$store.state.username
@@ -197,7 +208,7 @@ export default {
     },
     computed: {
         birthday() {
-            return moment(this.$store.state.userData.birthday).format('yyyy-MM-DD');
+            return moment(this.$store.state.userData.birthday).format('YYYY-MM-DD');
         }
     },
     async mounted() {

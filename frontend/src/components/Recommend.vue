@@ -21,7 +21,7 @@ export default {
     },
     methods: {
         getRecommend() {
-            var URL = '/recommend?username=' + this.$store.state.userData.username
+            var URL = '/recommend?username=' + this.$store.state.username
             return axios.get(URL)
                 .then(response => {
                     console.log(response);
