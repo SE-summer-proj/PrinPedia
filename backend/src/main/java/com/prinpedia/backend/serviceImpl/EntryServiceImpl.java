@@ -83,7 +83,9 @@ public class EntryServiceImpl implements EntryService {
                     .should(QueryBuilders
                             .matchQuery("entryTitle", term.word).boost(2))
                     .should(QueryBuilders
-                            .matchQuery("entrySummary", term.word));
+                            .matchQuery("entrySummary", term.word))
+                    .should(QueryBuilders.termQuery("entryTitle.keyword",
+                            term.word).boost(2));
         }
         NativeSearchQuery searchQuery = new NativeSearchQueryBuilder()
                 .withQuery(boolBuilder)

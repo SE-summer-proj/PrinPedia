@@ -25,4 +25,12 @@ public interface EntryStaticsRepository extends JpaRepository<EntryStatics, Inte
     List<EntryStatics> findAllByDateBetweenAndTitle(Date start, Date end, String title);
 
     void deleteByTitle(String test_entry);
+
+    @Query(value =
+            "select new com.prinpedia.backend.entity.EntryStatics(a.title, a.date, sum(a.count)) " +
+                    "from EntryStatics a " +
+                    "group by a.title " +
+                    "order by a.count desc "
+                    )
+    List<EntryStatics> findTop4ByOrderByCountDesc();
 }

@@ -41,7 +41,7 @@ public class AdminController {
         }
         JSONObject response = new JSONObject();
         response.put("status", 0);
-        response.put("message", "success");
+        response.put("message", "Success");
         response.put("extraData", extraData);
         logger.debug("Response to GET request on '/admin/allUser' is: "
                 + response.toJSONString());
@@ -63,11 +63,11 @@ public class AdminController {
         JSONObject response = new JSONObject();
         if(adminService.grantAdmin(username)) {
             response.put("status", 0);
-            response.put("message", "Success");
+            response.put("message", "授予权限成功");
         }
         else {
             response.put("status", -1);
-            response.put("message", "Failure");
+            response.put("message", "授予权限失败");
         }
         logger.debug("Response to POST request on '/admin/grant' is: " +
                 response.toJSONString());
@@ -94,7 +94,7 @@ public class AdminController {
         }
         else {
             response.put("status", -1);
-            response.put("message", "Failure, cannot disable this user");
+            response.put("message", "不能禁用此用户");
         }
         logger.debug("Response to POST request on '/admin/ability' is: "
                 + response.toJSONString());

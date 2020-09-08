@@ -36,22 +36,16 @@ class EntryDaoImplTest {
 
     @BeforeEach
     public void setup() {
-        Optional<Entry> optionalEntry = entryRepository.findByTitle("test");
-        if(optionalEntry.isPresent()) {
-            entryRepository.deleteByTitle("test");
-            elasticEntryRepository.deleteByEntryTitle("test");
-            entryNodeRepository.deleteByTitle("test");
-        }
+        entryRepository.deleteByTitle("test");
+        elasticEntryRepository.deleteByEntryTitle("test");
+        entryNodeRepository.deleteByTitle("test");
     }
 
     @AfterEach
     public void after() {
-        Optional<Entry> optionalEntry = entryRepository.findByTitle("test");
-        if(optionalEntry.isPresent()) {
-            entryRepository.deleteByTitle("test");
-            elasticEntryRepository.deleteByEntryTitle("test");
-            entryNodeRepository.deleteByTitle("test");
-        }
+        entryRepository.deleteByTitle("test");
+        elasticEntryRepository.deleteByEntryTitle("test");
+        entryNodeRepository.deleteByTitle("test");
     }
 
     @Test
@@ -130,11 +124,5 @@ class EntryDaoImplTest {
                 elasticEntryRepository.findByEntryTitle("test");
         assertNotNull(elasticEntry, "Can't find entry in elastic");
         assertEquals("test", elasticEntry.getEntryTitle());
-
-        EntryNode entryNode =
-                entryNodeRepository.findByIndex(entryOptional.get().getIndex());
-        assertNotNull(entryNode, "Can't find entry in Neo4j");
-        assertEquals("test", entryNode.getTitle(),
-                "Entry title don't match");
     }
 }

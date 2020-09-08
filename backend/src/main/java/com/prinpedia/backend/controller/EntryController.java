@@ -42,20 +42,24 @@ public class EntryController {
             extraData.put("title", entry.getTitle());
             String wikiText = entry.getWikiText();
             JSONArray content = parseWikiMarkupIntoContent(wikiText);
-            String modifiedWiki = wikiText.replace("\\n", "\n");
-            modifiedWiki = modifiedWiki.replace("\\'", "\'");
+            String modifiedWiki;
+            if(wikiText != null) {
+                modifiedWiki = wikiText.replace("\\n", "\n");
+                modifiedWiki = modifiedWiki.replace("\\'", "\'");
+            }
+            else modifiedWiki = null;
             extraData.put("content", content);
             extraData.put("wikiText", modifiedWiki);
             if(entry.getLocked() != null) {
                 extraData.put("locked", entry.getLocked());
             }
             response.put("status", 0);
-            response.put("message", "fetch detail success");
+            response.put("message", "查询信息失败");
             response.put("extraData", extraData);
         }
         else {
             response.put("status", -1);
-            response.put("message", "no matched entry");
+            response.put("message", "无匹配词条");
         }
         logger.debug("Response to GET request on '/entry' is: " +
                 response.toJSONString());
@@ -209,7 +213,7 @@ public class EntryController {
         JSONObject response = new JSONObject();
         if(entryService.createEntry(title)) {
             response.put("status", 0);
-            response.put("message", "Successfully created");
+            response.put("message", "成功创建词条");
             JSONObject jsonObject1 = new JSONObject();
             jsonObject1.put("title", title);
             jsonObject1.put("summary", "");
@@ -219,7 +223,7 @@ public class EntryController {
         }
         else {
             response.put("status", -1);
-            response.put("message", "Create failure");
+            response.put("message", "创建词条失败");
         }
         logger.debug("Response to POST request on '/create' is: " +
                 response.toJSONString());
@@ -347,11 +351,11 @@ public class EntryController {
         JSONObject response = new JSONObject();
         if(entryService.lockEntry(title, lock)) {
             response.put("status", 0);
-            response.put("message", "Success");
+            response.put("message", "设置成功");
         }
         else {
             response.put("status", -1);
-            response.put("message", "Something wrong happened");
+            response.put("message", "出现了一点儿问题");
         }
         logger.debug("Response to POST request on '/lock' is: " +
                 response.toJSONString());
