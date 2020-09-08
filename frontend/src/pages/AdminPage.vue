@@ -6,6 +6,7 @@
         <el-button @click="$router.back()">返回</el-button>
         <el-button @click="$router.push('/stat')" type="primary">数据统计</el-button>
         <el-button @click="$router.push('/admin/feedback')" type="primary">意见箱</el-button>
+        <el-button @click="monitor">监测平台</el-button>
       </el-button-group>
       <el-tabs :active-name="activeName">
         <el-tab-pane name="user-admin" label="用户管理">
@@ -32,6 +33,11 @@ export default {
         return {
             activeName: 'user-admin'
         };
+    },
+    methods: {
+        monitor() {
+            window.open('54.144.184.221:5601');
+        }
     }
 }
 </script>
