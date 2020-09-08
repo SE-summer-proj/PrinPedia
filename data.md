@@ -1,17 +1,19 @@
 # PrinPedia
 
-## Data
+## 数据
 
-* Original data files were downloaded from wiki(https://dumps.wikimedia.org/).
+* 原始数据文件来源于wiki网站(https://dumps.wikimedia.org/)。
 
-* JWPL(Java Wikipedia Library) was used to transform the orininal data files to some txt files.
+* 用JWPL(Java Wikipedia Library)将原始数据解码，转化为数个记录不同信息的txt文件。
 
-* A python program changed traditional Chinese characters to simplified Chinese characters.
+* 一个Python脚本将数据从繁体中文转换为简体中文。
 
-* A C/C++ program measured how closely the relation of two entries are by an algorithm we had discussed, and loaded the result to a new file.
+* 一个C++程序衡量了不同词条之间的联系紧密程度，并把结果写入一个新的文件中。
 
-* Many C/C++ programs were writen to reform the txt files to different proper formats, making it easier to import data files into databases.
+* 一个C++程序将摘要从各个词条中整理了出来。
 
-* At last, data was imported into databases.
+* 许多C++和Java程序把各个文件所包含的信息转换为适应数据库批量导入的格式。
 
-* That is all about where our data come from.
+* 最后，数据被传进数据库。
+
+* 以上是数据处理的（几乎）全过程。
