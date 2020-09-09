@@ -102,7 +102,13 @@ public class EditEntryController {
         if(entryEditRequest != null) {
             JSONObject extraData = new JSONObject();
             extraData.put("title", entryEditRequest.getTitle());
-            extraData.put("wikiText", entryEditRequest.getWikiText());
+            String wikiText = null;
+            if(entryEditRequest.getWikiText() != null) {
+                wikiText = entryEditRequest.getWikiText()
+                        .replace("\\n", "\n");
+                wikiText = wikiText.replace("\\'", "\'");
+            }
+            extraData.put("wikiText", wikiText);
             extraData.put("date", entryEditRequest.getDate());
             extraData.put("status", entryEditRequest.getStatus());
             extraData.put("id", entryEditRequest.getId().toString());
