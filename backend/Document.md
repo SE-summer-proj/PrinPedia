@@ -177,3 +177,5 @@ Logstash和Kibana均与Elasticsearch部署在相同地实例上。
 相关测试。测试总体上比较充分，代码覆盖率较高，所有自己写的代码覆盖率都基本达到了100%.
 
 单元测试结果如下：
+
+![unit_test](./img/unit_test.PNG)
