@@ -48,8 +48,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable();
-        http.authorizeRequests()
+        http.headers().frameOptions().disable();
+        http.cors().and()
+                .authorizeRequests()
                 .antMatchers("/recommend").authenticated()
                 .antMatchers("/entry").permitAll()
                 .antMatchers("/search").permitAll()
@@ -66,7 +67,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .logoutSuccessHandler(logoutSuccessHandler)
                 .deleteCookies("JSESSIONID")
                 .and().exceptionHandling()
-                .authenticationEntryPoint(authenticationEntryPoint);
+                .authenticationEntryPoint(authenticationEntryPoint)
+                .and().csrf().disable();
 //        super.configure(http);
     }
 }

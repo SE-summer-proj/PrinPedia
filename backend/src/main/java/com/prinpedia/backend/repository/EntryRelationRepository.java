@@ -15,14 +15,21 @@ public interface EntryRelationRepository extends Neo4jRepository<EntryRelation, 
     void createEntryRelation(@Param("parentIndex") int parentIndex,
                              @Param("childIndex") int childIndex);
 
+    @Query("match (parent: Entry), (child: Entry) where parent.index = " +
+            "$parentIndex and child.index = $childIndex create " +
+            "r = (parent)-[er: EntryRelation {weight: $weight}]->(child) return r ")
+    void createEntryRelationWithWeight(@Param("parentIndex") int parentIndex,
+                                       @Param("childIndex") int childIndex,
+                                       @Param("weight") Long weight);
+
     @Query("match (parent: Entry)-[r: EntryRelation]-> (current: Entry) " +
             "where current.title = $currentTitle " +
-            "return parent")
+            "return parent order by r.weight desc")
     List<EntryNode> findParents(@Param("currentTitle") String currentTitle);
 
     @Query("match (current: Entry)-[r: EntryRelation]-> (child: Entry) " +
             "where current.title = $currentTitle " +
-            "return child")
+            "return child order by r.weight desc")
     List<EntryNode> findChildren(@Param("currentTitle") String currentTitle);
 
     @Query("match (parent: Entry)-[r]->(child: Entry) " +

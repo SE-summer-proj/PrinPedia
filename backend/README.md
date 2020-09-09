@@ -1,6 +1,6 @@
 # This is the backend app of this project
 
-The app is created using springboot.
+Backend app is developed through spring boot framework. 
 
 Run "BackendApplication" to run this backend.
 It runs on localhost:8080 by default.
@@ -15,7 +15,7 @@ have not been covered in Postman document yet would be stated here.
 
 Postman document URL: https://documenter.getpostman.com/view/11974581/T1DiHg68
 
-The above API document was updated on 7.23. If you have any questions, please contact
+The above API document was updated on 8.7. If you have any questions, please contact
 SHR for more details.
 
 ## Test and Run

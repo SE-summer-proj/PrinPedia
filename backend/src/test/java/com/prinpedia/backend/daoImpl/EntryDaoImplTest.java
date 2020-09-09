@@ -12,12 +12,14 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@ActiveProfiles(profiles = {"test"})
 @SpringBootTest
 class EntryDaoImplTest {
     @Autowired
@@ -34,22 +36,16 @@ class EntryDaoImplTest {
 
     @BeforeEach
     public void setup() {
-        Optional<Entry> optionalEntry = entryRepository.findByTitle("test");
-        if(optionalEntry.isPresent()) {
-            entryRepository.deleteByTitle("test");
-            elasticEntryRepository.deleteByEntryTitle("test");
-            entryNodeRepository.deleteByTitle("test");
-        }
+        entryRepository.deleteByTitle("test");
+        elasticEntryRepository.deleteByEntryTitle("test");
+        entryNodeRepository.deleteByTitle("test");
     }
 
     @AfterEach
     public void after() {
-        Optional<Entry> optionalEntry = entryRepository.findByTitle("test");
-        if(optionalEntry.isPresent()) {
-            entryRepository.deleteByTitle("test");
-            elasticEntryRepository.deleteByEntryTitle("test");
-            entryNodeRepository.deleteByTitle("test");
-        }
+        entryRepository.deleteByTitle("test");
+        elasticEntryRepository.deleteByEntryTitle("test");
+        entryNodeRepository.deleteByTitle("test");
     }
 
     @Test
@@ -69,7 +65,8 @@ class EntryDaoImplTest {
         ElasticEntry elasticEntry =
                 elasticEntryRepository.findByEntryTitle("test");
         assertNotNull(elasticEntry, "Can't find entry in elastic");
-        assertEquals("test", elasticEntry.getEntryTitle());
+        assertEquals("test", elasticEntry.getEntryTitle(),
+                "Elastic entry title don't match");
 
         entry = entryOptional.get();
         entry.setWikiText("wikiText");
@@ -127,11 +124,5 @@ class EntryDaoImplTest {
                 elasticEntryRepository.findByEntryTitle("test");
         assertNotNull(elasticEntry, "Can't find entry in elastic");
         assertEquals("test", elasticEntry.getEntryTitle());
-
-        EntryNode entryNode =
-                entryNodeRepository.findByIndex(entryOptional.get().getIndex());
-        assertNotNull(entryNode, "Can't find entry in Neo4j");
-        assertEquals("test", entryNode.getTitle(),
-                "Entry title don't match");
     }
 }

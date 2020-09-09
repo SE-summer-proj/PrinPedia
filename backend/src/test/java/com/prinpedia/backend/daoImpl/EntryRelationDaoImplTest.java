@@ -8,12 +8,14 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@ActiveProfiles(profiles = {"test"})
 @SpringBootTest
 class EntryRelationDaoImplTest {
     @Autowired
@@ -29,7 +31,7 @@ class EntryRelationDaoImplTest {
     @Transactional
     @Rollback
     public void createNode() {
-        int index = 123456;
+        int index = 10000000;
         String title = "hahaha";
         Boolean createResult = entryRelationDao.createNode(index, title);
         assertTrue(createResult, "Create failed");
@@ -44,13 +46,13 @@ class EntryRelationDaoImplTest {
     @Test
     @Transactional
     public void relationTest() {
-        int index1 = 1000;
+        int index1 = 10000000;
         String title1 = "title1";
 
-        int index2 = 2000;
+        int index2 = 20000000;
         String title2 = "title2";
 
-        int index3 = 3000;
+        int index3 = 30000000;
         String title3 = "title3";
 
         entryRelationDao.createNode(index1, title1);

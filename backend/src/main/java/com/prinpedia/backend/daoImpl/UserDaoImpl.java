@@ -35,9 +35,9 @@ public class UserDaoImpl implements UserDao {
                 userOtherRepository.findByUserId(user1.getUserId());
         if(userOther.isPresent()) {
             if(user.getAvatarBase64() != null) {
-                userOther.get().setAvatarBase64(user.getAvatarBase64());
-                userOtherRepository.deleteByUserId(user1.getUserId());
-                userOtherRepository.save(userOther.get());
+                UserOther userOther1 = userOther.get();
+                userOther1.setAvatarBase64(user.getAvatarBase64());
+                userOtherRepository.save(userOther1);
             }
         }
         else {

@@ -2,16 +2,17 @@ package com.prinpedia.backend.entity;
 
 import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.MongoId;
 
 import javax.persistence.Id;
 
 @Document(collection = "userOther")
 public class UserOther {
+    @MongoId
     private ObjectId userOtherId;
     private Integer userId;
     private String avatarBase64;
 
-    @Id
     public ObjectId getUserOtherId() {
         return userOtherId;
     }

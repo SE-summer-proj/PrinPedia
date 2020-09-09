@@ -2,11 +2,13 @@ package com.prinpedia.backend.controller;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.prinpedia.backend.entity.Content;
 import com.prinpedia.backend.entity.Entry;
-import com.prinpedia.backend.entity.Section;
 import com.prinpedia.backend.service.EntryService;
+import com.prinpedia.backend.service.StaticService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -15,36 +17,58 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @RestController
-@RequestMapping
+@RequestMapping(produces = "text/plain;charset=UTF-8")
 public class EntryController {
     @Autowired
-    EntryService entryService;
+    private EntryService entryService;
+
+    @Autowired
+    private StaticService staticService;
+
+    private Logger logger = LoggerFactory.getLogger(EntryController.class);
 
     @CrossOrigin
     @ResponseBody
     @GetMapping(value = "/entry")
     public String getEntryDetail(@RequestParam(value = "entryName") String title) {
+        logger.info("Receive GET request on '/entry'");
+        logger.debug("GET request on '/entry' with params: " +
+                "'entryName'=" + title);
         Entry entry = entryService.findByTitle(title);
         JSONObject response = new JSONObject();
         if(entry != null) {
+            staticService.entryRecord(title);
             JSONObject extraData = new JSONObject();
             extraData.put("title", entry.getTitle());
             String wikiText = entry.getWikiText();
             JSONArray content = parseWikiMarkupIntoContent(wikiText);
+            String modifiedWiki;
+            if(wikiText != null) {
+                modifiedWiki = wikiText.replace("\\n", "\n");
+                modifiedWiki = modifiedWiki.replace("\\'", "\'");
+            }
+            else modifiedWiki = null;
             extraData.put("content", content);
-            extraData.put("wikiText", wikiText);
+            extraData.put("wikiText", modifiedWiki);
+            if(entry.getLocked() != null) {
+                extraData.put("locked", entry.getLocked());
+            }
             response.put("status", 0);
-            response.put("message", "fetch detail success");
+            response.put("message", "查询信息失败");
             response.put("extraData", extraData);
         }
         else {
             response.put("status", -1);
-            response.put("message", "no matched entry");
+            response.put("message", "无匹配词条");
         }
+        logger.debug("Response to GET request on '/entry' is: " +
+                response.toJSONString());
+        logger.info("Response to GET request on '/entry' finished");
         return response.toJSONString();
     }
 
     private JSONArray parseWikiMarkupIntoContent(String markup) {
+        logger.info("Start parsing wiki markup");
         if(markup == null) return null;
         List<String> h1 = new ArrayList<>();
         String regx = "=*==(.+?)===*";
@@ -73,6 +97,8 @@ public class EntryController {
         List<List<String>> list = new ArrayList<>();
         list.add(h1);list.add(h2);list.add(h3);
 
+        logger.debug("Parsing wiki markup result: " + list.toString());
+        logger.info("Parsing wiki markup finished");
         JSONArray result = new JSONArray();
         int index = 0;
         while(index < h1.size()) {
@@ -95,7 +121,7 @@ public class EntryController {
         }
         if(newLevel < level) return index;
         if(newLevel == level) {
-            result.put("title", cur);
+            result.put("label", cur);
         }
 
         index++;
@@ -178,11 +204,16 @@ public class EntryController {
     @ResponseBody
     @PostMapping(value = "/create")
     public String createEntry(@RequestBody JSONObject jsonObject) {
+        logger.info("Receive POST request on '/create'");
+        logger.debug("POST request on '/create' with request body: " +
+                jsonObject.toJSONString());
         String title = jsonObject.getString("keyword");
+        logger.debug("POST request on '/create' with params: " +
+                "'keyword'=" + title);
         JSONObject response = new JSONObject();
         if(entryService.createEntry(title)) {
             response.put("status", 0);
-            response.put("message", "Successfully created");
+            response.put("message", "成功创建词条");
             JSONObject jsonObject1 = new JSONObject();
             jsonObject1.put("title", title);
             jsonObject1.put("summary", "");
@@ -192,8 +223,11 @@ public class EntryController {
         }
         else {
             response.put("status", -1);
-            response.put("message", "Create failure");
+            response.put("message", "创建词条失败");
         }
+        logger.debug("Response to POST request on '/create' is: " +
+                response.toJSONString());
+        logger.info("Response to POST request on '/create' finished");
         return response.toJSONString();
     }
 
@@ -201,6 +235,8 @@ public class EntryController {
     @ResponseBody
     @PostMapping(value = "/edit")
     public String editEntry(@RequestBody JSONObject jsonObject) {
+        logger.warn("'/edit' API is depreciated, this API will be removed in " +
+                "later version");
         JSONObject response = new JSONObject();
         String title = jsonObject.getString("title");
         String wikiText = jsonObject.getString("wikiText");
@@ -216,7 +252,6 @@ public class EntryController {
 
         return response.toJSONString();
     }
-
     /*
     //depreciated method
     @CrossOrigin
@@ -274,6 +309,10 @@ public class EntryController {
     @ResponseBody
     @GetMapping(value = "/relation")
     public String getRelationByTitle(@RequestParam("title") String title) {
+        logger.info("Receive GET request on '/relation'");
+        logger.debug("GET request on '/relation' with params: " +
+                "'title'=" + title);
+
         List<String> parents = entryService.findParents(title);
         List<String> children = entryService.findChildren(title);
 
@@ -291,6 +330,36 @@ public class EntryController {
         jsonCurrent.add(title);
         jsonObject.put("current", jsonCurrent);
 
+        logger.debug("Response to GET request on '/relation' is: " +
+                jsonObject.toJSONString());
+        logger.info("Response to GET request on '/relation' finished");
         return jsonObject.toJSONString();
+    }
+
+    @CrossOrigin
+    @ResponseBody
+    @PostMapping("/lock")
+    @PreAuthorize("hasRole('ADMIN')")
+    public String lockEntry(@RequestBody JSONObject request) {
+        logger.info("Receive POST request on '/lock'");
+        logger.debug("POST request on '/lock' with request body: " +
+                request.toJSONString());
+        String title = request.getString("title");
+        Boolean lock = request.getBoolean("lock");
+        logger.debug("POST request on '/entry/edit/request' with params: " +
+                "'title'=" + title + ", 'lock'=" + lock.toString());
+        JSONObject response = new JSONObject();
+        if(entryService.lockEntry(title, lock)) {
+            response.put("status", 0);
+            response.put("message", "设置成功");
+        }
+        else {
+            response.put("status", -1);
+            response.put("message", "出现了一点儿问题");
+        }
+        logger.debug("Response to POST request on '/lock' is: " +
+                response.toJSONString());
+        logger.info("Response to POST request on '/lock' finished");
+        return response.toJSONString();
     }
 }

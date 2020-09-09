@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration>
+<configuration>
+    <include resource="org/springframework/boot/logging/logback/base.xml"/>
+
+    <springProfile name="prod">
+        <appender name="LOGSTASH" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
+            <destination>172.31.53.231:4560</destination>
+            <encoder charset="UTF-8" class="net.logstash.logback.encoder.LogstashEncoder" />
+        </appender>
+        <root level="INFO">
+            <appender-ref ref="LOGSTASH" />
+            <appender-ref ref="CONSOLE" />
+        </root>
+    </springProfile>
+
+    <springProfile name="test">
+<!--        <appender name="LOGSTASH" class="net.logstash.logback.appender.LogstashTcpSocketAppender">-->
+<!--            <destination>172.31.53.231:4560</destination>-->
+<!--            <encoder charset="UTF-8" class="net.logstash.logback.encoder.LogstashEncoder" />-->
+<!--        </appender>-->
+        <root level="INFO">
+<!--            <appender-ref ref="LOGSTASH" />-->
+            <appender-ref ref="CONSOLE" />
+        </root>
+    </springProfile>
+
+    <springProfile name="dev">
+        <root level="INFO">
+            <appender-ref ref="CONSOLE" />
+        </root>
+    </springProfile>
+</configuration>

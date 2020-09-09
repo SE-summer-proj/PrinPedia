@@ -3,9 +3,11 @@ package com.prinpedia.backend.entity;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 
+import java.util.Date;
 import java.util.List;
 
 import static javax.persistence.GenerationType.IDENTITY;
@@ -21,7 +23,8 @@ public class User {
     private String username;
     private String password;
     private String email;
-    private Integer authority; // 1--ordinary user
+    private Date birthday;
+    private Boolean enabled;
     private String avatarBase64;
     private List<Role> roleList;
 
@@ -55,8 +58,19 @@ public class User {
         this.email = email;
     }
 
-    public Integer getAuthority() { return authority; }
-    public void setAuthority(Integer authority) { this.authority = authority; }
+    @Temporal(TemporalType.DATE)
+    @DateTimeFormat(pattern="yyyy-MM-dd")
+    public Date getBirthday() {
+        return birthday;
+    }
+    public void setBirthday(Date birthday) {
+        this.birthday = birthday;
+    }
+
+    public Boolean getEnabled() { return enabled; }
+    public void setEnabled(Boolean enabled) {
+        this.enabled = enabled;
+    }
 
     @Transient
     public String getAvatarBase64() { return avatarBase64; }
@@ -64,7 +78,8 @@ public class User {
         this.avatarBase64 = avatarBase64;
     }
 
-    @ManyToMany(cascade = CascadeType.PERSIST)
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE,
+            CascadeType.REFRESH})
     @JsonIgnoreProperties(value = "userList")
     public List<Role> getRoleList() {
         return roleList;
