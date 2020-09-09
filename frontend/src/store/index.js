@@ -6,21 +6,32 @@ Vue.use(Vuex);
 export const store = new Vuex.Store({
     state: {
         logged: false,
+        userType: [],
+        username: '',
         userData: {
             username: '',
-            userType: 0
+            birthday: '',
+            email: '',
+            avatarBase64: ''
         }
     },
     mutations: {
+        login(state, loginInfo) {
+            state.logged = true;
+            state.userType = loginInfo.userType;
+            state.username = loginInfo.username;
+        },
         setUserData(state, userData) {
             state.userData = userData;
-            state.logged = true;
         },
         logout(state) {
             state.userData = {
                 username: '',
-                userType: 0
-            }
+                birthday: '',
+                email: '',
+                avatarBase64: ''
+            };
+            state.userType = [];
             state.logged = false;
         }
     }

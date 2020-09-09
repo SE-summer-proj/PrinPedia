@@ -17,36 +17,36 @@
 </template>
 
 <script>
-    export default {
-        name: "SearchBar",
-        data: function () {
-            return {
-                searchKeyword: ''
-            };
-        },
-        props: {
-            keyword: String
-        },
-        methods: {
-            search() {
-                if (this.searchKeyword !== '')
-                    this.$router.push('/result/' + this.searchKeyword);
-            }
-        },
-        mounted() {
-            this.searchKeyword = this.keyword;
+export default {
+    name: "SearchBar",
+    data: function () {
+        return {
+            searchKeyword: ''
+        };
+    },
+    props: {
+        keyword: String
+    },
+    methods: {
+        search() {
+            if (this.searchKeyword !== '')
+                this.$router.push('/result/' + this.searchKeyword);
         }
+    },
+    mounted() {
+        this.searchKeyword = this.keyword;
     }
+}
 </script>
 
 <style scoped>
-  #search-button {
+#search-button {
     background-color: aqua;
     color: darkblue;
-  }
-  .searchbar {
+}
+.searchbar {
     box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
     margin-top: 10px;
     margin-bottom: 10px;
-  }
+}
 </style>

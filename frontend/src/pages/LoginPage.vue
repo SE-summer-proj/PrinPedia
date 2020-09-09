@@ -7,13 +7,13 @@
 </template>
 
 <script>
-    import LoginDialog from "@/components/LoginDialog";
-    import Header from "@/components/Header";
-    import Footer from "@/components/Footer";
-    export default {
-        name: "LoginPage",
-        components: {Footer, Header, LoginDialog}
-    }
+import LoginDialog from "@/components/LoginDialog";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
+export default {
+    name: "LoginPage",
+    components: {Footer, Header, LoginDialog}
+}
 </script>
 
 <style scoped>

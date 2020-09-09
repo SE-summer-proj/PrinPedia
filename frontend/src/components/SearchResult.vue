@@ -6,14 +6,16 @@
 </template>
 
 <script>
-    export default {
-        name: "SearchResult",
-        props: ['result']
-    }
+export default {
+    name: "SearchResult",
+    props: ['result']
+}
 </script>
 
 <style scoped>
-  #search-result {
+#search-result {
     text-align: left;
-  }
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
 </style>

@@ -5,13 +5,16 @@
     </el-header>
     <el-main>
       <el-row type="flex" justify="center">
-        <el-col :span="10">
+        <el-col :span="8">
           <SearchBar id="searchbar-main" style="text-align: center" keyword="" />
+        </el-col>
+        <el-col :span="2">
+          <el-button @click="$router.push('/advanced')">高级搜索</el-button>
         </el-col>
       </el-row>
       <el-row type="flex" justify="center">
         <el-col :span="10">
-          <Recommend id="recommend" />
+          <Recommend id="recommend" v-if="$store.state.logged" />
         </el-col>
       </el-row>
       <el-row type="flex" justify="center">
@@ -27,15 +30,15 @@
 </template>
 
 <script>
-    import SearchBar from "@/components/SearchBar";
-    import Recommend from "@/components/Recommend";
-    import Header from "@/components/Header";
-    import Footer from "@/components/Footer";
-    import Ranking from "@/components/Ranking";
-    export default {
-        name: "SearchPage",
-        components: {Ranking, Footer, Header, Recommend, SearchBar}
-    }
+import SearchBar from "@/components/SearchBar";
+import Recommend from "@/components/Recommend";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
+import Ranking from "@/components/Ranking";
+export default {
+    name: "SearchPage",
+    components: {Ranking, Footer, Header, Recommend, SearchBar}
+}
 </script>
 
 <style scoped>
