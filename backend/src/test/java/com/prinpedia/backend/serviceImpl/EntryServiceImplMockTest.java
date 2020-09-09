@@ -230,4 +230,26 @@ class EntryServiceImplMockTest {
         assertTrue(result.contains("second"),
                 "Cannot find second child entry title");
     }
+
+    @DisplayName("Lock and unlock")
+    @Test
+    public void lockAndUnlock() {
+        String title = "title";
+
+        Entry entry = new Entry();
+        entry.setTitle("Test");
+        Optional<Entry> optionalEntry = Optional.of(entry);
+        Mockito.when(entryDao.findByTitle("title")).thenReturn(optionalEntry);
+        Optional<Entry> optionalEntry1 = Optional.empty();
+        Mockito.when(entryDao.findByTitle("123")).thenReturn(optionalEntry1);
+        Mockito.when(entryDao.create(Mockito.any(Entry.class))).thenReturn(true);
+
+        Boolean result = entryService.lockEntry(title, true);
+        assertTrue(result, "Lock an entry failed");
+        result = entryService.lockEntry(title, false);
+        assertTrue(result, "Unlock an entry failed");
+
+        result = entryService.lockEntry("123", true);
+        assertFalse(result, "Operate on a null entry");
+    }
 }

@@ -38,7 +38,7 @@ public class MessageBoxController {
         messageBoxService.createMessage(username, content);
         JSONObject response = new JSONObject();
         response.put("status", 0);
-        response.put("message", "Submit success");
+        response.put("message", "提交成功");
         logger.debug("Response to POST request on '/message/create' is: "
                 + response.toJSONString());
         logger.info("Response to POST request on '/message/create' finished");
@@ -123,11 +123,11 @@ public class MessageBoxController {
         JSONObject response = new JSONObject();
         if(messageBoxService.reply(id, reply)) {
             response.put("status", 0);
-            response.put("message", "Reply success");
+            response.put("message", "回复成功");
         }
         else {
             response.put("status", -1);
-            response.put("message", "Something wrong happened");
+            response.put("message", "出现了一点儿问题");
         }
         logger.debug("Response to POST request on '/message/reply' is: "
                 + response.toJSONString());

@@ -14,8 +14,8 @@ public class RecommendController {
     @PreAuthorize("principal.username.equals(#username)")
     public String getRecommend(@RequestParam(value = "username") String username) {
         JSONArray jsonArray = new JSONArray();
-        jsonArray.add("哈哈哈");
-        jsonArray.add("嘻嘻嘻");
+        jsonArray.add("数学");
+        jsonArray.add("河北省");
         JSONObject response = new JSONObject();
         response.put("status", 0);
         response.put("message", "success");

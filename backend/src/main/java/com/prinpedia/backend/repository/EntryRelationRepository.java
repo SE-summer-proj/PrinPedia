@@ -24,12 +24,12 @@ public interface EntryRelationRepository extends Neo4jRepository<EntryRelation, 
 
     @Query("match (parent: Entry)-[r: EntryRelation]-> (current: Entry) " +
             "where current.title = $currentTitle " +
-            "return parent")
+            "return parent order by r.weight desc")
     List<EntryNode> findParents(@Param("currentTitle") String currentTitle);
 
     @Query("match (current: Entry)-[r: EntryRelation]-> (child: Entry) " +
             "where current.title = $currentTitle " +
-            "return child")
+            "return child order by r.weight desc")
     List<EntryNode> findChildren(@Param("currentTitle") String currentTitle);
 
     @Query("match (parent: Entry)-[r]->(child: Entry) " +

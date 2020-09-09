@@ -9,7 +9,10 @@ import java.util.List;
 public interface EntryService {
     Entry findByTitle(String title);
     String searchTitle(String keyword);
-    List<ElasticEntry> searchTitleAndSummary(String keyword);
+    List<ElasticEntry> searchTitleAndSummary(String keyword, Integer page);
+    List<ElasticEntry> advancedSearch(String must, String should, String mustNot,
+                                      String mustTotal, String mustTitle,
+                                      Integer page);
     Boolean createEntry(String title);
     Boolean lockEntry(String title, Boolean lock);
     /*Boolean editEntryOld(String title, String summary, List<Content> contentList,

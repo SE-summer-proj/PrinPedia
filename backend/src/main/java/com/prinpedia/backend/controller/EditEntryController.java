@@ -41,19 +41,19 @@ public class EditEntryController {
         JSONObject response = new JSONObject();
         if(title != null && wikiText != null && username != null) {
             Entry entry = entryService.findByTitle(title);
-            if(entry.getLocked()) {
+            if(entry == null || (entry.getLocked() != null && entry.getLocked())) {
                 response.put("status", -1);
-                response.put("message", "Entry is locked");
+                response.put("message", "不能编辑此词条");
             }
             else {
                 entryService.editEntryRequest(title, wikiText, username);
                 response.put("status", 0);
-                response.put("message", "Successfully edited");
+                response.put("message", "提交编辑申请成功");
             }
         }
         else {
             response.put("status", -1);
-            response.put("message", "Edition failure");
+            response.put("message", "编辑失败");
         }
         logger.debug("Response to POST request on '/entry/edit/request' is: " +
                 response.toJSONString());
@@ -64,7 +64,7 @@ public class EditEntryController {
     @CrossOrigin
     @ResponseBody
     @GetMapping(value = "/userLog")
-    @PreAuthorize("principal.username.equals(#username) || hasRole('ADMIN')")
+    @PreAuthorize("principal.username.equals(#username) && hasRole('ADMIN')")
     public String getEditLog(@RequestParam("username") String username) {
         logger.info("Receive GET request on '/entry/edit/userLog'");
         logger.debug("GET request on '/entry/edit/userLog' with params: " +
@@ -102,7 +102,13 @@ public class EditEntryController {
         if(entryEditRequest != null) {
             JSONObject extraData = new JSONObject();
             extraData.put("title", entryEditRequest.getTitle());
-            extraData.put("wikiText", entryEditRequest.getWikiText());
+            String wikiText = null;
+            if(entryEditRequest.getWikiText() != null) {
+                wikiText = entryEditRequest.getWikiText()
+                        .replace("\\n", "\n");
+                wikiText = wikiText.replace("\\'", "\'");
+            }
+            extraData.put("wikiText", wikiText);
             extraData.put("date", entryEditRequest.getDate());
             extraData.put("status", entryEditRequest.getStatus());
             extraData.put("id", entryEditRequest.getId().toString());
@@ -112,7 +118,7 @@ public class EditEntryController {
         }
         else {
             response.put("status", -1);
-            response.put("message", "Can't find edit log");
+            response.put("message", "不能找到编辑记录");
         }
         logger.debug("Response to GET request on '/entry/edit/detail' is: " +
                 response.toJSONString());
@@ -165,11 +171,11 @@ public class EditEntryController {
         JSONObject response = new JSONObject();
         if(entryService.examineEditLog(id, passed)) {
             response.put("status", 0);
-            response.put("message", "Success");
+            response.put("message", "成功");
         }
         else {
             response.put("status", -1);
-            response.put("message", "Failure");
+            response.put("message", "出现了一点儿问题");
         }
         logger.debug("Response to POST request on '/entry/edit/examine' is: " +
                 response.toJSONString());

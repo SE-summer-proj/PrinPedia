@@ -37,11 +37,11 @@ public class CollectionController {
         JSONObject response = new JSONObject();
         if(collectionService.addToCollection(username, title)) {
             response.put("status", 0);
-            response.put("message", "Add success");
+            response.put("message", "添加成功");
         }
         else {
             response.put("status", -1);
-            response.put("message", "Something wrong happened");
+            response.put("message", "发生了一点儿问题");
         }
         logger.debug("Response to POST request on '/collection/add' is: " +
                 response.toJSONString());
@@ -65,11 +65,11 @@ public class CollectionController {
         JSONObject response = new JSONObject();
         if(collectionService.removeFromCollection(username, title)) {
             response.put("status", 0);
-            response.put("message", "Remove success");
+            response.put("message", "移除成功");
         }
         else {
             response.put("status", -1);
-            response.put("message", "Something wrong happened");
+            response.put("message", "发生了一点儿问题");
         }
         logger.debug("Response to POST request on '/collection/remove' is: " +
                 response.toJSONString());

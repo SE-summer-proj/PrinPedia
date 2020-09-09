@@ -39,11 +39,11 @@ public class UserController {
         JSONObject response = new JSONObject();
         if(userService.register(username, password, email)) {
             response.put("status", 0);
-            response.put("message", "Registration succeed.");
+            response.put("message", "注册成功");
         }
         else {
             response.put("status", -1);
-            response.put("message", "Registration fails");
+            response.put("message", "注册失败");
         }
         logger.debug("Response to POST request on '/user/register' is: " +
                 response.toJSONString());
@@ -92,11 +92,11 @@ public class UserController {
         JSONObject response = new JSONObject();
         if(userService.editUserDetail(user)) {
             response.put("status", 0);
-            response.put("message", "Update user detail successfully");
+            response.put("message", "编辑成功");
         }
         else {
             response.put("status", -1);
-            response.put("message", "Failure");
+            response.put("message", "编辑失败");
         }
         logger.debug("Response to POST request on '/user/edit' is: " +
                 response.toJSONString());
@@ -123,13 +123,13 @@ public class UserController {
         JSONObject response = new JSONObject();
         if(isMatched) {
             user.setPassword(passwordEncoder.encode(newPassword));
-            userService.updateUser(user);
+            userService.editUserDetail(user);
             response.put("status", 0);
-            response.put("message", "Alter password success");
+            response.put("message", "修改密码成功");
         }
         else {
             response.put("status", -1);
-            response.put("message", "Wrong old password");
+            response.put("message", "原密码错误");
         }
         logger.debug("Response to POST request on '/user/password' is: " +
                 response.toJSONString());

@@ -33,7 +33,7 @@ class UserControllerTest {
     @BeforeEach()
     void setUp() {
         User test = userRepository.findByUsername("test");
-        if(test != null) {
+        if (test != null) {
             userRepository.deleteById(test.getUserId());
         }
     }
@@ -41,7 +41,7 @@ class UserControllerTest {
     @AfterEach
     void after() {
         User test = userRepository.findByUsername("test");
-        if(test != null) {
+        if (test != null) {
             userRepository.deleteById(test.getUserId());
         }
     }
@@ -175,10 +175,10 @@ class UserControllerTest {
     @WithMockUser(username = "test")
     public void editUserDetails() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders
-                        .post("/user/register")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"username\": \"test\", \"password\": \"test\", " +
-                                "\"mailAddr\": \"123@123.com\"}"))
+                .post("/user/register")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"username\": \"test\", \"password\": \"test\", " +
+                        "\"mailAddr\": \"123@123.com\"}"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andReturn();
 
@@ -194,6 +194,48 @@ class UserControllerTest {
         String resultString = result.getResponse().getContentAsString();
         JSONObject resultJSON = JSON.parseObject(resultString);
         assertEquals(0, resultJSON.getInteger("status"),
+                "Status don't match");
+
+        result = mockMvc
+                .perform(MockMvcRequestBuilders
+                        .post("/user/password")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"oldPassword\": \"wrong\", " +
+                                "\"newPassword\": \"new\"}"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andReturn();
+
+        resultString = result.getResponse().getContentAsString();
+        resultJSON = JSON.parseObject(resultString);
+        assertEquals(-1, resultJSON.getInteger("status"),
+                "Status don't match");
+
+        result = mockMvc
+                .perform(MockMvcRequestBuilders
+                        .post("/user/password")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"oldPassword\": \"test\", " +
+                                "\"newPassword\": \"new\"}"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andReturn();
+
+        resultString = result.getResponse().getContentAsString();
+        resultJSON = JSON.parseObject(resultString);
+        assertEquals(0, resultJSON.getInteger("status"),
+                "Status don't match");
+
+        result = mockMvc
+                .perform(MockMvcRequestBuilders
+                        .post("/user/password")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"oldPassword\": \"test\", " +
+                                "\"newPassword\": \"new\"}"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andReturn();
+
+        resultString = result.getResponse().getContentAsString();
+        resultJSON = JSON.parseObject(resultString);
+        assertEquals(-1, resultJSON.getInteger("status"),
                 "Status don't match");
     }
 

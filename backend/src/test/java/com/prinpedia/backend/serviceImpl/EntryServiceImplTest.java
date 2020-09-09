@@ -23,7 +23,7 @@ class EntryServiceImplTest {
         String result = entryService.searchTitle(keyword);
         System.out.println("Search with keyword(" + keyword + "): " + result);
 
-        keyword = "hahaha";
+        keyword = "数学";
         result = entryService.searchTitle(keyword);
         System.out.println("Search with keyword(" + keyword + "): " + result);
     }
@@ -33,12 +33,22 @@ class EntryServiceImplTest {
     public void  searchTitleAndSummary() {
         String []strings = {
                 "greek",
-                "technique",
-                "mission"
+                "数学",
+                "数学困难"
         };
 
         for(String keyword : strings) {
-            List<ElasticEntry> result = entryService.searchTitleAndSummary(keyword);
+            List<ElasticEntry> result =
+                    entryService.searchTitleAndSummary(keyword, 0);
         }
+    }
+
+    @DisplayName("Advanced search")
+    @Test
+    public void advancedSearch() {
+        List<ElasticEntry> result =
+                entryService.advancedSearch("数学", "科学 算数",
+                        "简单", "数学", "数学",
+                        0);
     }
 }

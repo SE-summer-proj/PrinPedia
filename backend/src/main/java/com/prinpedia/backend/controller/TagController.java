@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -30,6 +31,7 @@ public class TagController {
         List<Tag> tagList = tagService.findTagByEntry(title);
         JSONObject response = new JSONObject();
         JSONArray tagArray = new JSONArray();
+        if(tagList == null) tagList = new ArrayList<>();
         for(Tag tag : tagList) {
             tagArray.add(tag.getTagName());
         }
@@ -52,9 +54,8 @@ public class TagController {
         List<EntryInfo> entryInfoList = tagService.findEntryByTag(tagName);
         JSONObject response = new JSONObject();
         JSONArray entryArray = new JSONArray();
-        for(EntryInfo entryInfo : entryInfoList) {
-            entryArray.add(entryInfo.getTitle());
-        }
+        if(entryInfoList == null) entryInfoList = new ArrayList<>();
+        for(EntryInfo entryInfo : entryInfoList) { entryArray.add(entryInfo.getTitle()); }
         response.put("status", 0);
         response.put("message", "Success");
         response.put("extraData", entryArray);
@@ -120,11 +121,11 @@ public class TagController {
         JSONObject response = new JSONObject();
         if(tagService.createTag(tagName)) {
             response.put("status", 0);
-            response.put("message", "Create tag success");
+            response.put("message", "创建标签成功");
         }
         else {
             response.put("status", -1);
-            response.put("message", "Tag already exists");
+            response.put("message", "标签已存在");
         }
         logger.debug("Response to POST request on '/tag/create' is: " +
                 response.toJSONString());

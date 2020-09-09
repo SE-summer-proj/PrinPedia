@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -68,12 +67,8 @@ public class UserServiceImpl implements UserService {
         oldUser.setEmail(user.getEmail());
         oldUser.setBirthday(user.getBirthday());
         oldUser.setAvatarBase64(user.getAvatarBase64());
+        if(user.getPassword() != null) oldUser.setPassword(user.getPassword());
         userDao.update(oldUser);
         return true;
-    }
-
-    @Override
-    public void updateUser(User user) {
-        userDao.update(user);
     }
 }

@@ -1,6 +1,6 @@
 # This is the backend app of this project
 
-The app is created using springboot.
+Backend app is developed through spring boot framework. 
 
 Run "BackendApplication" to run this backend.
 It runs on localhost:8080 by default.

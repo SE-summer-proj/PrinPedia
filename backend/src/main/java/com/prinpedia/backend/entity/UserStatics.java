@@ -21,6 +21,13 @@ public class UserStatics {
     private Date date;
     private long count;
 
+    public UserStatics(Date date, Long count) {
+        this.date = date;
+        this.count = count;
+    }
+
+    public UserStatics() {}
+
     @Id
     @GeneratedValue(strategy = IDENTITY)
     public int getUserStaticsId() {

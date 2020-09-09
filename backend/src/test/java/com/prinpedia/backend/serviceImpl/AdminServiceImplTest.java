@@ -76,7 +76,6 @@ class AdminServiceImplTest {
         boolean flag = false;
         List<Role> roleList = user.getRoleList();
         for(Role role : roleList) {
-            System.out.println(role.getRoleName());
             if(role.getRoleName().equals("ROLE_ADMIN")) {
                 flag = true;
                 break;
@@ -118,4 +117,28 @@ class AdminServiceImplTest {
         assertFalse(result, "Change a non-existing user's ability");
     }
 
+    @Test
+    @Transactional
+    @Rollback
+    public void createSuperUser() {
+        String username = "test";
+        String password = "test";
+
+        Boolean createResult = adminService.createSuperUser(username, password);
+        assertTrue(createResult, "Create super admin failed");
+
+        User user = userService.findUserByName(username);
+        boolean flag = false;
+        List<Role> roleList = user.getRoleList();
+        for(Role role : roleList) {
+            if(role.getRoleName().equals("ROLE_SUPER")) {
+                flag = true;
+                break;
+            }
+        }
+        assertTrue(flag, "Cannot find \"ROLE_SUPER\" in roleList");
+
+        createResult = adminService.createSuperUser(username, password);
+        assertFalse(createResult, "Create an already existed super user");
+    }
 }
